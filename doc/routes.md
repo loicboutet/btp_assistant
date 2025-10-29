@@ -10,6 +10,7 @@ This document outlines all the routes in the application. The core functionality
 - **Secondary Interface:** Web (dashboard and admin only)
 - **Authentication:** Devise for web, Unipile account_id for WhatsApp
 - **Subscription Management:** Stripe Customer Portal (no custom subscription routes needed)
+- **Route Language:** English (Rails convention)
 
 ---
 
@@ -22,12 +23,12 @@ This document outlines all the routes in the application. The core functionality
 | Method | Path | Description | Journey Step |
 |--------|------|-------------|--------------|
 | GET | `/` | Landing page with product info and CTA | 1. Discovery |
-| GET | `/inscription` | Registration form (name, email, phone, company, SIRET, VAT, language) | 2. Sign Up |
-| POST | `/inscription` | Process registration and redirect to Stripe Checkout | 3. Submit |
-| GET | `/inscription/success` | Payment success page with WhatsApp connection instructions | 4. Success |
-| GET | `/mentions-legales` | Legal notices | Reference |
-| GET | `/cgu` | Terms and conditions | Reference |
-| GET | `/politique-confidentialite` | Privacy policy | Reference |
+| GET | `/sign_up` | Registration form (name, email, phone, company, SIRET, VAT, language) | 2. Sign Up |
+| POST | `/sign_up` | Process registration and redirect to Stripe Checkout | 3. Submit |
+| GET | `/sign_up/success` | Payment success page with WhatsApp connection instructions | 4. Success |
+| GET | `/legal` | Legal notices | Reference |
+| GET | `/terms` | Terms and conditions | Reference |
+| GET | `/privacy` | Privacy policy | Reference |
 
 **Note:** Stripe Checkout handles the payment page (no custom route needed).
 
@@ -41,13 +42,13 @@ This document outlines all the routes in the application. The core functionality
 
 | Method | Path | Description | Journey Step |
 |--------|------|-------------|--------------|
-| GET | `/connexion` | Sign in page | 1. Login Page |
-| POST | `/connexion` | Process sign in | 2. Submit Login |
-| DELETE | `/deconnexion` | Sign out | Exit |
-| GET | `/mot-de-passe/oublie` | Forgot password form | 1. Forgot |
-| POST | `/mot-de-passe/oublie` | Send password reset email | 2. Request Reset |
-| GET | `/mot-de-passe/nouveau` | Reset password form (from email link) | 3. Reset Form |
-| PATCH | `/mot-de-passe/nouveau` | Update password | 4. Save New Password |
+| GET | `/login` | Sign in page | 1. Login Page |
+| POST | `/login` | Process sign in | 2. Submit Login |
+| DELETE | `/logout` | Sign out | Exit |
+| GET | `/password/forgot` | Forgot password form | 1. Forgot |
+| POST | `/password/forgot` | Send password reset email | 2. Request Reset |
+| GET | `/password/reset` | Reset password form (from email link) | 3. Reset Form |
+| PATCH | `/password/reset` | Update password | 4. Save New Password |
 
 ### Dashboard Journey
 
@@ -56,8 +57,8 @@ This document outlines all the routes in the application. The core functionality
 | Method | Path | Description | Journey Step |
 |--------|------|-------------|--------------|
 | GET | `/dashboard` | Main dashboard with stats and recent activity | 1. Home |
-| GET | `/profil` | User profile view and edit | 2. Profile View |
-| PATCH | `/profil` | Update user profile | 3. Update Profile |
+| GET | `/profile` | User profile view and edit | 2. Profile View |
+| PATCH | `/profile` | Update user profile | 3. Update Profile |
 
 ### WhatsApp Connection Journey
 
@@ -65,10 +66,10 @@ This document outlines all the routes in the application. The core functionality
 
 | Method | Path | Description | Journey Step |
 |--------|------|-------------|--------------|
-| GET | `/whatsapp/connexion` | WhatsApp connection page with QR code | 1. Connection Page |
-| POST | `/whatsapp/connexion` | Request QR code from Unipile | 2. Generate QR |
-| GET | `/whatsapp/statut` | Check connection status (AJAX polling) | 3. Verify Connection |
-| DELETE | `/whatsapp/deconnexion` | Disconnect WhatsApp account | Disconnect |
+| GET | `/whatsapp/connect` | WhatsApp connection page with QR code | 1. Connection Page |
+| POST | `/whatsapp/connect` | Request QR code from Unipile | 2. Generate QR |
+| GET | `/whatsapp/status` | Check connection status (AJAX polling) | 3. Verify Connection |
+| DELETE | `/whatsapp/disconnect` | Disconnect WhatsApp account | Disconnect |
 
 ### Client Management Journey
 
@@ -78,9 +79,9 @@ This document outlines all the routes in the application. The core functionality
 |--------|------|-------------|--------------|
 | GET | `/clients` | List all clients with search and filters | 1. Clients List |
 | GET | `/clients/:id` | View client details with quotes/invoices history | 2. Client Details |
-| GET | `/clients/nouveau` | Create client form (web interface) | 1. New Client Form |
+| GET | `/clients/new` | Create client form (web interface) | 1. New Client Form |
 | POST | `/clients` | Save new client (web interface) | 2. Save Client |
-| GET | `/clients/:id/modifier` | Edit client form | 1. Edit Form |
+| GET | `/clients/:id/edit` | Edit client form | 1. Edit Form |
 | PATCH | `/clients/:id` | Update client | 2. Save Changes |
 | DELETE | `/clients/:id` | Delete client (soft delete) | Delete |
 
@@ -92,11 +93,11 @@ This document outlines all the routes in the application. The core functionality
 
 | Method | Path | Description | Journey Step |
 |--------|------|-------------|--------------|
-| GET | `/devis` | List all quotes with filters (status, date, client) | 1. Quotes List |
-| GET | `/devis/:id` | View quote details with items and PDF | 2. Quote Details |
-| GET | `/devis/:id/pdf` | Download quote PDF | 3. Download |
-| GET | `/devis/:id/apercu` | Preview quote before sending | 3. Preview |
-| POST | `/devis/:id/envoyer-whatsapp` | Resend quote PDF via WhatsApp | 4. Resend |
+| GET | `/quotes` | List all quotes with filters (status, date, client) | 1. Quotes List |
+| GET | `/quotes/:id` | View quote details with items and PDF | 2. Quote Details |
+| GET | `/quotes/:id/pdf` | Download quote PDF | 3. Download |
+| GET | `/quotes/:id/preview` | Preview quote before sending | 3. Preview |
+| POST | `/quotes/:id/send_whatsapp` | Resend quote PDF via WhatsApp | 4. Resend |
 
 **Note:** Quotes are primarily created via WhatsApp conversation. Web interface is read-only + resend capability.
 
@@ -106,12 +107,12 @@ This document outlines all the routes in the application. The core functionality
 
 | Method | Path | Description | Journey Step |
 |--------|------|-------------|--------------|
-| GET | `/factures` | List all invoices with filters (status, date, client) | 1. Invoices List |
-| GET | `/factures/:id` | View invoice details with items and PDF | 2. Invoice Details |
-| GET | `/factures/:id/pdf` | Download invoice PDF | 3. Download |
-| GET | `/factures/:id/apercu` | Preview invoice before sending | 3. Preview |
-| POST | `/factures/:id/envoyer-whatsapp` | Resend invoice PDF via WhatsApp | 4. Resend |
-| PATCH | `/factures/:id/statut` | Update invoice status (paid, overdue) | 5. Update Status |
+| GET | `/invoices` | List all invoices with filters (status, date, client) | 1. Invoices List |
+| GET | `/invoices/:id` | View invoice details with items and PDF | 2. Invoice Details |
+| GET | `/invoices/:id/pdf` | Download invoice PDF | 3. Download |
+| GET | `/invoices/:id/preview` | Preview invoice before sending | 3. Preview |
+| POST | `/invoices/:id/send_whatsapp` | Resend invoice PDF via WhatsApp | 4. Resend |
+| PATCH | `/invoices/:id/status` | Update invoice status (paid, overdue) | 5. Update Status |
 
 **Note:** Invoices are primarily created via WhatsApp conversation. Web interface is read-only + status management.
 
@@ -121,7 +122,7 @@ This document outlines all the routes in the application. The core functionality
 
 | Method | Path | Description | Journey Step |
 |--------|------|-------------|--------------|
-| POST | `/abonnement/portail` | Create Stripe Customer Portal session and redirect | 1. Open Portal |
+| POST | `/subscription/portal` | Create Stripe Customer Portal session and redirect | 1. Open Portal |
 
 **What Stripe Customer Portal Handles:**
 - ✅ View subscription details and status
@@ -167,7 +168,7 @@ This document outlines all the routes in the application. The core functionality
 | Method | Path | Description | Journey Step |
 |--------|------|-------------|--------------|
 | GET | `/admin` | Admin dashboard with global stats and metrics | 1. Admin Home |
-| GET | `/admin/metriques` | Detailed metrics and analytics | 2. Analytics |
+| GET | `/admin/metrics` | Detailed metrics and analytics | 2. Analytics |
 
 ### User Management Journey
 
@@ -175,15 +176,15 @@ This document outlines all the routes in the application. The core functionality
 
 | Method | Path | Description | Journey Step |
 |--------|------|-------------|--------------|
-| GET | `/admin/utilisateurs` | List all users with search and filters | 1. Users List |
-| GET | `/admin/utilisateurs/:id` | View user details and activity | 2. User Details |
-| GET | `/admin/utilisateurs/:id/modifier` | Edit user form | 3. Edit Form |
-| PATCH | `/admin/utilisateurs/:id` | Update user | 4. Save Changes |
-| POST | `/admin/utilisateurs/:id/suspendre` | Suspend user account | Action: Suspend |
-| POST | `/admin/utilisateurs/:id/activer` | Activate suspended account | Action: Activate |
-| POST | `/admin/utilisateurs/:id/reset-whatsapp` | Force WhatsApp reconnection | Action: Reset WhatsApp |
-| GET | `/admin/utilisateurs/:id/logs` | View user activity logs | View Logs |
-| POST | `/admin/utilisateurs/:id/portail-stripe` | Create Stripe Portal session for user (admin access) | Stripe Portal |
+| GET | `/admin/users` | List all users with search and filters | 1. Users List |
+| GET | `/admin/users/:id` | View user details and activity | 2. User Details |
+| GET | `/admin/users/:id/edit` | Edit user form | 3. Edit Form |
+| PATCH | `/admin/users/:id` | Update user | 4. Save Changes |
+| POST | `/admin/users/:id/suspend` | Suspend user account | Action: Suspend |
+| POST | `/admin/users/:id/activate` | Activate suspended account | Action: Activate |
+| POST | `/admin/users/:id/reset_whatsapp` | Force WhatsApp reconnection | Action: Reset WhatsApp |
+| GET | `/admin/users/:id/logs` | View user activity logs | View Logs |
+| POST | `/admin/users/:id/stripe_portal` | Create Stripe Portal session for user (admin access) | Stripe Portal |
 
 ### Subscription Management Journey
 
@@ -191,9 +192,9 @@ This document outlines all the routes in the application. The core functionality
 
 | Method | Path | Description | Journey Step |
 |--------|------|-------------|--------------|
-| GET | `/admin/abonnements` | List all subscriptions with filters (status, Stripe ID) | 1. Subscriptions List |
-| GET | `/admin/abonnements/:id` | View subscription details (links to Stripe Dashboard) | 2. Subscription Details |
-| GET | `/admin/abonnements/impayes` | List overdue subscriptions | View Overdue |
+| GET | `/admin/subscriptions` | List all subscriptions with filters (status, Stripe ID) | 1. Subscriptions List |
+| GET | `/admin/subscriptions/:id` | View subscription details (links to Stripe Dashboard) | 2. Subscription Details |
+| GET | `/admin/subscriptions/overdue` | List overdue subscriptions | View Overdue |
 
 **Note:** Admin manages subscriptions in Stripe Dashboard (no manual suspend/reactivate routes). Webhooks handle all status updates automatically.
 
@@ -206,7 +207,7 @@ This document outlines all the routes in the application. The core functionality
 | GET | `/admin/logs` | System logs with filters (type, date, user) | 1. Logs List |
 | GET | `/admin/logs/:id` | View detailed log entry | 2. Log Details |
 | GET | `/admin/webhooks` | Webhook activity log (Unipile, Stripe) | 1. Webhooks Log |
-| POST | `/admin/webhooks/:id/rejouer` | Replay failed webhook | Action: Replay |
+| POST | `/admin/webhooks/:id/replay` | Replay failed webhook | Action: Replay |
 
 ### Settings Management Journey
 
@@ -214,12 +215,12 @@ This document outlines all the routes in the application. The core functionality
 
 | Method | Path | Description | Journey Step |
 |--------|------|-------------|--------------|
-| GET | `/admin/parametres` | Global application settings | 1. Settings Home |
-| PATCH | `/admin/parametres` | Update settings | 2. Save Settings |
-| GET | `/admin/parametres/unipile` | Unipile configuration and status | View Unipile Config |
-| POST | `/admin/parametres/unipile/test` | Test Unipile connection | Test Connection |
-| GET | `/admin/parametres/stripe` | Stripe configuration | View Stripe Config |
-| GET | `/admin/parametres/openai` | OpenAI configuration | View OpenAI Config |
+| GET | `/admin/settings` | Global application settings | 1. Settings Home |
+| PATCH | `/admin/settings` | Update settings | 2. Save Settings |
+| GET | `/admin/settings/unipile` | Unipile configuration and status | View Unipile Config |
+| POST | `/admin/settings/unipile/test` | Test Unipile connection | Test Connection |
+| GET | `/admin/settings/stripe` | Stripe configuration | View Stripe Config |
+| GET | `/admin/settings/openai` | OpenAI configuration | View OpenAI Config |
 
 ---
 
@@ -275,9 +276,9 @@ This document outlines all the routes in the application. The core functionality
 
 | Method | Path | Description | Journey Step |
 |--------|------|-------------|--------------|
-| GET | `/api/v1/statut` | Application health check | Health Check |
-| GET | `/api/v1/statut/whatsapp` | WhatsApp connection status for current user | WhatsApp Status |
-| GET | `/api/v1/messages/nouveaux` | Poll for new messages (if webhooks fail) | Polling Fallback |
+| GET | `/api/v1/status` | Application health check | Health Check |
+| GET | `/api/v1/whatsapp/status` | WhatsApp connection status for current user | WhatsApp Status |
+| GET | `/api/v1/messages/new` | Poll for new messages (if webhooks fail) | Polling Fallback |
 
 ---
 
@@ -354,14 +355,14 @@ These are not HTTP routes but conversational triggers:
 
 ```
 Landing (/) 
-  → Registration (/inscription) 
+  → Registration (/sign_up) 
   → Stripe Checkout (external)
-  → Success (/inscription/success)
-  → Login (/connexion)
+  → Success (/sign_up/success)
+  → Login (/login)
   → Dashboard (/dashboard)
-  → WhatsApp Connection (/whatsapp/connexion)
+  → WhatsApp Connection (/whatsapp/connect)
   → Scan QR Code
-  → Connected! (Poll /whatsapp/statut)
+  → Connected! (Poll /whatsapp/status)
   → Start creating documents via WhatsApp
 ```
 
@@ -379,18 +380,18 @@ WhatsApp: "créer un devis"
   → User: "oui"
   → AI: Generates PDF
   → AI: Sends PDF on WhatsApp
-  → User can view on web (/devis) later
+  → User can view on web (/quotes) later
 ```
 
 ### 3. View and Resend Quote Journey
 
 ```
 Dashboard (/dashboard)
-  → Quotes List (/devis)
-  → Select Quote (/devis/:id)
+  → Quotes List (/quotes)
+  → Select Quote (/quotes/:id)
   → View Details + PDF
   → Click "Resend via WhatsApp"
-  → POST /devis/:id/envoyer-whatsapp
+  → POST /quotes/:id/send_whatsapp
   → Success message
   → PDF sent to client on WhatsApp
 ```
@@ -400,7 +401,7 @@ Dashboard (/dashboard)
 ```
 Dashboard (/dashboard)
   → Click "Manage Subscription" button
-  → POST /abonnement/portail
+  → POST /subscription/portal
   → Create Stripe Customer Portal session
   → Redirect to Stripe Portal (external)
   → User manages subscription (update payment, view invoices, cancel)
@@ -411,13 +412,13 @@ Dashboard (/dashboard)
 ### 5. Admin User Management Journey
 
 ```
-Admin Login (/connexion)
+Admin Login (/login)
   → Admin Dashboard (/admin)
-  → Users List (/admin/utilisateurs)
+  → Users List (/admin/users)
   → Search User
-  → View User (/admin/utilisateurs/:id)
-  → Check Activity Logs (/admin/utilisateurs/:id/logs)
-  → Suspend Account (POST /admin/utilisateurs/:id/suspendre)
+  → View User (/admin/users/:id)
+  → Check Activity Logs (/admin/users/:id/logs)
+  → Suspend Account (POST /admin/users/:id/suspend)
   → User notified via email
 ```
 
@@ -444,17 +445,17 @@ Stripe webhook: invoice.payment_failed
 ### Stripe Checkout (Registration)
 
 **Flow:**
-1. User submits registration form → `POST /inscription`
+1. User submits registration form → `POST /sign_up`
 2. Create Stripe Checkout Session with:
    - Price ID (monthly subscription)
    - Customer email
-   - Success URL: `/inscription/success`
-   - Cancel URL: `/inscription`
+   - Success URL: `/sign_up/success`
+   - Cancel URL: `/sign_up`
 3. Redirect user to Stripe Checkout (external)
 4. User completes payment
 5. Stripe webhook: `checkout.session.completed`
 6. Activate user account
-7. User returns to `/inscription/success`
+7. User returns to `/sign_up/success`
 
 **Stripe Checkout Session Parameters:**
 ```ruby
@@ -466,8 +467,8 @@ Stripe::Checkout::Session.create(
   }],
   customer_email: user.email,
   client_reference_id: user.id,
-  success_url: "#{root_url}inscription/success?session_id={CHECKOUT_SESSION_ID}",
-  cancel_url: "#{root_url}inscription",
+  success_url: "#{root_url}sign_up/success?session_id={CHECKOUT_SESSION_ID}",
+  cancel_url: "#{root_url}sign_up",
   metadata: {
     user_id: user.id
   }
@@ -477,7 +478,7 @@ Stripe::Checkout::Session.create(
 ### Stripe Customer Portal (Subscription Management)
 
 **Flow:**
-1. User clicks "Manage Subscription" → `POST /abonnement/portail`
+1. User clicks "Manage Subscription" → `POST /subscription/portal`
 2. Create Stripe Customer Portal Session:
    ```ruby
    Stripe::BillingPortal::Session.create(
@@ -524,10 +525,10 @@ end
 ## Route Naming Conventions
 
 ### Path Structure
-- **French paths** for user-facing routes: `/devis`, `/factures`, `/clients`
-- **English paths** for admin/API routes: `/admin/users`, `/api/v1/messages`
-- Resource names in **singular** for show: `/devis/:id`
-- Resource names in **plural** for index: `/devis`
+- **English paths** for all routes (Rails convention)
+- Use underscores for multi-word paths: `/sign_up`, `/send_whatsapp`, `/reset_whatsapp`
+- Resource names in **singular** for show: `/quotes/:id`
+- Resource names in **plural** for index: `/quotes`
 - Journey-aware grouping: Related actions use same base path
 
 ### Controller Actions
@@ -540,10 +541,10 @@ end
 - `destroy` → Delete resource (Journey: Delete)
 
 ### Custom Actions
-- Use **POST** for state changes: `POST /devis/:id/envoyer-whatsapp`
-- Use descriptive names in **French** for user routes
-- Use descriptive names in **English** for admin routes
-- Action verbs: `envoyer`, `suspendre`, `activer`, `rejouer`, `portail`
+- Use **POST** for state changes: `POST /quotes/:id/send_whatsapp`
+- Use descriptive names in **English**: `send_whatsapp`, `suspend`, `activate`, `replay`
+- Use underscores for multi-word actions: `send_whatsapp`, `reset_whatsapp`, `stripe_portal`
+- RESTful where possible, custom actions when needed
 
 ---
 
@@ -591,9 +592,9 @@ end
 | `/` | `/` (landing) | Unauthenticated | Start journey |
 | `/` | `/dashboard` | Authenticated | Continue journey |
 | `/admin` | `/admin/dashboard` | Admin | Admin home |
-| `/devis/nouveau` | N/A | Always | Redirect to WhatsApp with instructions |
-| `/factures/nouveau` | N/A | Always | Redirect to WhatsApp with instructions |
-| `/abonnement` | `/abonnement/portail` | Always | Direct to Stripe Portal (auto-redirect) |
+| `/quotes/new` | N/A | Always | Redirect to WhatsApp with instructions |
+| `/invoices/new` | N/A | Always | Redirect to WhatsApp with instructions |
+| `/subscription` | `/subscription/portal` | Always | Direct to Stripe Portal (auto-redirect) |
 
 ---
 
@@ -645,6 +646,5 @@ end
 - Mobile app routes (if native app is built later)
 - Advanced analytics routes for power users
 - Export/import routes for accounting integration
-- Multi-language route alternatives (Turkish paths: `/teklifler`, `/faturalar`)
 - API routes for third-party integrations (accounting software, CRM)
 - Stripe Connect (if enabling payments to artisans' accounts)
