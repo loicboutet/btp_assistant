@@ -7,21 +7,34 @@
 
 <!-- Filters -->
 <div class="admin-card" style="margin-bottom: var(--spacing-lg);">
+  <h3 class="filters-title">Filtres de recherche</h3>
   <div class="filters-bar">
     <div class="search-box">
       <input type="search" placeholder="Rechercher par nom, Stripe ID..." class="form-input">
     </div>
     <div class="filter-group">
-      <label>Statut</label>
       <select class="form-select">
-        <option>Tous</option>
+        <option>Tous les statuts</option>
         <option selected>Actifs</option>
         <option>En retard</option>
         <option>Annulés</option>
         <option>Essai</option>
       </select>
     </div>
-    <%= link_to "Abonnements en retard", overdue_admin_subscriptions_path, class: "btn btn-outline" %>
+    <div class="filter-actions">
+      <button class="btn btn-outline">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="20" height="20">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+        <span>Effacer</span>
+      </button>
+      <%= link_to overdue_admin_subscriptions_path, class: "btn btn-primary" do %>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="20" height="20">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 3c2.755 0 5.455.232 8.083.678.533.09.917.556.917 1.096v1.044a2.25 2.25 0 01-.659 1.591l-5.432 5.432a2.25 2.25 0 00-.659 1.591v2.927a2.25 2.25 0 01-1.244 2.013L9.75 21v-6.568a2.25 2.25 0 00-.659-1.591L3.659 7.409A2.25 2.25 0 013 5.818V4.774c0-.54.384-1.006.917-1.096A48.32 48.32 0 0112 3z" />
+        </svg>
+        <span>Abonnements en retard</span>
+      <% end %>
+    </div>
   </div>
 </div>
 
@@ -62,7 +75,7 @@
         <td class="font-weight-bold">59€</td>
         <td>
           <div class="action-buttons">
-            <%= link_to "Voir", admin_subscription_path(1), class: "btn btn-sm btn-outline" %>
+            <%= link_to "Voir", admin_subscription_path(1), class: "btn btn-xs btn-outline" %>
           </div>
         </td>
       </tr>
@@ -87,7 +100,7 @@
         <td class="font-weight-bold">59€</td>
         <td>
           <div class="action-buttons">
-            <%= link_to "Voir", admin_subscription_path(2), class: "btn btn-sm btn-outline" %>
+            <%= link_to "Voir", admin_subscription_path(2), class: "btn btn-xs btn-outline" %>
           </div>
         </td>
       </tr>
@@ -112,7 +125,7 @@
         <td class="font-weight-bold">59€</td>
         <td>
           <div class="action-buttons">
-            <%= link_to "Voir", admin_subscription_path(3), class: "btn btn-sm btn-outline" %>
+            <%= link_to "Voir", admin_subscription_path(3), class: "btn btn-xs btn-outline" %>
           </div>
         </td>
       </tr>
@@ -137,7 +150,7 @@
         <td class="font-weight-bold">59€</td>
         <td>
           <div class="action-buttons">
-            <%= link_to "Voir", admin_subscription_path(4), class: "btn btn-sm btn-outline" %>
+            <%= link_to "Voir", admin_subscription_path(4), class: "btn btn-xs btn-outline" %>
           </div>
         </td>
       </tr>
@@ -146,27 +159,34 @@
 </div>
 
 <!-- Summary Stats -->
-<div class="admin-card" style="margin-top: var(--spacing-xl);">
-  <div class="card-header">
-    <h2>Résumé financier</h2>
-  </div>
-  <div class="stats-grid">
-    <div class="stat-card">
+<div class="stats-grid" style="margin-top: var(--spacing-xl);">
+  <div class="stat-card">
+    <div class="stat-icon bg-green">💰</div>
+    <div class="stat-content">
       <div class="stat-label">MRR Total</div>
       <div class="stat-value">2 847€</div>
       <div class="stat-change positive">+8% ce mois</div>
     </div>
-    <div class="stat-card">
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon bg-blue">📊</div>
+    <div class="stat-content">
       <div class="stat-label">ARR (Annual)</div>
       <div class="stat-value">34 164€</div>
       <div class="stat-detail">Projection annuelle</div>
     </div>
-    <div class="stat-card">
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon bg-orange">📉</div>
+    <div class="stat-content">
       <div class="stat-label">Churn Rate</div>
       <div class="stat-value">2.1%</div>
       <div class="stat-change positive">↓ 0.5%</div>
     </div>
-    <div class="stat-card">
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon bg-purple">👤</div>
+    <div class="stat-content">
       <div class="stat-label">ARPU</div>
       <div class="stat-value">60.57€</div>
       <div class="stat-detail">Par utilisateur</div>

@@ -8,54 +8,97 @@
 <!-- Stats Cards -->
 <div class="stats-grid">
   <div class="stat-card">
-    <div class="stat-label">Webhooks Unipile (24h)</div>
-    <div class="stat-value">247</div>
-    <div class="stat-detail success-text">243 succès (98.4%)</div>
+    <div class="stat-icon bg-green">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="32" height="32">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M8.625 9.75a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375m-13.5 3.01c0 1.6 1.123 2.994 2.707 3.227 1.087.16 2.185.283 3.293.369V21l4.184-4.183a1.14 1.14 0 01.778-.332 48.294 48.294 0 005.83-.498c1.585-.233 2.708-1.626 2.708-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z" />
+      </svg>
+    </div>
+    <div class="stat-content">
+      <div class="stat-value">247</div>
+      <div class="stat-label">Webhooks Unipile (24h)</div>
+      <div class="stat-change positive">98.4% succès</div>
+    </div>
   </div>
+
   <div class="stat-card">
-    <div class="stat-label">Webhooks Stripe (24h)</div>
-    <div class="stat-value">18</div>
-    <div class="stat-detail success-text">18 succès (100%)</div>
+    <div class="stat-icon bg-purple">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="32" height="32">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5z" />
+      </svg>
+    </div>
+    <div class="stat-content">
+      <div class="stat-value">18</div>
+      <div class="stat-label">Webhooks Stripe (24h)</div>
+      <div class="stat-change positive">100% succès</div>
+    </div>
   </div>
+
   <div class="stat-card">
-    <div class="stat-label">Échecs à rejouer</div>
-    <div class="stat-value warning-text">4</div>
-    <div class="stat-detail">Nécessite action</div>
+    <div class="stat-icon bg-orange">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="32" height="32">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
+      </svg>
+    </div>
+    <div class="stat-content">
+      <div class="stat-value">4</div>
+      <div class="stat-label">Échecs à rejouer</div>
+      <div class="stat-change negative">Nécessite action</div>
+    </div>
   </div>
+
   <div class="stat-card">
-    <div class="stat-label">Temps de réponse moyen</div>
-    <div class="stat-value">1.2s</div>
-    <div class="stat-detail success-text">Excellent</div>
+    <div class="stat-icon bg-blue">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="32" height="32">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
+      </svg>
+    </div>
+    <div class="stat-content">
+      <div class="stat-value">1.2s</div>
+      <div class="stat-label">Temps de réponse moyen</div>
+      <div class="stat-change neutral">Performance normale</div>
+    </div>
   </div>
 </div>
 
 <!-- Filters -->
 <div class="admin-card" style="margin-top: var(--spacing-xl); margin-bottom: var(--spacing-lg);">
+  <h3 class="filters-title">Filtres de recherche</h3>
   <div class="filters-bar">
     <div class="filter-group">
-      <label>Source</label>
       <select class="form-select">
-        <option>Tous</option>
+        <option>Toutes les sources</option>
         <option>Unipile</option>
         <option>Stripe</option>
       </select>
     </div>
     <div class="filter-group">
-      <label>Statut</label>
       <select class="form-select">
-        <option>Tous</option>
+        <option>Tous les statuts</option>
         <option>Succès</option>
         <option>Échec</option>
         <option>En attente</option>
       </select>
     </div>
     <div class="filter-group">
-      <label>Période</label>
       <select class="form-select">
         <option selected>Aujourd'hui</option>
         <option>7 derniers jours</option>
         <option>30 derniers jours</option>
       </select>
+    </div>
+    <div class="filter-actions">
+      <button class="btn btn-outline">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="20" height="20">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+        <span>Effacer</span>
+      </button>
+      <button class="btn btn-primary">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="20" height="20">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 3c2.755 0 5.455.232 8.083.678.533.09.917.556.917 1.096v1.044a2.25 2.25 0 01-.659 1.591l-5.432 5.432a2.25 2.25 0 00-.659 1.591v2.927a2.25 2.25 0 01-1.244 2.013L9.75 21v-6.568a2.25 2.25 0 00-.659-1.591L3.659 7.409A2.25 2.25 0 013 5.818V4.774c0-.54.384-1.006.917-1.096A48.32 48.32 0 0112 3z" />
+        </svg>
+        <span>Filtrer</span>
+      </button>
     </div>
   </div>
 </div>
@@ -93,7 +136,7 @@
         <td><span class="status-badge status-success">Success</span></td>
         <td>1.2s</td>
         <td>
-          <button class="btn btn-sm btn-outline" disabled>Rejouer</button>
+          <button class="btn btn-xs btn-outline" disabled>Rejouer</button>
         </td>
       </tr>
       <tr>
@@ -110,7 +153,7 @@
         <td><span class="status-badge status-success">Success</span></td>
         <td>0.8s</td>
         <td>
-          <button class="btn btn-sm btn-outline" disabled>Rejouer</button>
+          <button class="btn btn-xs btn-outline" disabled>Rejouer</button>
         </td>
       </tr>
       <tr>
@@ -127,7 +170,7 @@
         <td><span class="status-badge status-success">Success</span></td>
         <td>0.9s</td>
         <td>
-          <button class="btn btn-sm btn-outline" disabled>Rejouer</button>
+          <button class="btn btn-xs btn-outline" disabled>Rejouer</button>
         </td>
       </tr>
       <tr class="row-warning">
@@ -144,7 +187,12 @@
         <td><span class="status-badge status-warning">Retry</span></td>
         <td>3.5s</td>
         <td>
-          <%= link_to "Rejouer", admin_webhook_replay_path(1), method: :post, class: "btn btn-sm btn-primary", data: { confirm: "Rejouer ce webhook ?" } %>
+          <%= link_to replay_admin_webhook_path(1), method: :post, class: "btn btn-xs btn-primary", data: { confirm: "Rejouer ce webhook ?" } do %>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="14" height="14" style="display: inline-block; vertical-align: middle; margin-right: 4px;">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" />
+            </svg>
+            <span>Rejouer</span>
+          <% end %>
         </td>
       </tr>
       <tr>
@@ -161,7 +209,7 @@
         <td><span class="status-badge status-success">Success</span></td>
         <td>0.7s</td>
         <td>
-          <button class="btn btn-sm btn-outline" disabled>Rejouer</button>
+          <button class="btn btn-xs btn-outline" disabled>Rejouer</button>
         </td>
       </tr>
       <tr class="row-danger">
@@ -178,7 +226,12 @@
         <td><span class="status-badge status-danger">Failed</span></td>
         <td>1.1s</td>
         <td>
-          <%= link_to "Rejouer", admin_webhook_replay_path(2), method: :post, class: "btn btn-sm btn-primary", data: { confirm: "Rejouer ce webhook ?" } %>
+          <%= link_to replay_admin_webhook_path(2), method: :post, class: "btn btn-xs btn-primary", data: { confirm: "Rejouer ce webhook ?" } do %>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="14" height="14" style="display: inline-block; vertical-align: middle; margin-right: 4px;">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" />
+            </svg>
+            <span>Rejouer</span>
+          <% end %>
         </td>
       </tr>
       <tr>
@@ -195,7 +248,7 @@
         <td><span class="status-badge status-success">Success</span></td>
         <td>1.0s</td>
         <td>
-          <button class="btn btn-sm btn-outline" disabled>Rejouer</button>
+          <button class="btn btn-xs btn-outline" disabled>Rejouer</button>
         </td>
       </tr>
     </tbody>

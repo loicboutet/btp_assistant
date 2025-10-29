@@ -6,10 +6,10 @@
 </div>
 
 <!-- Time Range Selector -->
-<div class="admin-card" style="margin-bottom: var(--spacing-lg);">
+<div class="admin-card" style="margin-bottom: 2rem;">
+  <label class="form-label">Période</label>
   <div class="filters-bar">
     <div class="filter-group">
-      <label>Période</label>
       <select class="form-select">
         <option>7 derniers jours</option>
         <option selected>30 derniers jours</option>
@@ -18,12 +18,25 @@
         <option>Tout le temps</option>
       </select>
     </div>
-    <button class="btn btn-primary">Exporter CSV</button>
+    <div class="filter-actions">
+      <button class="btn btn-outline">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="20" height="20">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+        <span>Effacer</span>
+      </button>
+      <button class="btn btn-primary">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="20" height="20">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
+        </svg>
+        <span>Exporter CSV</span>
+      </button>
+    </div>
   </div>
 </div>
 
 <!-- Revenue Metrics -->
-<div class="admin-card">
+<div class="admin-card" style="margin-bottom: 3rem;">
   <div class="card-header">
     <h2>Revenus & Abonnements</h2>
   </div>
@@ -56,7 +69,7 @@
 </div>
 
 <!-- User Metrics -->
-<div class="admin-card" style="margin-top: var(--spacing-xl);">
+<div class="admin-card" style="margin-bottom: 3rem;">
   <div class="card-header">
     <h2>Utilisateurs & Engagement</h2>
   </div>
@@ -85,7 +98,7 @@
 </div>
 
 <!-- Document Metrics -->
-<div class="admin-card" style="margin-top: var(--spacing-xl);">
+<div class="admin-card" style="margin-bottom: 3rem;">
   <div class="card-header">
     <h2>Documents générés</h2>
   </div>
@@ -114,7 +127,7 @@
 </div>
 
 <!-- WhatsApp & Integration Metrics -->
-<div class="admin-card" style="margin-top: var(--spacing-xl);">
+<div class="admin-card" style="margin-bottom: 3rem;">
   <div class="card-header">
     <h2>WhatsApp & Intégrations</h2>
   </div>
@@ -143,7 +156,7 @@
 </div>
 
 <!-- System Performance -->
-<div class="admin-card" style="margin-top: var(--spacing-xl);">
+<div class="admin-card" style="margin-bottom: 3rem;">
   <div class="card-header">
     <h2>Performance système</h2>
   </div>
@@ -171,8 +184,8 @@
   </div>
 </div>
 
-<!-- Language Distribution -->
-<div class="admin-content-grid" style="margin-top: var(--spacing-xl);">
+<!-- Language Distribution & Regions -->
+<div class="admin-content-grid">
   <div class="admin-card">
     <div class="card-header">
       <h2>Distribution des langues</h2>
@@ -235,7 +248,7 @@
 </div>
 
 <!-- Growth Chart Placeholder -->
-<div class="admin-card" style="margin-top: var(--spacing-xl);">
+<div class="admin-card" style="margin-top: 3rem;">
   <div class="card-header">
     <h2>Croissance mensuelle</h2>
   </div>

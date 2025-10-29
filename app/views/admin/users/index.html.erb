@@ -7,34 +7,46 @@
 
 <!-- Filters & Search -->
 <div class="admin-card" style="margin-bottom: var(--spacing-lg);">
+  <h3 class="filters-title">Filtres de recherche</h3>
   <div class="filters-bar">
     <div class="search-box">
       <input type="search" placeholder="Rechercher par nom, email, SIRET..." class="form-input">
     </div>
     <div class="filter-group">
-      <label>Statut</label>
       <select class="form-select">
-        <option>Tous</option>
+        <option>Tous les statuts</option>
         <option selected>Actifs</option>
         <option>Suspendus</option>
         <option>Essai</option>
       </select>
     </div>
     <div class="filter-group">
-      <label>Langue</label>
       <select class="form-select">
-        <option>Toutes</option>
+        <option>Toutes les langues</option>
         <option>Français</option>
         <option>Turc</option>
       </select>
     </div>
     <div class="filter-group">
-      <label>WhatsApp</label>
       <select class="form-select">
-        <option>Tous</option>
+        <option>WhatsApp (Tous)</option>
         <option>Connectés</option>
         <option>Non connectés</option>
       </select>
+    </div>
+    <div class="filter-actions">
+      <button class="btn btn-outline">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="20" height="20">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+        <span>Effacer</span>
+      </button>
+      <button class="btn btn-primary">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="20" height="20">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 3c2.755 0 5.455.232 8.083.678.533.09.917.556.917 1.096v1.044a2.25 2.25 0 01-.659 1.591l-5.432 5.432a2.25 2.25 0 00-.659 1.591v2.927a2.25 2.25 0 01-1.244 2.013L9.75 21v-6.568a2.25 2.25 0 00-.659-1.591L3.659 7.409A2.25 2.25 0 013 5.818V4.774c0-.54.384-1.006.917-1.096A48.32 48.32 0 0112 3z" />
+        </svg>
+        <span>Filtrer</span>
+      </button>
     </div>
   </div>
 </div>
@@ -82,7 +94,13 @@
         <td><span class="status-badge status-success">Actif</span></td>
         <td>
           <div class="action-buttons">
-            <%= link_to "Voir", admin_user_path(1), class: "btn btn-sm btn-outline" %>
+            <%= link_to admin_user_path(1), class: "btn btn-xs btn-outline" do %>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="14" height="14" style="display: inline-block; vertical-align: middle; margin-right: 4px;">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+              </svg>
+              <span>Voir</span>
+            <% end %>
           </div>
         </td>
       </tr>
@@ -113,7 +131,13 @@
         <td><span class="status-badge status-success">Actif</span></td>
         <td>
           <div class="action-buttons">
-            <%= link_to "Voir", admin_user_path(2), class: "btn btn-sm btn-outline" %>
+            <%= link_to admin_user_path(2), class: "btn btn-xs btn-outline" do %>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="14" height="14" style="display: inline-block; vertical-align: middle; margin-right: 4px;">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+              </svg>
+              <span>Voir</span>
+            <% end %>
           </div>
         </td>
       </tr>
@@ -144,7 +168,13 @@
         <td><span class="status-badge status-success">Actif</span></td>
         <td>
           <div class="action-buttons">
-            <%= link_to "Voir", admin_user_path(3), class: "btn btn-sm btn-outline" %>
+            <%= link_to admin_user_path(3), class: "btn btn-xs btn-outline" do %>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="14" height="14" style="display: inline-block; vertical-align: middle; margin-right: 4px;">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+              </svg>
+              <span>Voir</span>
+            <% end %>
           </div>
         </td>
       </tr>
@@ -175,7 +205,13 @@
         <td><span class="status-badge status-success">Actif</span></td>
         <td>
           <div class="action-buttons">
-            <%= link_to "Voir", admin_user_path(4), class: "btn btn-sm btn-outline" %>
+            <%= link_to admin_user_path(4), class: "btn btn-xs btn-outline" do %>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="14" height="14" style="display: inline-block; vertical-align: middle; margin-right: 4px;">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+              </svg>
+              <span>Voir</span>
+            <% end %>
           </div>
         </td>
       </tr>
@@ -206,7 +242,13 @@
         <td><span class="status-badge status-success">Actif</span></td>
         <td>
           <div class="action-buttons">
-            <%= link_to "Voir", admin_user_path(5), class: "btn btn-sm btn-outline" %>
+            <%= link_to admin_user_path(5), class: "btn btn-xs btn-outline" do %>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="14" height="14" style="display: inline-block; vertical-align: middle; margin-right: 4px;">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+              </svg>
+              <span>Voir</span>
+            <% end %>
           </div>
         </td>
       </tr>
@@ -237,7 +279,13 @@
         <td><span class="status-badge status-warning">Paiement échoué</span></td>
         <td>
           <div class="action-buttons">
-            <%= link_to "Voir", admin_user_path(6), class: "btn btn-sm btn-outline" %>
+            <%= link_to admin_user_path(6), class: "btn btn-xs btn-outline" do %>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="14" height="14" style="display: inline-block; vertical-align: middle; margin-right: 4px;">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+              </svg>
+              <span>Voir</span>
+            <% end %>
           </div>
         </td>
       </tr>
@@ -268,7 +316,13 @@
         <td><span class="status-badge status-danger">Suspendu</span></td>
         <td>
           <div class="action-buttons">
-            <%= link_to "Voir", admin_user_path(7), class: "btn btn-sm btn-outline" %>
+            <%= link_to admin_user_path(7), class: "btn btn-xs btn-outline" do %>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="14" height="14" style="display: inline-block; vertical-align: middle; margin-right: 4px;">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+              </svg>
+              <span>Voir</span>
+            <% end %>
           </div>
         </td>
       </tr>
@@ -299,7 +353,13 @@
         <td><span class="status-badge status-success">Actif</span></td>
         <td>
           <div class="action-buttons">
-            <%= link_to "Voir", admin_user_path(8), class: "btn btn-sm btn-outline" %>
+            <%= link_to admin_user_path(8), class: "btn btn-xs btn-outline" do %>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="14" height="14" style="display: inline-block; vertical-align: middle; margin-right: 4px;">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+              </svg>
+              <span>Voir</span>
+            <% end %>
           </div>
         </td>
       </tr>
@@ -308,8 +368,4 @@
 </div>
 
 <!-- Pagination -->
-<div class="pagination">
-  <button class="btn btn-outline" disabled>Précédent</button>
-  <span class="pagination-info">Page 1 sur 6</span>
-  <button class="btn btn-outline">Suivant</button>
-</div>
+<%= render 'shared/pagination', collection: @users || [] %>
