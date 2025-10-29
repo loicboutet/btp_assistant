@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Charte Graphique - Devis WhatsApp</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-green: #1F9D55;
+            --secondary-green: #25D366;
+            --dark-green: #128C7E;
+            --light-green: #DCF8C6;
+            --accent-euro: #00A884;
+            --bg-light: #F0F2F5;
+            --text-dark: #1F2937;
+            --text-gray: #6B7280;
+        }
+
+        .bg-primary { background-color: var(--primary-green); }
+        .bg-secondary { background-color: var(--secondary-green); }
+        .bg-dark-green { background-color: var(--dark-green); }
+        .bg-light-green { background-color: var(--light-green); }
+        .bg-accent { background-color: var(--accent-euro); }
+        .bg-light { background-color: var(--bg-light); }
+        
+        .text-primary { color: var(--primary-green); }
+        .text-secondary { color: var(--secondary-green); }
+        .text-dark-green { color: var(--dark-green); }
+        
+        .border-primary { border-color: var(--primary-green); }
+        
+        .chat-bubble {
+            border-radius: 18px;
+        }
+        
+        .rounded-squircle {
+            border-radius: 28% / 25%;
+        }
+
+        .shadow-whatsapp {
+            box-shadow: 0 4px 14px rgba(31, 157, 85, 0.25);
+        }
+
+        .font-heading {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            font-weight: 600;
+        }
+
+        .font-body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-light font-body">
+    
+    <!-- Header -->
+    <header class="bg-primary text-white p-8">
+        <div class="max-w-6xl mx-auto">
+            <h1 class="text-4xl font-heading mb-2">Charte Graphique</h1>
+            <p class="text-xl opacity-90">Devis WhatsApp - Assistant vocal pour artisans</p>
+        </div>
+    </header>
+
+    <main class="max-w-6xl mx-auto p-8 space-y-12">
+
+        <!-- Logo Section -->
+        <section class="bg-white p-8 rounded-lg shadow">
+            <h2 class="text-3xl font-heading text-primary mb-6">Logo</h2>
+            <div class="flex items-center justify-center p-12 bg-gray-50 rounded-lg">
+                <img src="../app/assets/images/logo.png" alt="Logo Devis WhatsApp" class="max-w-xs h-auto shadow-whatsapp rounded-lg">
+            </div>
+            <p class="mt-4 text-gray-600 text-center">Logo officiel de l'application</p>
+        </section>
+
+        <!-- Colors -->
+        <section class="bg-white p-8 rounded-lg shadow">
+            <h2 class="text-3xl font-heading text-primary mb-6">Palette de couleurs</h2>
+            
+            <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
+                <div>
+                    <div class="bg-primary h-24 rounded-lg shadow-whatsapp"></div>
+                    <p class="mt-2 font-semibold">Principal</p>
+                    <p class="text-sm text-gray-600">#1F9D55</p>
+                </div>
+                <div>
+                    <div class="bg-secondary h-24 rounded-lg"></div>
+                    <p class="mt-2 font-semibold">Secondaire</p>
+                    <p class="text-sm text-gray-600">#25D366</p>
+                </div>
+                <div>
+                    <div class="bg-dark-green h-24 rounded-lg"></div>
+                    <p class="mt-2 font-semibold">Sombre</p>
+                    <p class="text-sm text-gray-600">#128C7E</p>
+                </div>
+                <div>
+                    <div class="bg-light-green h-24 rounded-lg border-2 border-gray-200"></div>
+                    <p class="mt-2 font-semibold">Clair</p>
+                    <p class="text-sm text-gray-600">#DCF8C6</p>
+                </div>
+                <div>
+                    <div class="bg-accent h-24 rounded-lg"></div>
+                    <p class="mt-2 font-semibold">Accent</p>
+                    <p class="text-sm text-gray-600">#00A884</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Typography -->
+        <section class="bg-white p-8 rounded-lg shadow">
+            <h2 class="text-3xl font-heading text-primary mb-6">Typographie</h2>
+            
+            <div class="space-y-6">
+                <div>
+                    <p class="text-sm text-gray-600 mb-2">Titres</p>
+                    <h1 class="text-4xl font-heading">Segoe UI Semibold</h1>
+                </div>
+                <div>
+                    <p class="text-sm text-gray-600 mb-2">Sous-titres</p>
+                    <h2 class="text-2xl font-heading">Segoe UI Semibold</h2>
+                </div>
+                <div>
+                    <p class="text-sm text-gray-600 mb-2">Corps de texte</p>
+                    <p class="text-base">Segoe UI Regular - Pour le contenu principal et les descriptions</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- UI Components -->
+        <section class="bg-white p-8 rounded-lg shadow">
+            <h2 class="text-3xl font-heading text-primary mb-6">Composants UI</h2>
+            
+            <!-- Buttons -->
+            <div class="mb-8">
+                <h3 class="text-xl font-heading mb-4">Boutons</h3>
+                <div class="flex flex-wrap gap-4">
+                    <button class="bg-primary text-white px-6 py-3 rounded-lg shadow-whatsapp hover:bg-dark-green transition">
+                        Bouton Principal
+                    </button>
+                    <button class="bg-white text-primary border-2 border-primary px-6 py-3 rounded-lg hover:bg-light-green transition">
+                        Bouton Secondaire
+                    </button>
+                    <button class="bg-secondary text-white px-6 py-3 chat-bubble shadow hover:bg-dark-green transition">
+                        WhatsApp Style
+                    </button>
+                </div>
+            </div>
+
+            <!-- Chat Bubbles -->
+            <div class="mb-8">
+                <h3 class="text-xl font-heading mb-4">Bulles de chat</h3>
+                <div class="space-y-4 max-w-md">
+                    <div class="bg-light-green chat-bubble p-4 ml-auto max-w-xs">
+                        <p class="text-sm">Message utilisateur</p>
+                        <span class="text-xs text-gray-500">14:23</span>
+                    </div>
+                    <div class="bg-white chat-bubble p-4 shadow max-w-xs">
+                        <p class="text-sm">Réponse de l'assistant</p>
+                        <span class="text-xs text-gray-500">14:24</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cards -->
+            <div class="mb-8">
+                <h3 class="text-xl font-heading mb-4">Cartes</h3>
+                <div class="grid md:grid-cols-2 gap-4">
+                    <div class="border-2 border-primary rounded-lg p-6 hover:shadow-whatsapp transition">
+                        <div class="text-primary text-3xl mb-2">€</div>
+                        <h4 class="font-heading text-lg mb-2">Devis</h4>
+                        <p class="text-gray-600 text-sm">Créez vos devis par simple message vocal</p>
+                    </div>
+                    <div class="border-2 border-gray-200 rounded-lg p-6 hover:border-primary hover:shadow-whatsapp transition">
+                        <div class="text-primary text-3xl mb-2">📄</div>
+                        <h4 class="font-heading text-lg mb-2">Factures</h4>
+                        <p class="text-gray-600 text-sm">Générez vos factures instantanément</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Form Elements -->
+            <div>
+                <h3 class="text-xl font-heading mb-4">Formulaires</h3>
+                <div class="space-y-4 max-w-md">
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Nom de l'entreprise</label>
+                        <input type="text" class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-primary focus:outline-none transition" placeholder="Ex: Maçonnerie Dubois">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Numéro WhatsApp</label>
+                        <input type="tel" class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-primary focus:outline-none transition" placeholder="+33 6 12 34 56 78">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Icons & Illustrations -->
+        <section class="bg-white p-8 rounded-lg shadow">
+            <h2 class="text-3xl font-heading text-primary mb-6">Icônes</h2>
+            <div class="flex flex-wrap gap-8 items-center justify-center">
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-primary rounded-full flex items-center justify-center text-white text-2xl mb-2">
+                        💬
+                    </div>
+                    <p class="text-sm">WhatsApp</p>
+                </div>
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-primary rounded-full flex items-center justify-center text-white text-2xl mb-2">
+                        €
+                    </div>
+                    <p class="text-sm">Finance</p>
+                </div>
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-primary rounded-full flex items-center justify-center text-white text-2xl mb-2">
+                        📄
+                    </div>
+                    <p class="text-sm">Documents</p>
+                </div>
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-primary rounded-full flex items-center justify-center text-white text-2xl mb-2">
+                        🎤
+                    </div>
+                    <p class="text-sm">Vocal</p>
+                </div>
+            </div>
+            <p class="mt-6 text-gray-600 text-sm text-center">Style : Arrondis, simples, lisibles sur fond vert</p>
+        </section>
+
+        <!-- Spacing & Layout -->
+        <section class="bg-white p-8 rounded-lg shadow">
+            <h2 class="text-3xl font-heading text-primary mb-6">Espacement & Layout</h2>
+            <div class="space-y-4">
+                <div class="flex items-center gap-4">
+                    <div class="w-16 text-sm text-gray-600">XS</div>
+                    <div class="h-4 bg-primary" style="width: 8px;"></div>
+                    <span class="text-sm">8px</span>
+                </div>
+                <div class="flex items-center gap-4">
+                    <div class="w-16 text-sm text-gray-600">S</div>
+                    <div class="h-4 bg-primary" style="width: 16px;"></div>
+                    <span class="text-sm">16px</span>
+                </div>
+                <div class="flex items-center gap-4">
+                    <div class="w-16 text-sm text-gray-600">M</div>
+                    <div class="h-4 bg-primary" style="width: 24px;"></div>
+                    <span class="text-sm">24px</span>
+                </div>
+                <div class="flex items-center gap-4">
+                    <div class="w-16 text-sm text-gray-600">L</div>
+                    <div class="h-4 bg-primary" style="width: 32px;"></div>
+                    <span class="text-sm">32px</span>
+                </div>
+                <div class="flex items-center gap-4">
+                    <div class="w-16 text-sm text-gray-600">XL</div>
+                    <div class="h-4 bg-primary" style="width: 48px;"></div>
+                    <span class="text-sm">48px</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Guidelines -->
+        <section class="bg-white p-8 rounded-lg shadow">
+            <h2 class="text-3xl font-heading text-primary mb-6">Principes de design</h2>
+            <div class="grid md:grid-cols-2 gap-6">
+                <div class="border-l-4 border-primary pl-4">
+                    <h4 class="font-heading mb-2">✅ À faire</h4>
+                    <ul class="text-sm text-gray-700 space-y-1">
+                        <li>• Utiliser des formes arrondies (18px min)</li>
+                        <li>• Privilégier les icônes simples</li>
+                        <li>• Garder du blanc/espace vide</li>
+                        <li>• Contraste texte/fond élevé</li>
+                    </ul>
+                </div>
+                <div class="border-l-4 border-red-500 pl-4">
+                    <h4 class="font-heading mb-2">❌ À éviter</h4>
+                    <ul class="text-sm text-gray-700 space-y-1">
+                        <li>• Formes carrées/anguleuses</li>
+                        <li>• Surcharge d'informations</li>
+                        <li>• Couleurs criardes</li>
+                        <li>• Texte sur fond vert clair</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-primary text-white text-center p-6 mt-12">
+        <p>Charte graphique - Devis WhatsApp © 2025</p>
+    </footer>
+
+</body>
+</html>
