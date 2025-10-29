@@ -1,0 +1,261 @@
+<% content_for :title, "Webhooks - Admin" %>
+
+<div class="admin-page-header">
+  <h1>Surveillance des Webhooks</h1>
+  <p class="text-muted">Activité Unipile & Stripe en temps réel</p>
+</div>
+
+<!-- Stats Cards -->
+<div class="stats-grid">
+  <div class="stat-card">
+    <div class="stat-label">Webhooks Unipile (24h)</div>
+    <div class="stat-value">247</div>
+    <div class="stat-detail success-text">243 succès (98.4%)</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">Webhooks Stripe (24h)</div>
+    <div class="stat-value">18</div>
+    <div class="stat-detail success-text">18 succès (100%)</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">Échecs à rejouer</div>
+    <div class="stat-value warning-text">4</div>
+    <div class="stat-detail">Nécessite action</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">Temps de réponse moyen</div>
+    <div class="stat-value">1.2s</div>
+    <div class="stat-detail success-text">Excellent</div>
+  </div>
+</div>
+
+<!-- Filters -->
+<div class="admin-card" style="margin-top: var(--spacing-xl); margin-bottom: var(--spacing-lg);">
+  <div class="filters-bar">
+    <div class="filter-group">
+      <label>Source</label>
+      <select class="form-select">
+        <option>Tous</option>
+        <option>Unipile</option>
+        <option>Stripe</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <label>Statut</label>
+      <select class="form-select">
+        <option>Tous</option>
+        <option>Succès</option>
+        <option>Échec</option>
+        <option>En attente</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <label>Période</label>
+      <select class="form-select">
+        <option selected>Aujourd'hui</option>
+        <option>7 derniers jours</option>
+        <option>30 derniers jours</option>
+      </select>
+    </div>
+  </div>
+</div>
+
+<!-- Webhooks Table -->
+<div class="admin-card">
+  <div class="card-header">
+    <h2>Activité des webhooks</h2>
+  </div>
+  <table class="admin-table">
+    <thead>
+      <tr>
+        <th>Horodatage</th>
+        <th>Source</th>
+        <th>Type d'événement</th>
+        <th>Utilisateur</th>
+        <th>Détails</th>
+        <th>Statut</th>
+        <th>Temps</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="text-nowrap">14:23:45</td>
+        <td><span class="badge badge-green">Unipile</span></td>
+        <td>message.received</td>
+        <td>
+          <div class="user-info-compact">
+            <div class="user-avatar-sm">JD</div>
+            <span>Jean Dupont</span>
+          </div>
+        </td>
+        <td class="text-muted small">Message vocal transcrit</td>
+        <td><span class="status-badge status-success">Success</span></td>
+        <td>1.2s</td>
+        <td>
+          <button class="btn btn-sm btn-outline" disabled>Rejouer</button>
+        </td>
+      </tr>
+      <tr>
+        <td class="text-nowrap">14:15:22</td>
+        <td><span class="badge badge-purple">Stripe</span></td>
+        <td>payment_intent.succeeded</td>
+        <td>
+          <div class="user-info-compact">
+            <div class="user-avatar-sm">MM</div>
+            <span>Marie Martin</span>
+          </div>
+        </td>
+        <td class="text-muted small">Paiement de 59€</td>
+        <td><span class="status-badge status-success">Success</span></td>
+        <td>0.8s</td>
+        <td>
+          <button class="btn btn-sm btn-outline" disabled>Rejouer</button>
+        </td>
+      </tr>
+      <tr>
+        <td class="text-nowrap">13:45:11</td>
+        <td><span class="badge badge-green">Unipile</span></td>
+        <td>message.received</td>
+        <td>
+          <div class="user-info-compact">
+            <div class="user-avatar-sm">AD</div>
+            <span>Ahmet Demir</span>
+          </div>
+        </td>
+        <td class="text-muted small">Message texte (Turkish)</td>
+        <td><span class="status-badge status-success">Success</span></td>
+        <td>0.9s</td>
+        <td>
+          <button class="btn btn-sm btn-outline" disabled>Rejouer</button>
+        </td>
+      </tr>
+      <tr class="row-warning">
+        <td class="text-nowrap">12:30:45</td>
+        <td><span class="badge badge-green">Unipile</span></td>
+        <td>message.received</td>
+        <td>
+          <div class="user-info-compact">
+            <div class="user-avatar-sm">PL</div>
+            <span>Pierre Lefebvre</span>
+          </div>
+        </td>
+        <td class="text-muted small">Erreur transcription</td>
+        <td><span class="status-badge status-warning">Retry</span></td>
+        <td>3.5s</td>
+        <td>
+          <%= link_to "Rejouer", admin_webhook_replay_path(1), method: :post, class: "btn btn-sm btn-primary", data: { confirm: "Rejouer ce webhook ?" } %>
+        </td>
+      </tr>
+      <tr>
+        <td class="text-nowrap">11:22:18</td>
+        <td><span class="badge badge-purple">Stripe</span></td>
+        <td>customer.subscription.updated</td>
+        <td>
+          <div class="user-info-compact">
+            <div class="user-avatar-sm">CK</div>
+            <span>Can Kaya</span>
+          </div>
+        </td>
+        <td class="text-muted small">Mise à jour abonnement</td>
+        <td><span class="status-badge status-success">Success</span></td>
+        <td>0.7s</td>
+        <td>
+          <button class="btn btn-sm btn-outline" disabled>Rejouer</button>
+        </td>
+      </tr>
+      <tr class="row-danger">
+        <td class="text-nowrap">10:15:33</td>
+        <td><span class="badge badge-purple">Stripe</span></td>
+        <td>invoice.payment_failed</td>
+        <td>
+          <div class="user-info-compact">
+            <div class="user-avatar-sm">AÖ</div>
+            <span>Ali Öztürk</span>
+          </div>
+        </td>
+        <td class="text-muted small">Échec paiement</td>
+        <td><span class="status-badge status-danger">Failed</span></td>
+        <td>1.1s</td>
+        <td>
+          <%= link_to "Rejouer", admin_webhook_replay_path(2), method: :post, class: "btn btn-sm btn-primary", data: { confirm: "Rejouer ce webhook ?" } %>
+        </td>
+      </tr>
+      <tr>
+        <td class="text-nowrap">09:45:22</td>
+        <td><span class="badge badge-green">Unipile</span></td>
+        <td>account.connected</td>
+        <td>
+          <div class="user-info-compact">
+            <div class="user-avatar-sm">MY</div>
+            <span>Mehmet Yılmaz</span>
+          </div>
+        </td>
+        <td class="text-muted small">WhatsApp connecté</td>
+        <td><span class="status-badge status-success">Success</span></td>
+        <td>1.0s</td>
+        <td>
+          <button class="btn btn-sm btn-outline" disabled>Rejouer</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Pagination -->
+<div class="pagination">
+  <button class="btn btn-outline" disabled>Précédent</button>
+  <span class="pagination-info">Page 1 sur 18</span>
+  <button class="btn btn-outline">Suivant</button>
+</div>
+
+<!-- Webhook Health -->
+<div class="admin-content-grid" style="margin-top: var(--spacing-xl);">
+  <div class="admin-card">
+    <div class="card-header">
+      <h2>Santé Unipile</h2>
+    </div>
+    <div class="details-list">
+      <div class="detail-item">
+        <span class="detail-label">Statut</span>
+        <span class="detail-value"><span class="status-badge status-success">Opérationnel</span></span>
+      </div>
+      <div class="detail-item">
+        <span class="detail-label">Dernière activité</span>
+        <span class="detail-value">Il y a 2 minutes</span>
+      </div>
+      <div class="detail-item">
+        <span class="detail-label">Taux de succès (24h)</span>
+        <span class="detail-value success-text">98.4%</span>
+      </div>
+      <div class="detail-item">
+        <span class="detail-label">Temps de réponse moyen</span>
+        <span class="detail-value">1.3s</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="admin-card">
+    <div class="card-header">
+      <h2>Santé Stripe</h2>
+    </div>
+    <div class="details-list">
+      <div class="detail-item">
+        <span class="detail-label">Statut</span>
+        <span class="detail-value"><span class="status-badge status-success">Opérationnel</span></span>
+      </div>
+      <div class="detail-item">
+        <span class="detail-label">Dernière activité</span>
+        <span class="detail-value">Il y a 5 minutes</span>
+      </div>
+      <div class="detail-item">
+        <span class="detail-label">Taux de succès (24h)</span>
+        <span class="detail-value success-text">100%</span>
+      </div>
+      <div class="detail-item">
+        <span class="detail-label">Temps de réponse moyen</span>
+        <span class="detail-value">0.9s</span>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,266 @@
+<% content_for :title, "Métriques - Dashboard Admin" %>
+
+<div class="admin-page-header">
+  <h1>Métriques & Analytics</h1>
+  <p class="text-muted">Statistiques détaillées de l'application</p>
+</div>
+
+<!-- Time Range Selector -->
+<div class="admin-card" style="margin-bottom: var(--spacing-lg);">
+  <div class="filters-bar">
+    <div class="filter-group">
+      <label>Période</label>
+      <select class="form-select">
+        <option>7 derniers jours</option>
+        <option selected>30 derniers jours</option>
+        <option>3 derniers mois</option>
+        <option>12 derniers mois</option>
+        <option>Tout le temps</option>
+      </select>
+    </div>
+    <button class="btn btn-primary">Exporter CSV</button>
+  </div>
+</div>
+
+<!-- Revenue Metrics -->
+<div class="admin-card">
+  <div class="card-header">
+    <h2>Revenus & Abonnements</h2>
+  </div>
+  <div class="metrics-grid">
+    <div class="metric-item">
+      <div class="metric-label">MRR (Monthly Recurring Revenue)</div>
+      <div class="metric-value large">2 847€</div>
+      <div class="metric-trend positive">↑ 8.2% vs mois dernier</div>
+      <div class="metric-detail">ARR: 34 164€</div>
+    </div>
+    <div class="metric-item">
+      <div class="metric-label">Nouveaux abonnements</div>
+      <div class="metric-value large">12</div>
+      <div class="metric-trend positive">↑ 20% vs mois dernier</div>
+      <div class="metric-detail">Moyenne: 8/mois</div>
+    </div>
+    <div class="metric-item">
+      <div class="metric-label">Churn Rate</div>
+      <div class="metric-value large">2.1%</div>
+      <div class="metric-trend positive">↓ 0.5% vs mois dernier</div>
+      <div class="metric-detail">3 désabonnements</div>
+    </div>
+    <div class="metric-item">
+      <div class="metric-label">ARPU (Average Revenue Per User)</div>
+      <div class="metric-value large">60.57€</div>
+      <div class="metric-trend neutral">→ Stable</div>
+      <div class="metric-detail">47 utilisateurs actifs</div>
+    </div>
+  </div>
+</div>
+
+<!-- User Metrics -->
+<div class="admin-card" style="margin-top: var(--spacing-xl);">
+  <div class="card-header">
+    <h2>Utilisateurs & Engagement</h2>
+  </div>
+  <div class="metrics-grid">
+    <div class="metric-item">
+      <div class="metric-label">Total utilisateurs</div>
+      <div class="metric-value">52</div>
+      <div class="metric-detail">47 actifs, 5 suspendus</div>
+    </div>
+    <div class="metric-item">
+      <div class="metric-label">Utilisateurs actifs (30j)</div>
+      <div class="metric-value">47</div>
+      <div class="metric-detail">90.4% du total</div>
+    </div>
+    <div class="metric-item">
+      <div class="metric-label">Nouveaux utilisateurs (30j)</div>
+      <div class="metric-value">12</div>
+      <div class="metric-detail">+25.5% de croissance</div>
+    </div>
+    <div class="metric-item">
+      <div class="metric-label">Taux de rétention (90j)</div>
+      <div class="metric-value">94.0%</div>
+      <div class="metric-detail">Excellent</div>
+    </div>
+  </div>
+</div>
+
+<!-- Document Metrics -->
+<div class="admin-card" style="margin-top: var(--spacing-xl);">
+  <div class="card-header">
+    <h2>Documents générés</h2>
+  </div>
+  <div class="metrics-grid">
+    <div class="metric-item">
+      <div class="metric-label">Total documents (30j)</div>
+      <div class="metric-value">1 243</div>
+      <div class="metric-detail">542 devis, 701 factures</div>
+    </div>
+    <div class="metric-item">
+      <div class="metric-label">Documents/utilisateur (30j)</div>
+      <div class="metric-value">26.4</div>
+      <div class="metric-detail">Moyenne quotidienne: 0.88</div>
+    </div>
+    <div class="metric-item">
+      <div class="metric-label">Devis convertis en factures</div>
+      <div class="metric-value">73.2%</div>
+      <div class="metric-detail">397 conversions</div>
+    </div>
+    <div class="metric-item">
+      <div class="metric-label">Documents cette semaine</div>
+      <div class="metric-value">156</div>
+      <div class="metric-detail">+12% vs semaine précédente</div>
+    </div>
+  </div>
+</div>
+
+<!-- WhatsApp & Integration Metrics -->
+<div class="admin-card" style="margin-top: var(--spacing-xl);">
+  <div class="card-header">
+    <h2>WhatsApp & Intégrations</h2>
+  </div>
+  <div class="metrics-grid">
+    <div class="metric-item">
+      <div class="metric-label">Comptes WhatsApp connectés</div>
+      <div class="metric-value">44</div>
+      <div class="metric-detail">93.6% des utilisateurs actifs</div>
+    </div>
+    <div class="metric-item">
+      <div class="metric-label">Messages traités (30j)</div>
+      <div class="metric-value">3 247</div>
+      <div class="metric-detail">Moyenne: 108/jour</div>
+    </div>
+    <div class="metric-item">
+      <div class="metric-label">Messages vocaux transcrits</div>
+      <div class="metric-value">1 892</div>
+      <div class="metric-detail">58.3% du total</div>
+    </div>
+    <div class="metric-item">
+      <div class="metric-label">Taux de succès IA</div>
+      <div class="metric-value">96.8%</div>
+      <div class="metric-detail">3 143 / 3 247 messages</div>
+    </div>
+  </div>
+</div>
+
+<!-- System Performance -->
+<div class="admin-card" style="margin-top: var(--spacing-xl);">
+  <div class="card-header">
+    <h2>Performance système</h2>
+  </div>
+  <div class="metrics-grid">
+    <div class="metric-item">
+      <div class="metric-label">Webhooks Unipile (24h)</div>
+      <div class="metric-value">247</div>
+      <div class="metric-detail success-text">98.4% succès</div>
+    </div>
+    <div class="metric-item">
+      <div class="metric-label">Webhooks Stripe (24h)</div>
+      <div class="metric-value">18</div>
+      <div class="metric-detail success-text">100% succès</div>
+    </div>
+    <div class="metric-item">
+      <div class="metric-label">Temps de réponse moyen</div>
+      <div class="metric-value">1.2s</div>
+      <div class="metric-detail success-text">Excellent</div>
+    </div>
+    <div class="metric-item">
+      <div class="metric-label">Uptime (30j)</div>
+      <div class="metric-value">99.9%</div>
+      <div class="metric-detail">~22 minutes downtime</div>
+    </div>
+  </div>
+</div>
+
+<!-- Language Distribution -->
+<div class="admin-content-grid" style="margin-top: var(--spacing-xl);">
+  <div class="admin-card">
+    <div class="card-header">
+      <h2>Distribution des langues</h2>
+    </div>
+    <div class="language-stats">
+      <div class="language-stat-item">
+        <div class="language-info">
+          <span class="language-flag">🇫🇷</span>
+          <span class="language-name">Français</span>
+        </div>
+        <div class="language-bar">
+          <div class="language-progress" style="width: 65%;"></div>
+        </div>
+        <div class="language-value">65% (34 utilisateurs)</div>
+      </div>
+      <div class="language-stat-item">
+        <div class="language-info">
+          <span class="language-flag">🇹🇷</span>
+          <span class="language-name">Turc</span>
+        </div>
+        <div class="language-bar">
+          <div class="language-progress" style="width: 35%; background: #e74c3c;"></div>
+        </div>
+        <div class="language-value">35% (18 utilisateurs)</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="admin-card">
+    <div class="card-header">
+      <h2>Top régions</h2>
+    </div>
+    <div class="region-list">
+      <div class="region-item">
+        <span class="region-name">Île-de-France</span>
+        <span class="region-count">23 utilisateurs</span>
+      </div>
+      <div class="region-item">
+        <span class="region-name">Auvergne-Rhône-Alpes</span>
+        <span class="region-count">8 utilisateurs</span>
+      </div>
+      <div class="region-item">
+        <span class="region-name">Provence-Alpes-Côte d'Azur</span>
+        <span class="region-count">7 utilisateurs</span>
+      </div>
+      <div class="region-item">
+        <span class="region-name">Grand Est</span>
+        <span class="region-count">5 utilisateurs</span>
+      </div>
+      <div class="region-item">
+        <span class="region-name">Occitanie</span>
+        <span class="region-count">4 utilisateurs</span>
+      </div>
+      <div class="region-item">
+        <span class="region-name">Autres</span>
+        <span class="region-count">5 utilisateurs</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Growth Chart Placeholder -->
+<div class="admin-card" style="margin-top: var(--spacing-xl);">
+  <div class="card-header">
+    <h2>Croissance mensuelle</h2>
+  </div>
+  <div class="chart-placeholder">
+    <div class="chart-bars">
+      <div class="chart-bar" style="height: 40%;" title="Janvier: 28 users">
+        <div class="bar-fill"></div>
+        <div class="bar-label">Jan</div>
+      </div>
+      <div class="chart-bar" style="height: 45%;" title="Février: 31 users">
+        <div class="bar-fill"></div>
+        <div class="bar-label">Fév</div>
+      </div>
+      <div class="chart-bar" style="height: 55%;" title="Mars: 37 users">
+        <div class="bar-fill"></div>
+        <div class="bar-label">Mar</div>
+      </div>
+      <div class="chart-bar" style="height: 65%;" title="Avril: 42 users">
+        <div class="bar-fill"></div>
+        <div class="bar-label">Avr</div>
+      </div>
+      <div class="chart-bar" style="height: 85%;" title="Mai: 52 users">
+        <div class="bar-fill"></div>
+        <div class="bar-label">Mai</div>
+      </div>
+    </div>
+  </div>
+</div>

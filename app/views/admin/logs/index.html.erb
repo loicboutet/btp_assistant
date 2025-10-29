@@ -1,0 +1,235 @@
+<% content_for :title, "Logs système - Admin" %>
+
+<div class="admin-page-header">
+  <h1>Logs système</h1>
+  <p class="text-muted">Surveillance de l'activité de l'application</p>
+</div>
+
+<!-- Filters -->
+<div class="admin-card" style="margin-bottom: var(--spacing-lg);">
+  <div class="filters-bar">
+    <div class="search-box">
+      <input type="search" placeholder="Rechercher dans les logs..." class="form-input">
+    </div>
+    <div class="filter-group">
+      <label>Type</label>
+      <select class="form-select">
+        <option>Tous</option>
+        <option>User</option>
+        <option>Subscription</option>
+        <option>Document</option>
+        <option>WhatsApp</option>
+        <option>Webhook</option>
+        <option>Error</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <label>Période</label>
+      <select class="form-select">
+        <option selected>Aujourd'hui</option>
+        <option>7 derniers jours</option>
+        <option>30 derniers jours</option>
+        <option>Tout</option>
+      </select>
+    </div>
+    <button class="btn btn-outline">Exporter</button>
+  </div>
+</div>
+
+<!-- Logs Table -->
+<div class="admin-card">
+  <table class="admin-table">
+    <thead>
+      <tr>
+        <th>Horodatage</th>
+        <th>Type</th>
+        <th>Utilisateur</th>
+        <th>Action</th>
+        <th>Détails</th>
+        <th>Statut</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="text-nowrap">2025-05-30 14:23:45</td>
+        <td><span class="badge badge-blue">User</span></td>
+        <td>
+          <div class="user-info-compact">
+            <div class="user-avatar-sm">MY</div>
+            <span>Mehmet Yılmaz</span>
+          </div>
+        </td>
+        <td>user.registered</td>
+        <td class="text-muted small">Nouvel utilisateur inscrit via Stripe</td>
+        <td><span class="status-badge status-success">Success</span></td>
+        <td>
+          <%= link_to "Détails", admin_log_path(1), class: "btn btn-sm btn-outline" %>
+        </td>
+      </tr>
+      <tr>
+        <td class="text-nowrap">2025-05-30 14:08:12</td>
+        <td><span class="badge badge-purple">Document</span></td>
+        <td>
+          <div class="user-info-compact">
+            <div class="user-avatar-sm">JD</div>
+            <span>Jean Dupont</span>
+          </div>
+        </td>
+        <td>invoice.created</td>
+        <td class="text-muted small">Facture #F-2025-0234 créée via WhatsApp</td>
+        <td><span class="status-badge status-success">Success</span></td>
+        <td>
+          <%= link_to "Détails", admin_log_path(2), class: "btn btn-sm btn-outline" %>
+        </td>
+      </tr>
+      <tr>
+        <td class="text-nowrap">2025-05-30 13:45:33</td>
+        <td><span class="badge badge-green">WhatsApp</span></td>
+        <td>
+          <div class="user-info-compact">
+            <div class="user-avatar-sm">JD</div>
+            <span>Jean Dupont</span>
+          </div>
+        </td>
+        <td>whatsapp.message_received</td>
+        <td class="text-muted small">Message vocal transcrit (French)</td>
+        <td><span class="status-badge status-success">Success</span></td>
+        <td>
+          <%= link_to "Détails", admin_log_path(3), class: "btn btn-sm btn-outline" %>
+        </td>
+      </tr>
+      <tr>
+        <td class="text-nowrap">2025-05-30 12:15:22</td>
+        <td><span class="badge badge-orange">Webhook</span></td>
+        <td>
+          <div class="user-info-compact">
+            <div class="user-avatar-sm">MM</div>
+            <span>Marie Martin</span>
+          </div>
+        </td>
+        <td>stripe.payment_succeeded</td>
+        <td class="text-muted small">Paiement mensuel de 59€ reçu</td>
+        <td><span class="status-badge status-success">Success</span></td>
+        <td>
+          <%= link_to "Détails", admin_log_path(4), class: "btn btn-sm btn-outline" %>
+        </td>
+      </tr>
+      <tr>
+        <td class="text-nowrap">2025-05-30 11:30:45</td>
+        <td><span class="badge badge-purple">Document</span></td>
+        <td>
+          <div class="user-info-compact">
+            <div class="user-avatar-sm">AD</div>
+            <span>Ahmet Demir</span>
+          </div>
+        </td>
+        <td>quote.created</td>
+        <td class="text-muted small">Devis #D-2025-0456 créé via WhatsApp</td>
+        <td><span class="status-badge status-success">Success</span></td>
+        <td>
+          <%= link_to "Détails", admin_log_path(5), class: "btn btn-sm btn-outline" %>
+        </td>
+      </tr>
+      <tr class="row-warning">
+        <td class="text-nowrap">2025-05-30 10:22:18</td>
+        <td><span class="badge badge-orange">Webhook</span></td>
+        <td>
+          <div class="user-info-compact">
+            <div class="user-avatar-sm">AÖ</div>
+            <span>Ali Öztürk</span>
+          </div>
+        </td>
+        <td>stripe.payment_failed</td>
+        <td class="text-muted small">Échec paiement - carte expirée</td>
+        <td><span class="status-badge status-warning">Failed</span></td>
+        <td>
+          <%= link_to "Détails", admin_log_path(6), class: "btn btn-sm btn-outline" %>
+        </td>
+      </tr>
+      <tr>
+        <td class="text-nowrap">2025-05-30 09:15:33</td>
+        <td><span class="badge badge-green">WhatsApp</span></td>
+        <td>
+          <div class="user-info-compact">
+            <div class="user-avatar-sm">PL</div>
+            <span>Pierre Lefebvre</span>
+          </div>
+        </td>
+        <td>whatsapp.connected</td>
+        <td class="text-muted small">Compte WhatsApp connecté via Unipile</td>
+        <td><span class="status-badge status-success">Success</span></td>
+        <td>
+          <%= link_to "Détails", admin_log_path(7), class: "btn btn-sm btn-outline" %>
+        </td>
+      </tr>
+      <tr class="row-danger">
+        <td class="text-nowrap">2025-05-30 08:42:11</td>
+        <td><span class="badge badge-red">Error</span></td>
+        <td>
+          <div class="user-info-compact">
+            <div class="user-avatar-sm">SB</div>
+            <span>Sophie Bernard</span>
+          </div>
+        </td>
+        <td>subscription.suspended</td>
+        <td class="text-muted small">Compte suspendu - impayé 15 jours</td>
+        <td><span class="status-badge status-danger">Error</span></td>
+        <td>
+          <%= link_to "Détails", admin_log_path(8), class: "btn btn-sm btn-outline" %>
+        </td>
+      </tr>
+      <tr>
+        <td class="text-nowrap">2025-05-30 07:30:22</td>
+        <td><span class="badge badge-blue">User</span></td>
+        <td>
+          <div class="user-info-compact">
+            <div class="user-avatar-sm">CK</div>
+            <span>Can Kaya</span>
+          </div>
+        </td>
+        <td>user.login</td>
+        <td class="text-muted small">Connexion au dashboard (IP: 89.156.2.45)</td>
+        <td><span class="status-badge status-success">Success</span></td>
+        <td>
+          <%= link_to "Détails", admin_log_path(9), class: "btn btn-sm btn-outline" %>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Pagination -->
+<div class="pagination">
+  <button class="btn btn-outline" disabled>Précédent</button>
+  <span class="pagination-info">Page 1 sur 42</span>
+  <button class="btn btn-outline">Suivant</button>
+</div>
+
+<!-- Log Stats -->
+<div class="admin-card" style="margin-top: var(--spacing-xl);">
+  <div class="card-header">
+    <h2>Statistiques des logs (24h)</h2>
+  </div>
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-label">Total événements</div>
+      <div class="stat-value">847</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Succès</div>
+      <div class="stat-value success-text">823</div>
+      <div class="stat-detail">97.2%</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Erreurs</div>
+      <div class="stat-value danger-text">12</div>
+      <div class="stat-detail">1.4%</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Warnings</div>
+      <div class="stat-value warning-text">12</div>
+      <div class="stat-detail">1.4%</div>
+    </div>
+  </div>
+</div>

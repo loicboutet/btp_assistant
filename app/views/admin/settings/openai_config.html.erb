@@ -1,0 +1,192 @@
+<% content_for :title, "Configuration OpenAI - Paramètres Admin" %>
+
+<div class="admin-page-header">
+  <%= link_to "← Retour aux paramètres", admin_settings_path, class: "back-link" %>
+  <h1>Configuration OpenAI</h1>
+  <p class="text-muted">Intelligence artificielle et traitement des messages</p>
+</div>
+
+<!-- Status Overview -->
+<div class="stats-grid">
+  <div class="stat-card">
+    <div class="stat-label">Statut API</div>
+    <div class="stat-value"><span class="status-badge status-success">Opérationnel</span></div>
+    <div class="stat-detail">GPT-4 + Whisper</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">Requêtes (24h)</div>
+    <div class="stat-value">3 247</div>
+    <div class="stat-detail">GPT: 1 355, Whisper: 1 892</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">Taux de succès</div>
+    <div class="stat-value success-text">96.8%</div>
+    <div class="stat-detail">3 143 / 3 247</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">Coût estimé (mois)</div>
+    <div class="stat-value">~247€</div>
+    <div class="stat-detail">Basé sur 30j</div>
+  </div>
+</div>
+
+<!-- Configuration Form -->
+<div class="admin-card" style="margin-top: var(--spacing-xl);">
+  <div class="card-header">
+    <h2>Configuration API</h2>
+    <button class="btn btn-primary">Sauvegarder</button>
+  </div>
+  <form class="settings-form">
+    <div class="form-group">
+      <label class="form-label">API Key</label>
+      <input type="password" class="form-input" value="sk-••••••••••••••••••••••••••••••••" placeholder="sk-...">
+      <small class="form-hint">Clé API OpenAI</small>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Organization ID</label>
+      <input type="text" class="form-input" value="org-••••••••••••••••" placeholder="org-...">
+      <small class="form-hint">ID de votre organisation OpenAI (optionnel)</small>
+    </div>
+  </form>
+</div>
+
+<!-- GPT Configuration -->
+<div class="admin-card" style="margin-top: var(--spacing-xl);">
+  <div class="card-header">
+    <h2>Configuration GPT (Traitement de texte)</h2>
+    <button class="btn btn-primary">Sauvegarder</button>
+  </div>
+  <form class="settings-form">
+    <div class="form-group">
+      <label class="form-label">Modèle GPT</label>
+      <select class="form-select">
+        <option>GPT-3.5 Turbo</option>
+        <option selected>GPT-4</option>
+        <option>GPT-4 Turbo</option>
+      </select>
+      <small class="form-hint">Modèle utilisé pour le traitement des conversations</small>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Temperature</label>
+      <input type="number" class="form-input" value="0.7" min="0" max="2" step="0.1">
+      <small class="form-hint">Contrôle la créativité des réponses (0-2). Recommandé: 0.7</small>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Max Tokens</label>
+      <input type="number" class="form-input" value="2000" min="100" max="4000" step="100">
+      <small class="form-hint">Longueur maximale des réponses</small>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Langues supportées</label>
+      <div class="checkbox-group">
+        <label class="checkbox-label">
+          <input type="checkbox" checked disabled>
+          <span>🇫🇷 Français</span>
+        </label>
+        <label class="checkbox-label">
+          <input type="checkbox" checked disabled>
+          <span>🇹🇷 Turc</span>
+        </label>
+      </div>
+      <small class="form-hint">GPT détecte automatiquement la langue de l'utilisateur</small>
+    </div>
+  </form>
+</div>
+
+<!-- Whisper Configuration -->
+<div class="admin-card" style="margin-top: var(--spacing-xl);">
+  <div class="card-header">
+    <h2>Configuration Whisper (Transcription vocale)</h2>
+    <button class="btn btn-primary">Sauvegarder</button>
+  </div>
+  <form class="settings-form">
+    <div class="form-group">
+      <label class="form-label">Modèle Whisper</label>
+      <select class="form-select">
+        <option selected>Whisper-1</option>
+      </select>
+      <small class="form-hint">Modèle utilisé pour la transcription audio</small>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Détection automatique de langue</label>
+      <label class="checkbox-label">
+        <input type="checkbox" checked>
+        <span>Activer la détection automatique</span>
+      </label>
+      <small class="form-hint">Whisper détecte automatiquement la langue parlée</small>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Format audio supporté</label>
+      <input type="text" class="form-input" value="mp3, wav, ogg, m4a" readonly>
+      <small class="form-hint">Formats audio acceptés par Whisper</small>
+    </div>
+  </form>
+</div>
+
+<!-- Usage Statistics -->
+<div class="admin-card" style="margin-top: var(--spacing-xl);">
+  <div class="card-header">
+    <h2>Statistiques d'utilisation (30j)</h2>
+  </div>
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-label">Total requêtes GPT</div>
+      <div class="stat-value">40 650</div>
+      <div class="stat-detail">~1 355/jour</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Total transcriptions Whisper</div>
+      <div class="stat-value">56 760</div>
+      <div class="stat-detail">~1 892/jour</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Tokens GPT utilisés</div>
+      <div class="stat-value">2.4M</div>
+      <div class="stat-detail">~80K/jour</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Minutes audio transcrits</div>
+      <div class="stat-value">947 min</div>
+      <div class="stat-detail">~31.5 min/jour</div>
+    </div>
+  </div>
+</div>
+
+<!-- Performance -->
+<div class="admin-card" style="margin-top: var(--spacing-xl);">
+  <div class="card-header">
+    <h2>Performance & Qualité</h2>
+  </div>
+  <div class="details-list">
+    <div class="detail-item">
+      <span class="detail-label">Taux de succès GPT</span>
+      <span class="detail-value success-text">97.2%</span>
+    </div>
+    <div class="detail-item">
+      <span class="detail-label">Taux de succès Whisper</span>
+      <span class="detail-value success-text">96.5%</span>
+    </div>
+    <div class="detail-item">
+      <span class="detail-label">Temps de réponse moyen GPT</span>
+      <span class="detail-value">2.3s</span>
+    </div>
+    <div class="detail-item">
+      <span class="detail-label">Temps de transcription moyen</span>
+      <span class="detail-value">1.8s</span>
+    </div>
+    <div class="detail-item">
+      <span class="detail-label">Précision transcription (estimée)</span>
+      <span class="detail-value success-text">94%</span>
+    </div>
+    <div class="detail-item">
+      <span class="detail-label">Satisfaction utilisateurs</span>
+      <span class="detail-value success-text">4.6/5</span>
+    </div>
+  </div>
+</div>

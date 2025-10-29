@@ -1,0 +1,192 @@
+<% content_for :title, "Paramètres - Admin" %>
+
+<div class="admin-page-header">
+  <h1>Paramètres de l'application</h1>
+  <p class="text-muted">Configuration générale et intégrations</p>
+</div>
+
+<!-- Integration Status Cards -->
+<div class="stats-grid">
+  <div class="stat-card">
+    <div class="stat-label">Unipile (WhatsApp)</div>
+    <div class="stat-value"><span class="status-badge status-success">Connecté</span></div>
+    <div class="stat-detail">
+      <%= link_to "Configurer →", admin_settings_unipile_path, class: "text-link" %>
+    </div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">Stripe (Paiements)</div>
+    <div class="stat-value"><span class="status-badge status-success">Actif</span></div>
+    <div class="stat-detail">
+      <%= link_to "Configurer →", admin_settings_stripe_path, class: "text-link" %>
+    </div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">OpenAI (IA)</div>
+    <div class="stat-value"><span class="status-badge status-success">Opérationnel</span></div>
+    <div class="stat-detail">
+      <%= link_to "Configurer →", admin_settings_openai_path, class: "text-link" %>
+    </div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">Uptime (30j)</div>
+    <div class="stat-value">99.9%</div>
+    <div class="stat-detail success-text">Excellent</div>
+  </div>
+</div>
+
+<!-- General Settings -->
+<div class="admin-card" style="margin-top: var(--spacing-xl);">
+  <div class="card-header">
+    <h2>Paramètres généraux</h2>
+    <button class="btn btn-primary">Sauvegarder</button>
+  </div>
+  <form class="settings-form">
+    <div class="form-group">
+      <label class="form-label">Nom de l'application</label>
+      <input type="text" class="form-input" value="Devis WhatsApp" placeholder="Nom de l'application">
+      <small class="form-hint">Nom affiché aux utilisateurs</small>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Email support</label>
+      <input type="email" class="form-input" value="support@deviswhatsapp.fr" placeholder="Email de support">
+      <small class="form-hint">Email de contact pour les utilisateurs</small>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">URL de l'application</label>
+      <input type="url" class="form-input" value="https://deviswhatsapp.fr" placeholder="https://...">
+      <small class="form-hint">URL publique de l'application</small>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Langue par défaut</label>
+      <select class="form-select">
+        <option selected>Français</option>
+        <option>Turc</option>
+      </select>
+      <small class="form-hint">Langue par défaut pour les nouveaux utilisateurs</small>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Mode maintenance</label>
+      <label class="checkbox-label">
+        <input type="checkbox">
+        <span>Activer le mode maintenance</span>
+      </label>
+      <small class="form-hint">Désactive l'accès à l'application pour les utilisateurs</small>
+    </div>
+  </form>
+</div>
+
+<!-- Quick Access to Integrations -->
+<div class="admin-content-grid" style="margin-top: var(--spacing-xl);">
+  <div class="admin-card">
+    <div class="card-header">
+      <h2>Unipile - WhatsApp</h2>
+      <%= link_to "Configurer", admin_settings_unipile_path, class: "btn btn-sm btn-primary" %>
+    </div>
+    <div class="details-list">
+      <div class="detail-item">
+        <span class="detail-label">Statut API</span>
+        <span class="detail-value"><span class="status-badge status-success">Connecté</span></span>
+      </div>
+      <div class="detail-item">
+        <span class="detail-label">Comptes connectés</span>
+        <span class="detail-value">44 / 47 utilisateurs</span>
+      </div>
+      <div class="detail-item">
+        <span class="detail-label">Messages traités (24h)</span>
+        <span class="detail-value">247</span>
+      </div>
+      <div class="detail-item">
+        <span class="detail-label">Dernière activité</span>
+        <span class="detail-value">Il y a 2 minutes</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="admin-card">
+    <div class="card-header">
+      <h2>Stripe - Paiements</h2>
+      <%= link_to "Configurer", admin_settings_stripe_path, class: "btn btn-sm btn-primary" %>
+    </div>
+    <div class="details-list">
+      <div class="detail-item">
+        <span class="detail-label">Mode</span>
+        <span class="detail-value"><span class="badge badge-green">Production</span></span>
+      </div>
+      <div class="detail-item">
+        <span class="detail-label">Abonnements actifs</span>
+        <span class="detail-value">47</span>
+      </div>
+      <div class="detail-item">
+        <span class="detail-label">MRR</span>
+        <span class="detail-value">2 847€</span>
+      </div>
+      <div class="detail-item">
+        <span class="detail-label">Webhooks (24h)</span>
+        <span class="detail-value">18 (100% succès)</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="admin-card">
+    <div class="card-header">
+      <h2>OpenAI - Intelligence Artificielle</h2>
+      <%= link_to "Configurer", admin_settings_openai_path, class: "btn btn-sm btn-primary" %>
+    </div>
+    <div class="details-list">
+      <div class="detail-item">
+        <span class="detail-label">Modèle GPT</span>
+        <span class="detail-value">GPT-4</span>
+      </div>
+      <div class="detail-item">
+        <span class="detail-label">Modèle Whisper</span>
+        <span class="detail-value">Whisper-1</span>
+      </div>
+      <div class="detail-item">
+        <span class="detail-label">Requêtes (24h)</span>
+        <span class="detail-value">3 247</span>
+      </div>
+      <div class="detail-item">
+        <span class="detail-label">Taux de succès</span>
+        <span class="detail-value success-text">96.8%</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- System Information -->
+<div class="admin-card" style="margin-top: var(--spacing-xl);">
+  <div class="card-header">
+    <h2>Informations système</h2>
+  </div>
+  <div class="details-list">
+    <div class="detail-item">
+      <span class="detail-label">Version de l'application</span>
+      <span class="detail-value">1.0.0</span>
+    </div>
+    <div class="detail-item">
+      <span class="detail-label">Environnement</span>
+      <span class="detail-value"><span class="badge badge-green">Production</span></span>
+    </div>
+    <div class="detail-item">
+      <span class="detail-label">Base de données</span>
+      <span class="detail-value">PostgreSQL 14.5</span>
+    </div>
+    <div class="detail-item">
+      <span class="detail-label">Ruby version</span>
+      <span class="detail-value">3.2.0</span>
+    </div>
+    <div class="detail-item">
+      <span class="detail-label">Rails version</span>
+      <span class="detail-value">7.1.0</span>
+    </div>
+    <div class="detail-item">
+      <span class="detail-label">Serveur</span>
+      <span class="detail-value">Puma</span>
+    </div>
+  </div>
+</div>

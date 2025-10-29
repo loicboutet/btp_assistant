@@ -1,0 +1,175 @@
+<% content_for :title, "Abonnements - Admin" %>
+
+<div class="admin-page-header">
+  <h1>Gestion des abonnements</h1>
+  <p class="text-muted">47 actifs • 5 en retard • 3 annulés</p>
+</div>
+
+<!-- Filters -->
+<div class="admin-card" style="margin-bottom: var(--spacing-lg);">
+  <div class="filters-bar">
+    <div class="search-box">
+      <input type="search" placeholder="Rechercher par nom, Stripe ID..." class="form-input">
+    </div>
+    <div class="filter-group">
+      <label>Statut</label>
+      <select class="form-select">
+        <option>Tous</option>
+        <option selected>Actifs</option>
+        <option>En retard</option>
+        <option>Annulés</option>
+        <option>Essai</option>
+      </select>
+    </div>
+    <%= link_to "Abonnements en retard", admin_subscriptions_overdue_path, class: "btn btn-outline" %>
+  </div>
+</div>
+
+<!-- Subscriptions Table -->
+<div class="admin-card">
+  <table class="admin-table">
+    <thead>
+      <tr>
+        <th>Utilisateur</th>
+        <th>Plan</th>
+        <th>Statut</th>
+        <th>Stripe IDs</th>
+        <th>Date début</th>
+        <th>Prochain paiement</th>
+        <th>MRR</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <div class="user-info">
+            <div class="user-avatar">JD</div>
+            <div>
+              <div class="user-name">Jean Dupont</div>
+              <div class="user-email">jean.dupont@example.fr</div>
+            </div>
+          </div>
+        </td>
+        <td>Mensuel</td>
+        <td><span class="status-badge status-success">Actif</span></td>
+        <td>
+          <div class="text-muted small">cus_AbCdEfGh</div>
+          <div class="text-muted small">sub_12345678</div>
+        </td>
+        <td>15 mars 2025</td>
+        <td>15 juin 2025</td>
+        <td class="font-weight-bold">59€</td>
+        <td>
+          <div class="action-buttons">
+            <%= link_to "Voir", admin_subscription_path(1), class: "btn btn-sm btn-outline" %>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <div class="user-info">
+            <div class="user-avatar">MM</div>
+            <div>
+              <div class="user-name">Marie Martin</div>
+              <div class="user-email">marie.martin@example.fr</div>
+            </div>
+          </div>
+        </td>
+        <td>Mensuel</td>
+        <td><span class="status-badge status-success">Actif</span></td>
+        <td>
+          <div class="text-muted small">cus_IjKlMnOp</div>
+          <div class="text-muted small">sub_23456789</div>
+        </td>
+        <td>12 déc 2024</td>
+        <td>12 juin 2025</td>
+        <td class="font-weight-bold">59€</td>
+        <td>
+          <div class="action-buttons">
+            <%= link_to "Voir", admin_subscription_path(2), class: "btn btn-sm btn-outline" %>
+          </div>
+        </td>
+      </tr>
+      <tr class="row-warning">
+        <td>
+          <div class="user-info">
+            <div class="user-avatar">AÖ</div>
+            <div>
+              <div class="user-name">Ali Öztürk</div>
+              <div class="user-email">ali.ozturk@example.com</div>
+            </div>
+          </div>
+        </td>
+        <td>Mensuel</td>
+        <td><span class="status-badge status-warning">Paiement échoué</span></td>
+        <td>
+          <div class="text-muted small">cus_QrStUvWx</div>
+          <div class="text-muted small">sub_34567890</div>
+        </td>
+        <td>8 fév 2025</td>
+        <td class="warning-text">Échoué - 2j restants</td>
+        <td class="font-weight-bold">59€</td>
+        <td>
+          <div class="action-buttons">
+            <%= link_to "Voir", admin_subscription_path(3), class: "btn btn-sm btn-outline" %>
+          </div>
+        </td>
+      </tr>
+      <tr class="row-danger">
+        <td>
+          <div class="user-info">
+            <div class="user-avatar">SB</div>
+            <div>
+              <div class="user-name">Sophie Bernard</div>
+              <div class="user-email">sophie.bernard@example.fr</div>
+            </div>
+          </div>
+        </td>
+        <td>Mensuel</td>
+        <td><span class="status-badge status-danger">Suspendu</span></td>
+        <td>
+          <div class="text-muted small">cus_YzAbCdEf</div>
+          <div class="text-muted small">sub_45678901</div>
+        </td>
+        <td>1 nov 2024</td>
+        <td class="danger-text">Impayé 15 jours</td>
+        <td class="font-weight-bold">59€</td>
+        <td>
+          <div class="action-buttons">
+            <%= link_to "Voir", admin_subscription_path(4), class: "btn btn-sm btn-outline" %>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Summary Stats -->
+<div class="admin-card" style="margin-top: var(--spacing-xl);">
+  <div class="card-header">
+    <h2>Résumé financier</h2>
+  </div>
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-label">MRR Total</div>
+      <div class="stat-value">2 847€</div>
+      <div class="stat-change positive">+8% ce mois</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">ARR (Annual)</div>
+      <div class="stat-value">34 164€</div>
+      <div class="stat-detail">Projection annuelle</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Churn Rate</div>
+      <div class="stat-value">2.1%</div>
+      <div class="stat-change positive">↓ 0.5%</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">ARPU</div>
+      <div class="stat-value">60.57€</div>
+      <div class="stat-detail">Par utilisateur</div>
+    </div>
+  </div>
+</div>

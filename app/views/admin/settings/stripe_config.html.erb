@@ -1,0 +1,161 @@
+<% content_for :title, "Configuration Stripe - Paramètres Admin" %>
+
+<div class="admin-page-header">
+  <%= link_to "← Retour aux paramètres", admin_settings_path, class: "back-link" %>
+  <h1>Configuration Stripe</h1>
+  <p class="text-muted">Gestion des paiements et abonnements</p>
+</div>
+
+<!-- Status Overview -->
+<div class="stats-grid">
+  <div class="stat-card">
+    <div class="stat-label">Statut API</div>
+    <div class="stat-value"><span class="status-badge status-success">Actif</span></div>
+    <div class="stat-detail">Mode Production</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">MRR</div>
+    <div class="stat-value">2 847€</div>
+    <div class="stat-detail">47 abonnements actifs</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">Webhooks (24h)</div>
+    <div class="stat-value">18</div>
+    <div class="stat-detail success-text">100% succès</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">Dernière transaction</div>
+    <div class="stat-value">5 min</div>
+    <div class="stat-detail">59€</div>
+  </div>
+</div>
+
+<!-- Configuration Form -->
+<div class="admin-card" style="margin-top: var(--spacing-xl);">
+  <div class="card-header">
+    <h2>Configuration API</h2>
+    <button class="btn btn-primary">Sauvegarder</button>
+  </div>
+  <form class="settings-form">
+    <div class="form-group">
+      <label class="form-label">Mode</label>
+      <select class="form-select">
+        <option>Test</option>
+        <option selected>Production</option>
+      </select>
+      <small class="form-hint">Environnement Stripe utilisé</small>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Publishable Key (Production)</label>
+      <input type="text" class="form-input" value="pk_live_••••••••••••••••" placeholder="pk_live_..." readonly>
+      <small class="form-hint">Clé publique pour le checkout</small>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Secret Key (Production)</label>
+      <input type="password" class="form-input" value="sk_live_••••••••••••••••" placeholder="sk_live_...">
+      <small class="form-hint">Clé secrète pour les opérations API</small>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Webhook Secret</label>
+      <input type="password" class="form-input" value="whsec_••••••••••••••••" placeholder="whsec_...">
+      <small class="form-hint">Secret pour la vérification des webhooks</small>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Price ID (Abonnement mensuel)</label>
+      <input type="text" class="form-input" value="price_1234567890abcdef" placeholder="price_...">
+      <small class="form-hint">ID du prix configuré dans Stripe (59€/mois)</small>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Webhook URL</label>
+      <input type="url" class="form-input" value="https://deviswhatsapp.fr/webhooks/stripe" readonly>
+      <small class="form-hint">URL configurée dans Stripe Dashboard</small>
+    </div>
+  </form>
+</div>
+
+<!-- Stripe Dashboard Link -->
+<div class="admin-card" style="margin-top: var(--spacing-xl);">
+  <div class="card-header">
+    <h2>Stripe Dashboard</h2>
+    <a href="https://dashboard.stripe.com" target="_blank" class="btn btn-primary">Ouvrir Stripe Dashboard →</a>
+  </div>
+  <p class="text-muted">Gérez vos paiements, abonnements et clients directement dans Stripe Dashboard</p>
+</div>
+
+<!-- Webhook Events -->
+<div class="admin-card" style="margin-top: var(--spacing-xl);">
+  <div class="card-header">
+    <h2>Événements Webhook configurés</h2>
+  </div>
+  <div class="webhook-events-list">
+    <div class="webhook-event-item">
+      <span class="status-badge status-success">✓</span>
+      <div>
+        <strong>checkout.session.completed</strong>
+        <p class="text-muted small">Premier paiement réussi → activation compte</p>
+      </div>
+    </div>
+    <div class="webhook-event-item">
+      <span class="status-badge status-success">✓</span>
+      <div>
+        <strong>invoice.payment_succeeded</strong>
+        <p class="text-muted small">Paiement récurrent réussi → maintien statut actif</p>
+      </div>
+    </div>
+    <div class="webhook-event-item">
+      <span class="status-badge status-success">✓</span>
+      <div>
+        <strong>invoice.payment_failed</strong>
+        <p class="text-muted small">Paiement échoué → suspension compte + email</p>
+      </div>
+    </div>
+    <div class="webhook-event-item">
+      <span class="status-badge status-success">✓</span>
+      <div>
+        <strong>customer.subscription.updated</strong>
+        <p class="text-muted small">Abonnement modifié → mise à jour statut</p>
+      </div>
+    </div>
+    <div class="webhook-event-item">
+      <span class="status-badge status-success">✓</span>
+      <div>
+        <strong>customer.subscription.deleted</strong>
+        <p class="text-muted small">Abonnement annulé → marquer comme annulé</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Statistics -->
+<div class="admin-card" style="margin-top: var(--spacing-xl);">
+  <div class="card-header">
+    <h2>Statistiques financières (30j)</h2>
+  </div>
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-label">Revenus totaux</div>
+      <div class="stat-value">2 847€</div>
+      <div class="stat-change positive">+8.2%</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Nouveaux abonnements</div>
+      <div class="stat-value">12</div>
+      <div class="stat-change positive">+20%</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Paiements échoués</div>
+      <div class="stat-value">5</div>
+      <div class="stat-detail">10.6% du total</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Annulations</div>
+      <div class="stat-value">3</div>
+      <div class="stat-detail">Churn: 2.1%</div>
+    </div>
+  </div>
+</div>
