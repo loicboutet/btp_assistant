@@ -1,5 +1,7 @@
 module Admin
   class SettingsController < ApplicationController
+    layout 'admin'
+    
     def index
     end
 

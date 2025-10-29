@@ -1,5 +1,7 @@
 module Admin
   class SubscriptionsController < ApplicationController
+    layout 'admin'
+    
     def index
     end
 

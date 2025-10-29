@@ -1,0 +1,211 @@
+<% content_for :title, "Abonnements en retard - Admin" %>
+
+<div class="admin-page-header">
+  <h1>Abonnements en retard</h1>
+  <p class="text-muted">5 abonnements nécessitent une attention</p>
+</div>
+
+<!-- Alert Summary -->
+<div class="admin-card" style="margin-bottom: var(--spacing-lg); background: #fff3cd; border-left: 4px solid #ffc107;">
+  <div style="padding: var(--spacing-md);">
+    <h3 style="margin: 0 0 var(--spacing-sm); color: #856404;">⚠️ Action requise</h3>
+    <p style="margin: 0; color: #856404;">Ces abonnements ont des paiements échoués ou sont en retard. Veuillez prendre les mesures nécessaires.</p>
+  </div>
+</div>
+
+<!-- Overdue Subscriptions Table -->
+<div class="admin-card">
+  <table class="admin-table">
+    <thead>
+      <tr>
+        <th>Utilisateur</th>
+        <th>Plan</th>
+        <th>Statut</th>
+        <th>Stripe IDs</th>
+        <th>Date échéance</th>
+        <th>Jours de retard</th>
+        <th>Montant dû</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="row-warning">
+        <td>
+          <div class="user-info">
+            <div class="user-avatar">AÖ</div>
+            <div>
+              <div class="user-name">Ali Öztürk</div>
+              <div class="user-email">ali.ozturk@example.com</div>
+            </div>
+          </div>
+        </td>
+        <td>Mensuel</td>
+        <td><span class="status-badge status-warning">Paiement échoué</span></td>
+        <td>
+          <div class="text-muted small">cus_QrStUvWx</div>
+          <div class="text-muted small">sub_34567890</div>
+        </td>
+        <td>28 mai 2025</td>
+        <td class="warning-text">2 jours</td>
+        <td class="font-weight-bold">59€</td>
+        <td>
+          <div class="action-buttons">
+            <%= link_to "Relancer", "#", class: "btn btn-sm btn-primary" %>
+            <%= link_to "Voir", admin_subscription_path(1), class: "btn btn-sm btn-outline" %>
+          </div>
+        </td>
+      </tr>
+      <tr class="row-danger">
+        <td>
+          <div class="user-info">
+            <div class="user-avatar">SB</div>
+            <div>
+              <div class="user-name">Sophie Bernard</div>
+              <div class="user-email">sophie.bernard@example.fr</div>
+            </div>
+          </div>
+        </td>
+        <td>Mensuel</td>
+        <td><span class="status-badge status-danger">Suspendu</span></td>
+        <td>
+          <div class="text-muted small">cus_YzAbCdEf</div>
+          <div class="text-muted small">sub_45678901</div>
+        </td>
+        <td>15 mai 2025</td>
+        <td class="danger-text">15 jours</td>
+        <td class="font-weight-bold">59€</td>
+        <td>
+          <div class="action-buttons">
+            <%= link_to "Relancer", "#", class: "btn btn-sm btn-primary" %>
+            <%= link_to "Voir", admin_subscription_path(2), class: "btn btn-sm btn-outline" %>
+          </div>
+        </td>
+      </tr>
+      <tr class="row-warning">
+        <td>
+          <div class="user-info">
+            <div class="user-avatar">CK</div>
+            <div>
+              <div class="user-name">Can Kaya</div>
+              <div class="user-email">can.kaya@example.com</div>
+            </div>
+          </div>
+        </td>
+        <td>Mensuel</td>
+        <td><span class="status-badge status-warning">Paiement échoué</span></td>
+        <td>
+          <div class="text-muted small">cus_GhIjKlMn</div>
+          <div class="text-muted small">sub_56789012</div>
+        </td>
+        <td>27 mai 2025</td>
+        <td class="warning-text">3 jours</td>
+        <td class="font-weight-bold">59€</td>
+        <td>
+          <div class="action-buttons">
+            <%= link_to "Relancer", "#", class: "btn btn-sm btn-primary" %>
+            <%= link_to "Voir", admin_subscription_path(3), class: "btn btn-sm btn-outline" %>
+          </div>
+        </td>
+      </tr>
+      <tr class="row-warning">
+        <td>
+          <div class="user-info">
+            <div class="user-avatar">MY</div>
+            <div>
+              <div class="user-name">Mehmet Yılmaz</div>
+              <div class="user-email">mehmet.yilmaz@example.com</div>
+            </div>
+          </div>
+        </td>
+        <td>Mensuel</td>
+        <td><span class="status-badge status-warning">Carte expirée</span></td>
+        <td>
+          <div class="text-muted small">cus_OpQrStUv</div>
+          <div class="text-muted small">sub_67890123</div>
+        </td>
+        <td>29 mai 2025</td>
+        <td class="warning-text">1 jour</td>
+        <td class="font-weight-bold">59€</td>
+        <td>
+          <div class="action-buttons">
+            <%= link_to "Relancer", "#", class: "btn btn-sm btn-primary" %>
+            <%= link_to "Voir", admin_subscription_path(4), class: "btn btn-sm btn-outline" %>
+          </div>
+        </td>
+      </tr>
+      <tr class="row-danger">
+        <td>
+          <div class="user-info">
+            <div class="user-avatar">AD</div>
+            <div>
+              <div class="user-name">Ahmet Demir</div>
+              <div class="user-email">ahmet.demir@example.com</div>
+            </div>
+          </div>
+        </td>
+        <td>Mensuel</td>
+        <td><span class="status-badge status-danger">Suspendu</span></td>
+        <td>
+          <div class="text-muted small">cus_WxYzAbCd</div>
+          <div class="text-muted small">sub_78901234</div>
+        </td>
+        <td>10 mai 2025</td>
+        <td class="danger-text">20 jours</td>
+        <td class="font-weight-bold">59€</td>
+        <td>
+          <div class="action-buttons">
+            <%= link_to "Relancer", "#", class: "btn btn-sm btn-primary" %>
+            <%= link_to "Voir", admin_subscription_path(5), class: "btn btn-sm btn-outline" %>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Actions disponibles -->
+<div class="admin-card" style="margin-top: var(--spacing-xl);">
+  <div class="card-header">
+    <h2>Actions rapides</h2>
+  </div>
+  <div style="padding: var(--spacing-lg);">
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: var(--spacing-md);">
+      <button class="btn btn-primary">
+        Relancer tous les paiements échoués
+      </button>
+      <button class="btn btn-outline">
+        Exporter la liste
+      </button>
+      <%= link_to "Retour aux abonnements", admin_subscriptions_path, class: "btn btn-outline" %>
+    </div>
+  </div>
+</div>
+
+<!-- Summary -->
+<div class="admin-card" style="margin-top: var(--spacing-xl);">
+  <div class="card-header">
+    <h2>Résumé des retards</h2>
+  </div>
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-label">Total en retard</div>
+      <div class="stat-value">5</div>
+      <div class="stat-detail">Abonnements</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Montant total dû</div>
+      <div class="stat-value">295€</div>
+      <div class="stat-detail">À récupérer</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Paiements échoués</div>
+      <div class="stat-value">3</div>
+      <div class="stat-detail">Moins de 5 jours</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Comptes suspendus</div>
+      <div class="stat-value">2</div>
+      <div class="stat-detail">Plus de 10 jours</div>
+    </div>
+  </div>
+</div>

@@ -109,7 +109,7 @@
   <div class="admin-card">
     <div class="card-header">
       <h2>Abonnements en alerte</h2>
-      <%= link_to "Voir tout", admin_subscriptions_overdue_path, class: "btn btn-sm btn-outline" %>
+      <%= link_to "Voir tout", overdue_admin_subscriptions_path, class: "btn btn-sm btn-outline" %>
     </div>
     <div class="alert-list">
       <div class="alert-item warning">
@@ -144,7 +144,7 @@
 <div class="admin-card" style="margin-top: var(--spacing-xl);">
   <div class="card-header">
     <h2>Statistiques rapides</h2>
-    <%= link_to "Analytics détaillées", admin_dashboard_metrics_path, class: "btn btn-sm btn-primary" %>
+    <%= link_to "Analytics détaillées", admin_metrics_path, class: "btn btn-sm btn-primary" %>
   </div>
   <div class="quick-stats-grid">
     <div class="quick-stat">
