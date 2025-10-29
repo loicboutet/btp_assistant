@@ -1,0 +1,45 @@
+<footer class="footer">
+  <div class="container">
+    <div class="flex-between" style="flex-wrap: wrap; gap: var(--spacing-md);">
+      <!-- Logo and Description -->
+      <div style="flex: 1; min-width: 250px;">
+        <%= image_tag "logo.png", alt: "Devis WhatsApp", style: "max-width: 120px; height: auto; margin-bottom: var(--spacing-sm);" %>
+        <p style="font-size: var(--font-size-sm); opacity: 0.9; margin-top: var(--spacing-sm);">
+          Assistant vocal pour artisans - Créez vos devis et factures par WhatsApp
+        </p>
+      </div>
+
+      <!-- Quick Links -->
+      <div style="flex: 1; min-width: 200px;">
+        <h4 style="font-weight: var(--font-weight-semibold); margin-bottom: var(--spacing-sm); color: #FFFFFF;">
+          Liens rapides
+        </h4>
+        <div style="display: flex; flex-direction: column; gap: var(--spacing-xs);">
+          <%= link_to "Accueil", root_path, style: "color: #FFFFFF; text-decoration: none; font-size: var(--font-size-sm); opacity: 0.9; transition: var(--transition-base);", onmouseover: "this.style.opacity='1'", onmouseout: "this.style.opacity='0.9'" %>
+          <%= link_to "À propos", about_path, style: "color: #FFFFFF; text-decoration: none; font-size: var(--font-size-sm); opacity: 0.9; transition: var(--transition-base);", onmouseover: "this.style.opacity='1'", onmouseout: "this.style.opacity='0.9'" if defined?(about_path) %>
+          <%= link_to "Support", support_path, style: "color: #FFFFFF; text-decoration: none; font-size: var(--font-size-sm); opacity: 0.9; transition: var(--transition-base);", onmouseover: "this.style.opacity='1'", onmouseout: "this.style.opacity='0.9'" if defined?(support_path) %>
+          <%= link_to "Contact", contact_path, style: "color: #FFFFFF; text-decoration: none; font-size: var(--font-size-sm); opacity: 0.9; transition: var(--transition-base);", onmouseover: "this.style.opacity='1'", onmouseout: "this.style.opacity='0.9'" if defined?(contact_path) %>
+        </div>
+      </div>
+
+      <!-- Legal Links -->
+      <div style="flex: 1; min-width: 200px;">
+        <h4 style="font-weight: var(--font-weight-semibold); margin-bottom: var(--spacing-sm); color: #FFFFFF;">
+          Légal
+        </h4>
+        <div style="display: flex; flex-direction: column; gap: var(--spacing-xs);">
+          <%= link_to "Conditions d'utilisation", terms_path, style: "color: #FFFFFF; text-decoration: none; font-size: var(--font-size-sm); opacity: 0.9; transition: var(--transition-base);", onmouseover: "this.style.opacity='1'", onmouseout: "this.style.opacity='0.9'" if defined?(terms_path) %>
+          <%= link_to "Politique de confidentialité", privacy_path, style: "color: #FFFFFF; text-decoration: none; font-size: var(--font-size-sm); opacity: 0.9; transition: var(--transition-base);", onmouseover: "this.style.opacity='1'", onmouseout: "this.style.opacity='0.9'" if defined?(privacy_path) %>
+          <%= link_to "Mentions légales", legal_path, style: "color: #FFFFFF; text-decoration: none; font-size: var(--font-size-sm); opacity: 0.9; transition: var(--transition-base);", onmouseover: "this.style.opacity='1'", onmouseout: "this.style.opacity='0.9'" if defined?(legal_path) %>
+        </div>
+      </div>
+    </div>
+
+    <!-- Copyright -->
+    <div style="margin-top: var(--spacing-lg); padding-top: var(--spacing-md); border-top: 1px solid rgba(255, 255, 255, 0.2); text-align: center;">
+      <p style="font-size: var(--font-size-sm); opacity: 0.9;">
+        © <%= Time.current.year %> Devis WhatsApp. Tous droits réservés.
+      </p>
+    </div>
+  </div>
+</footer>

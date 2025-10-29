@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= content_for(:title) || "Admin - Devis WhatsApp" %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= yield :head %>
+
+    <link rel="icon" href="/icon.png" type="image/png">
+    <link rel="icon" href="/icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/icon.png">
+
+    <%= stylesheet_link_tag "tailwind", "inter-font", "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag "style", "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+  </head>
+
+  <body>
+    <div class="admin-layout">
+      <!-- Left Sidebar -->
+      <aside class="admin-sidebar">
+        <!-- Logo Section -->
+        <div class="admin-sidebar-logo">
+          <%= link_to root_path do %>
+            <%= image_tag "logo.png", alt: "Devis WhatsApp" %>
+          <% end %>
+        </div>
+
+        <!-- Navigation -->
+        <nav class="admin-sidebar-nav">
+          <%= link_to admin_dashboard_path, class: "admin-nav-item #{current_page?(admin_dashboard_path) ? 'active' : ''}" do %>
+            <span class="admin-nav-item-icon">📊</span>
+            <span>Dashboard</span>
+          <% end %>
+
+          <%= link_to admin_users_path, class: "admin-nav-item #{current_page?(admin_users_path) ? 'active' : ''}" do %>
+            <span class="admin-nav-item-icon">👥</span>
+            <span>Utilisateurs</span>
+          <% end %>
+
+          <%= link_to admin_subscriptions_path, class: "admin-nav-item #{current_page?(admin_subscriptions_path) ? 'active' : ''}" do %>
+            <span class="admin-nav-item-icon">💳</span>
+            <span>Abonnements</span>
+          <% end %>
+
+          <%= link_to admin_analytics_path, class: "admin-nav-item #{current_page?(admin_analytics_path) ? 'active' : ''}" do %>
+            <span class="admin-nav-item-icon">📈</span>
+            <span>Analytics</span>
+          <% end %>
+
+          <%= link_to admin_settings_path, class: "admin-nav-item #{current_page?(admin_settings_path) ? 'active' : ''}" do %>
+            <span class="admin-nav-item-icon">⚙️</span>
+            <span>Paramètres</span>
+          <% end %>
+
+          <%= link_to admin_logs_path, class: "admin-nav-item #{current_page?(admin_logs_path) ? 'active' : ''}" do %>
+            <span class="admin-nav-item-icon">📝</span>
+            <span>Logs</span>
+          <% end %>
+        </nav>
+
+        <!-- Sidebar Footer -->
+        <div style="padding: var(--spacing-lg); border-top: 1px solid rgba(255, 255, 255, 0.2);">
+          <%= link_to destroy_user_session_path, data: { turbo_method: :delete }, class: "admin-nav-item" do %>
+            <span class="admin-nav-item-icon">🚪</span>
+            <span>Déconnexion</span>
+          <% end %>
+        </div>
+      </aside>
+
+      <!-- Main Content Area -->
+      <main class="admin-main-content">
+        <!-- Flash Messages -->
+        <% if notice %>
+          <div class="alert alert-success">
+            <%= notice %>
+          </div>
+        <% end %>
+        
+        <% if alert %>
+          <div class="alert alert-error">
+            <%= alert %>
+          </div>
+        <% end %>
+
+        <!-- Page Content -->
+        <%= yield %>
+
+        <!-- Footer -->
+        <%= render "shared/footer" %>
+      </main>
+    </div>
+  </body>
+</html>

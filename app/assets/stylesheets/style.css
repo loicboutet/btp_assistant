@@ -1,0 +1,937 @@
+/*
+ * Devis WhatsApp - Style Guide Implementation
+ * Based on doc/style_guide.html
+ */
+
+/* ========================================
+   CSS Custom Properties (Design Tokens)
+   ======================================== */
+
+:root {
+  /* Primary Colors */
+  --primary-green: #1F9D55;
+  --secondary-green: #25D366;
+  --dark-green: #128C7E;
+  --light-green: #DCF8C6;
+  --accent-euro: #00A884;
+  
+  /* Background Colors */
+  --bg-light: #F0F2F5;
+  --bg-white: #FFFFFF;
+  
+  /* Text Colors */
+  --text-dark: #1F2937;
+  --text-gray: #6B7280;
+  --text-light: #9CA3AF;
+  
+  /* Border Colors */
+  --border-light: #E5E7EB;
+  --border-gray: #D1D5DB;
+  
+  /* Typography */
+  --font-family-base: 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-weight-regular: 400;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  
+  /* Font Sizes */
+  --font-size-xs: 0.75rem;    /* 12px */
+  --font-size-sm: 0.875rem;   /* 14px */
+  --font-size-base: 1rem;     /* 16px */
+  --font-size-lg: 1.125rem;   /* 18px */
+  --font-size-xl: 1.25rem;    /* 20px */
+  --font-size-2xl: 1.5rem;    /* 24px */
+  --font-size-3xl: 1.875rem;  /* 30px */
+  --font-size-4xl: 2.25rem;   /* 36px */
+  
+  /* Spacing Scale */
+  --spacing-xs: 0.5rem;   /* 8px */
+  --spacing-sm: 1rem;     /* 16px */
+  --spacing-md: 1.5rem;   /* 24px */
+  --spacing-lg: 2rem;     /* 32px */
+  --spacing-xl: 3rem;     /* 48px */
+  
+  /* Border Radius */
+  --radius-sm: 0.5rem;      /* 8px */
+  --radius-md: 0.75rem;     /* 12px */
+  --radius-lg: 1.125rem;    /* 18px */
+  --radius-xl: 1.5rem;      /* 24px */
+  --radius-chat: 1.125rem;  /* 18px - Chat bubble specific */
+  --radius-squircle: 28% / 25%;
+  
+  /* Shadows */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  --shadow-whatsapp: 0 4px 14px rgba(31, 157, 85, 0.25);
+  
+  /* Transitions */
+  --transition-base: all 0.2s ease-in-out;
+  --transition-colors: color 0.2s ease-in-out, background-color 0.2s ease-in-out, border-color 0.2s ease-in-out;
+}
+
+/* ========================================
+   Base Styles
+   ======================================== */
+
+body {
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-regular);
+  color: var(--text-dark);
+  background-color: var(--bg-light);
+  line-height: 1.6;
+}
+
+/* ========================================
+   Typography
+   ======================================== */
+
+.font-heading {
+  font-family: var(--font-family-base);
+  font-weight: var(--font-weight-semibold);
+}
+
+.font-body {
+  font-family: var(--font-family-base);
+  font-weight: var(--font-weight-regular);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-family-base);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-dark);
+}
+
+h1 {
+  font-size: var(--font-size-4xl);
+  line-height: 1.2;
+}
+
+h2 {
+  font-size: var(--font-size-3xl);
+  line-height: 1.3;
+}
+
+h3 {
+  font-size: var(--font-size-2xl);
+  line-height: 1.4;
+}
+
+h4 {
+  font-size: var(--font-size-xl);
+  line-height: 1.4;
+}
+
+/* ========================================
+   Color Utilities - Backgrounds
+   ======================================== */
+
+.bg-primary {
+  background-color: var(--primary-green);
+}
+
+.bg-secondary {
+  background-color: var(--secondary-green);
+}
+
+.bg-dark-green {
+  background-color: var(--dark-green);
+}
+
+.bg-light-green {
+  background-color: var(--light-green);
+}
+
+.bg-accent {
+  background-color: var(--accent-euro);
+}
+
+.bg-light {
+  background-color: var(--bg-light);
+}
+
+.bg-white {
+  background-color: var(--bg-white);
+}
+
+/* ========================================
+   Color Utilities - Text
+   ======================================== */
+
+.text-primary {
+  color: var(--primary-green);
+}
+
+.text-secondary {
+  color: var(--secondary-green);
+}
+
+.text-dark-green {
+  color: var(--dark-green);
+}
+
+.text-dark {
+  color: var(--text-dark);
+}
+
+.text-gray {
+  color: var(--text-gray);
+}
+
+.text-light {
+  color: var(--text-light);
+}
+
+.text-white {
+  color: #FFFFFF;
+}
+
+/* ========================================
+   Color Utilities - Borders
+   ======================================== */
+
+.border-primary {
+  border-color: var(--primary-green);
+}
+
+.border-secondary {
+  border-color: var(--secondary-green);
+}
+
+.border-light {
+  border-color: var(--border-light);
+}
+
+.border-gray {
+  border-color: var(--border-gray);
+}
+
+/* ========================================
+   Shadows
+   ======================================== */
+
+.shadow-sm {
+  box-shadow: var(--shadow-sm);
+}
+
+.shadow-md {
+  box-shadow: var(--shadow-md);
+}
+
+.shadow-lg {
+  box-shadow: var(--shadow-lg);
+}
+
+.shadow-whatsapp {
+  box-shadow: var(--shadow-whatsapp);
+}
+
+/* ========================================
+   Border Radius
+   ======================================== */
+
+.rounded-sm {
+  border-radius: var(--radius-sm);
+}
+
+.rounded-md {
+  border-radius: var(--radius-md);
+}
+
+.rounded-lg {
+  border-radius: var(--radius-lg);
+}
+
+.rounded-xl {
+  border-radius: var(--radius-xl);
+}
+
+.rounded-full {
+  border-radius: 9999px;
+}
+
+.rounded-squircle {
+  border-radius: var(--radius-squircle);
+}
+
+/* ========================================
+   Chat Components
+   ======================================== */
+
+.chat-bubble {
+  border-radius: var(--radius-chat);
+  padding: var(--spacing-sm);
+  max-width: 70%;
+  word-wrap: break-word;
+}
+
+.chat-bubble-user {
+  background-color: var(--light-green);
+  margin-left: auto;
+}
+
+.chat-bubble-assistant {
+  background-color: var(--bg-white);
+  box-shadow: var(--shadow-sm);
+}
+
+.chat-timestamp {
+  font-size: var(--font-size-xs);
+  color: var(--text-gray);
+  display: block;
+  margin-top: 0.25rem;
+}
+
+/* ========================================
+   Buttons
+   ======================================== */
+
+.btn {
+  padding: 0.75rem 1.5rem;
+  border-radius: var(--radius-lg);
+  font-weight: var(--font-weight-semibold);
+  transition: var(--transition-colors);
+  cursor: pointer;
+  border: none;
+  font-family: var(--font-family-base);
+  display: inline-block;
+  text-align: center;
+  text-decoration: none;
+}
+
+.btn-primary {
+  background-color: var(--primary-green);
+  color: #FFFFFF;
+  box-shadow: var(--shadow-whatsapp);
+}
+
+.btn-primary:hover {
+  background-color: var(--dark-green);
+}
+
+.btn-secondary {
+  background-color: var(--bg-white);
+  color: var(--primary-green);
+  border: 2px solid var(--primary-green);
+}
+
+.btn-secondary:hover {
+  background-color: var(--light-green);
+}
+
+.btn-whatsapp {
+  background-color: var(--secondary-green);
+  color: #FFFFFF;
+  border-radius: var(--radius-chat);
+  box-shadow: var(--shadow-md);
+}
+
+.btn-whatsapp:hover {
+  background-color: var(--dark-green);
+}
+
+.btn-sm {
+  padding: 0.5rem 1rem;
+  font-size: var(--font-size-sm);
+}
+
+.btn-lg {
+  padding: 1rem 2rem;
+  font-size: var(--font-size-lg);
+}
+
+/* ========================================
+   Cards
+   ======================================== */
+
+.card {
+  background-color: var(--bg-white);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-lg);
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition-base);
+}
+
+.card:hover {
+  box-shadow: var(--shadow-md);
+}
+
+.card-bordered {
+  border: 2px solid var(--border-light);
+}
+
+.card-bordered:hover {
+  border-color: var(--primary-green);
+  box-shadow: var(--shadow-whatsapp);
+}
+
+.card-primary {
+  border: 2px solid var(--primary-green);
+}
+
+.card-icon {
+  font-size: var(--font-size-3xl);
+  color: var(--primary-green);
+  margin-bottom: var(--spacing-sm);
+}
+
+.card-title {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  margin-bottom: var(--spacing-sm);
+  color: var(--text-dark);
+}
+
+.card-description {
+  font-size: var(--font-size-sm);
+  color: var(--text-gray);
+}
+
+/* ========================================
+   Form Elements
+   ======================================== */
+
+.form-label {
+  display: block;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-dark);
+  margin-bottom: 0.5rem;
+}
+
+.form-input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 2px solid var(--border-gray);
+  border-radius: var(--radius-lg);
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-base);
+  transition: var(--transition-colors);
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: var(--primary-green);
+}
+
+.form-input::placeholder {
+  color: var(--text-light);
+}
+
+.form-textarea {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 2px solid var(--border-gray);
+  border-radius: var(--radius-lg);
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-base);
+  resize: vertical;
+  min-height: 100px;
+  transition: var(--transition-colors);
+}
+
+.form-textarea:focus {
+  outline: none;
+  border-color: var(--primary-green);
+}
+
+.form-select {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 2px solid var(--border-gray);
+  border-radius: var(--radius-lg);
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-base);
+  background-color: var(--bg-white);
+  cursor: pointer;
+  transition: var(--transition-colors);
+}
+
+.form-select:focus {
+  outline: none;
+  border-color: var(--primary-green);
+}
+
+/* ========================================
+   Icons
+   ======================================== */
+
+.icon-circle {
+  width: 4rem;
+  height: 4rem;
+  background-color: var(--primary-green);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #FFFFFF;
+  font-size: var(--font-size-2xl);
+}
+
+.icon-circle-sm {
+  width: 2.5rem;
+  height: 2.5rem;
+  font-size: var(--font-size-lg);
+}
+
+.icon-circle-lg {
+  width: 5rem;
+  height: 5rem;
+  font-size: var(--font-size-3xl);
+}
+
+/* ========================================
+   Layout & Spacing Utilities
+   ======================================== */
+
+.spacing-xs {
+  gap: var(--spacing-xs);
+}
+
+.spacing-sm {
+  gap: var(--spacing-sm);
+}
+
+.spacing-md {
+  gap: var(--spacing-md);
+}
+
+.spacing-lg {
+  gap: var(--spacing-lg);
+}
+
+.spacing-xl {
+  gap: var(--spacing-xl);
+}
+
+.p-xs { padding: var(--spacing-xs); }
+.p-sm { padding: var(--spacing-sm); }
+.p-md { padding: var(--spacing-md); }
+.p-lg { padding: var(--spacing-lg); }
+.p-xl { padding: var(--spacing-xl); }
+
+.m-xs { margin: var(--spacing-xs); }
+.m-sm { margin: var(--spacing-sm); }
+.m-md { margin: var(--spacing-md); }
+.m-lg { margin: var(--spacing-lg); }
+.m-xl { margin: var(--spacing-xl); }
+
+/* ========================================
+   Container & Layout
+   ======================================== */
+
+.container {
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: var(--spacing-md);
+  padding-right: var(--spacing-md);
+}
+
+.container-sm {
+  max-width: 640px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.container-md {
+  max-width: 768px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ========================================
+   Header & Footer
+   ======================================== */
+
+.header {
+  background-color: var(--primary-green);
+  color: #FFFFFF;
+  padding: var(--spacing-lg);
+}
+
+.footer {
+  background-color: var(--primary-green);
+  color: #FFFFFF;
+  text-align: center;
+  padding: var(--spacing-md);
+}
+
+/* ========================================
+   Alerts & Notifications
+   ======================================== */
+
+.alert {
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--radius-lg);
+  margin-bottom: var(--spacing-sm);
+}
+
+.alert-success {
+  background-color: #D1FAE5;
+  color: #065F46;
+  border: 1px solid #6EE7B7;
+}
+
+.alert-error {
+  background-color: #FEE2E2;
+  color: #991B1B;
+  border: 1px solid #FCA5A5;
+}
+
+.alert-warning {
+  background-color: #FEF3C7;
+  color: #92400E;
+  border: 1px solid #FCD34D;
+}
+
+.alert-info {
+  background-color: var(--light-green);
+  color: var(--dark-green);
+  border: 1px solid var(--secondary-green);
+}
+
+/* ========================================
+   Utility Classes
+   ======================================== */
+
+.text-center {
+  text-align: center;
+}
+
+.text-left {
+  text-align: left;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.flex {
+  display: flex;
+}
+
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.flex-between {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.grid {
+  display: grid;
+}
+
+.hidden {
+  display: none;
+}
+
+.transition {
+  transition: var(--transition-base);
+}
+
+/* ========================================
+   Layout Components
+   ======================================== */
+
+/* Admin Layout - Left Sidebar */
+.admin-layout {
+  display: flex;
+  min-height: 100vh;
+  background-color: var(--bg-light);
+}
+
+.admin-sidebar {
+  width: 260px;
+  background-color: var(--primary-green);
+  color: #FFFFFF;
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  height: 100vh;
+  left: 0;
+  top: 0;
+  overflow-y: auto;
+}
+
+.admin-sidebar-logo {
+  padding: var(--spacing-lg);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.admin-sidebar-logo img {
+  max-width: 120px;
+  height: auto;
+}
+
+.admin-sidebar-nav {
+  flex: 1;
+  padding: var(--spacing-md) 0;
+}
+
+.admin-nav-item {
+  display: flex;
+  align-items: center;
+  padding: var(--spacing-sm) var(--spacing-lg);
+  color: #FFFFFF;
+  text-decoration: none;
+  transition: var(--transition-colors);
+  font-weight: var(--font-weight-regular);
+}
+
+.admin-nav-item:hover,
+.admin-nav-item.active {
+  background-color: var(--dark-green);
+}
+
+.admin-nav-item-icon {
+  margin-right: var(--spacing-sm);
+  font-size: var(--font-size-xl);
+}
+
+.admin-main-content {
+  margin-left: 260px;
+  flex: 1;
+  padding: var(--spacing-lg);
+  min-height: 100vh;
+}
+
+/* Client Layout - Top Menu */
+.client-layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: var(--bg-light);
+}
+
+.client-header {
+  background-color: var(--bg-white);
+  box-shadow: var(--shadow-sm);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.client-navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--spacing-sm) var(--spacing-lg);
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.client-logo {
+  display: flex;
+  align-items: center;
+}
+
+.client-logo img {
+  height: 40px;
+  width: auto;
+}
+
+.client-nav-menu {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+}
+
+.client-nav-item {
+  color: var(--text-dark);
+  text-decoration: none;
+  padding: var(--spacing-sm) var(--spacing-sm);
+  font-weight: var(--font-weight-regular);
+  transition: var(--transition-colors);
+  border-radius: var(--radius-sm);
+}
+
+.client-nav-item:hover,
+.client-nav-item.active {
+  color: var(--primary-green);
+  background-color: var(--light-green);
+}
+
+.client-user-dropdown {
+  position: relative;
+}
+
+.client-user-button {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  cursor: pointer;
+  padding: var(--spacing-xs);
+  border-radius: var(--radius-md);
+  transition: var(--transition-base);
+}
+
+.client-user-button:hover {
+  background-color: var(--bg-light);
+}
+
+.client-user-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: var(--primary-green);
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: var(--font-weight-semibold);
+  font-size: var(--font-size-sm);
+}
+
+.client-user-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.client-user-name {
+  font-weight: var(--font-weight-semibold);
+  font-size: var(--font-size-sm);
+  color: var(--text-dark);
+}
+
+.client-user-email {
+  font-size: var(--font-size-xs);
+  color: var(--text-gray);
+}
+
+.client-dropdown-icon {
+  color: var(--text-gray);
+  font-size: var(--font-size-sm);
+}
+
+.client-dropdown-menu {
+  position: absolute;
+  right: 0;
+  top: calc(100% + var(--spacing-xs));
+  background-color: var(--bg-white);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  min-width: 200px;
+  padding: var(--spacing-xs);
+  display: none;
+}
+
+.client-dropdown-menu.active {
+  display: block;
+}
+
+.client-dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-sm) var(--spacing-md);
+  color: var(--text-dark);
+  text-decoration: none;
+  border-radius: var(--radius-sm);
+  transition: var(--transition-colors);
+  cursor: pointer;
+}
+
+.client-dropdown-item:hover {
+  background-color: var(--bg-light);
+}
+
+.client-dropdown-divider {
+  height: 1px;
+  background-color: var(--border-light);
+  margin: var(--spacing-xs) 0;
+}
+
+.client-main-content {
+  flex: 1;
+  padding: var(--spacing-lg);
+  max-width: 1400px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* Mobile Menu Toggle */
+.mobile-menu-toggle {
+  display: none;
+  background: none;
+  border: none;
+  font-size: var(--font-size-2xl);
+  color: var(--text-dark);
+  cursor: pointer;
+}
+
+/* ========================================
+   Responsive Design
+   ======================================== */
+
+@media (max-width: 768px) {
+  :root {
+    --font-size-4xl: 2rem;
+    --font-size-3xl: 1.5rem;
+  }
+  
+  .chat-bubble {
+    max-width: 85%;
+  }
+  
+  .btn {
+    width: 100%;
+  }
+  
+  .container {
+    padding-left: var(--spacing-sm);
+    padding-right: var(--spacing-sm);
+  }
+
+  /* Admin Layout Mobile */
+  .admin-sidebar {
+    width: 100%;
+    position: relative;
+    height: auto;
+  }
+
+  .admin-main-content {
+    margin-left: 0;
+  }
+
+  /* Client Layout Mobile */
+  .client-navbar {
+    padding: var(--spacing-sm);
+  }
+
+  .client-nav-menu {
+    display: none;
+  }
+
+  .mobile-menu-toggle {
+    display: block;
+  }
+
+  .client-user-info {
+    display: none;
+  }
+
+  .client-main-content {
+    padding: var(--spacing-sm);
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .admin-sidebar {
+    width: 200px;
+  }
+
+  .admin-main-content {
+    margin-left: 200px;
+  }
+}

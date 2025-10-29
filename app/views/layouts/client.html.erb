@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= content_for(:title) || "Devis WhatsApp" %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= yield :head %>
+
+    <link rel="icon" href="/icon.png" type="image/png">
+    <link rel="icon" href="/icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/icon.png">
+
+    <%= stylesheet_link_tag "tailwind", "inter-font", "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag "style", "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+  </head>
+
+  <body>
+    <div class="client-layout">
+      <!-- Top Header -->
+      <header class="client-header">
+        <nav class="client-navbar">
+          <!-- Logo -->
+          <div class="client-logo">
+            <%= link_to root_path do %>
+              <%= image_tag "logo.png", alt: "Devis WhatsApp" %>
+            <% end %>
+          </div>
+
+          <!-- Mobile Menu Toggle -->
+          <button class="mobile-menu-toggle" id="mobile-menu-toggle">
+            ☰
+          </button>
+
+          <!-- Navigation Menu -->
+          <div class="client-nav-menu" id="client-nav-menu">
+            <%= link_to "Tableau de bord", client_dashboard_path, class: "client-nav-item #{current_page?(client_dashboard_path) ? 'active' : ''}" %>
+            <%= link_to "Devis", client_quotes_path, class: "client-nav-item #{current_page?(client_quotes_path) ? 'active' : ''}" %>
+            <%= link_to "Factures", client_invoices_path, class: "client-nav-item #{current_page?(client_invoices_path) ? 'active' : ''}" %>
+            <%= link_to "Clients", client_clients_path, class: "client-nav-item #{current_page?(client_clients_path) ? 'active' : ''}" %>
+          </div>
+
+          <!-- User Dropdown -->
+          <div class="client-user-dropdown">
+            <div class="client-user-button" id="user-dropdown-button">
+              <!-- User Avatar -->
+              <div class="client-user-avatar">
+                <%= current_user.email.first.upcase %>
+              </div>
+              
+              <!-- User Info (hidden on mobile) -->
+              <div class="client-user-info">
+                <span class="client-user-name"><%= current_user.email.split('@').first.capitalize %></span>
+                <span class="client-user-email"><%= current_user.email %></span>
+              </div>
+              
+              <!-- Dropdown Icon -->
+              <span class="client-dropdown-icon">▼</span>
+            </div>
+
+            <!-- Dropdown Menu -->
+            <div class="client-dropdown-menu" id="user-dropdown-menu">
+              <%= link_to client_profile_path, class: "client-dropdown-item" do %>
+                <span>👤</span>
+                <span>Mon profil</span>
+              <% end %>
+
+              <%= link_to client_settings_path, class: "client-dropdown-item" do %>
+                <span>⚙️</span>
+                <span>Paramètres</span>
+              <% end %>
+
+              <%= link_to client_subscription_path, class: "client-dropdown-item" do %>
+                <span>💳</span>
+                <span>Abonnement</span>
+              <% end %>
+
+              <div class="client-dropdown-divider"></div>
+
+              <%= link_to destroy_user_session_path, data: { turbo_method: :delete }, class: "client-dropdown-item" do %>
+                <span>🚪</span>
+                <span>Déconnexion</span>
+              <% end %>
+            </div>
+          </div>
+        </nav>
+      </header>
+
+      <!-- Main Content Area -->
+      <main class="client-main-content">
+        <!-- Flash Messages -->
+        <% if notice %>
+          <div class="alert alert-success">
+            <%= notice %>
+          </div>
+        <% end %>
+        
+        <% if alert %>
+          <div class="alert alert-error">
+            <%= alert %>
+          </div>
+        <% end %>
+
+        <!-- Page Content -->
+        <%= yield %>
+      </main>
+
+      <!-- Footer -->
+      <%= render "shared/footer" %>
+    </div>
+
+    <!-- Dropdown Toggle Script -->
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        const dropdownButton = document.getElementById('user-dropdown-button');
+        const dropdownMenu = document.getElementById('user-dropdown-menu');
+        const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+        const navMenu = document.getElementById('client-nav-menu');
+
+        // User dropdown toggle
+        if (dropdownButton && dropdownMenu) {
+          dropdownButton.addEventListener('click', function(e) {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle('active');
+          });
+
+          // Close dropdown when clicking outside
+          document.addEventListener('click', function(e) {
+            if (!dropdownButton.contains(e.target)) {
+              dropdownMenu.classList.remove('active');
+            }
+          });
+        }
+
+        // Mobile menu toggle
+        if (mobileMenuToggle && navMenu) {
+          mobileMenuToggle.addEventListener('click', function() {
+            navMenu.style.display = navMenu.style.display === 'flex' ? 'none' : 'flex';
+          });
+        }
+      });
+    </script>
+  </body>
+</html>
