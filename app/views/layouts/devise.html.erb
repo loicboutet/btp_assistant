@@ -24,7 +24,7 @@
     <div style="display: flex; flex-direction: column; min-height: 100vh; background-color: var(--bg-light);">
       <!-- Main Content Area -->
       <main style="flex: 1; display: flex; align-items: center; justify-content: center; padding: var(--spacing-sm) 0;">
-        <div style="width: 100%; max-width: 480px;">
+        <div style="width: 100%; max-width: <%= controller_name == 'registrations' && action_name == 'new' ? '720px' : '480px' %>;">
           <!-- Logo -->
           <div style="text-align: center; display: flex; justify-content: center; margin-bottom: var(--spacing-xs);">
             <%= link_to root_path do %>
