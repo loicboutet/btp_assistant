@@ -23,17 +23,17 @@
   <body>
     <div style="display: flex; flex-direction: column; min-height: 100vh; background-color: var(--bg-light);">
       <!-- Main Content Area -->
-      <main style="flex: 1; display: flex; align-items: center; justify-content: center; padding-bottom: var(--spacing-md);">
+      <main style="flex: 1; display: flex; align-items: center; justify-content: center; padding: var(--spacing-sm) 0;">
         <div style="width: 100%; max-width: 480px;">
           <!-- Logo -->
-          <div style="text-align: center; display: flex; ; justify-content: center">
+          <div style="text-align: center; display: flex; justify-content: center; margin-bottom: var(--spacing-xs);">
             <%= link_to root_path do %>
-              <%= image_tag "logo.png", alt: "Devis WhatsApp", style: "max-width: 180px; height: auto;" %>
+              <%= image_tag "logo.png", alt: "Devis WhatsApp", style: "max-width: 140px; height: auto;" %>
             <% end %>
           </div>
 
           <!-- Card Container -->
-          <div class="card" style="padding: var(--spacing-lg);">
+          <div class="card" style="padding: var(--spacing-md);">
             <!-- Flash Messages -->
             <% if notice %>
               <div class="alert alert-success">
@@ -52,7 +52,7 @@
           </div>
 
           <!-- Additional Links -->
-          <div style="text-align: center; margin-top: var(--spacing-sm);">
+          <div style="text-align: center; margin-top: var(--spacing-xs);">
             <p style="font-size: var(--font-size-sm); color: var(--text-gray);">
               <%= link_to "Retour à l'accueil", root_path, style: "color: var(--primary-green); text-decoration: none; font-weight: var(--font-weight-semibold);" %>
             </p>
