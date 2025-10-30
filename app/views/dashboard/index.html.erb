@@ -20,7 +20,15 @@
     <div class="alert-title">Connectez votre WhatsApp</div>
     <div class="alert-meta">Pour commencer à créer des devis et factures par commande vocale, connectez votre compte WhatsApp personnel. C'est simple et sécurisé !</div>
   </div>
-  <%= link_to "Voir le guide →", whatsapp_connect_path, class: "btn btn-sm btn-primary" %>
+  <div style="display: flex; justify-content: flex-end;">
+    <%= link_to whatsapp_connect_path, class: "btn btn-sm btn-primary", style: "width: auto;" do %>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+        <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+      </svg>
+      <span>Voir le guide →</span>
+    <% end %>
+  </div>
 </div>
 
 <!-- Statistics Cards -->
@@ -101,7 +109,14 @@
         </svg>
         Activité récente
       </h2>
-      <%= link_to "Voir tout", conversations_path, class: "btn btn-sm btn-outline" %>
+      <div style="margin-left: auto; display: inline-flex;">
+        <%= link_to conversations_path, class: "btn btn-xs btn-outline" do %>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 18l6-6-6-6"></path>
+          </svg>
+          <span>Voir tout</span>
+        <% end %>
+      </div>
     </div>
     <div style="padding: var(--spacing-xl); text-align: center;">
       <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="margin: 0 auto 1rem; color: var(--text-gray);">
@@ -184,7 +199,7 @@
       </div>
     </div>
     
-    <div style="padding: var(--spacing-lg); display: flex; gap: 0.5rem; flex-wrap: wrap; border-top: 1px solid var(--border-color);">
+    <div style="padding: var(--spacing-lg); display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem; border-top: 1px solid var(--border-color);">
       <%= link_to clients_path, class: "btn btn-sm btn-outline" do %>
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
@@ -226,7 +241,13 @@
       </div>
     </div>
     <div>
-      <%= button_to "Gérer l'abonnement", client_subscription_path, method: :post, class: "btn btn-outline", style: "background: transparent; color: white; border: 1px solid white;" %>
+      <%= button_to client_subscription_path, method: :post, class: "btn btn-outline", style: "background: transparent; color: white; border: 1px solid white; display: inline-flex; align-items: center; gap: 0.5rem;" do %>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect>
+          <line x1="1" y1="10" x2="23" y2="10"></line>
+        </svg>
+        <span>Gérer l'abonnement</span>
+      <% end %>
     </div>
   </div>
 </div>
@@ -287,5 +308,14 @@
     <div class="alert-title">Besoin d'aide ?</div>
     <div class="alert-meta">Consultez nos guides ou envoyez "aide" sur WhatsApp pour découvrir toutes les commandes disponibles.</div>
   </div>
-  <%= link_to "Guide d'utilisation", "#", class: "btn btn-sm btn-outline" %>
+  <div style="display: flex; justify-content: flex-end;">
+    <%= link_to "#", class: "btn btn-sm btn-outline", style: "width: auto;" do %>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10"></circle>
+        <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+        <line x1="12" y1="17" x2="12.01" y2="17"></line>
+      </svg>
+      <span>Guide d'utilisation</span>
+    <% end %>
+  </div>
 </div>
