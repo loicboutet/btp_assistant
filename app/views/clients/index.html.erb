@@ -1,40 +1,17 @@
-<% content_for :title, "Mes Clients - Clients WhatsApp" %>
+<% content_for :title, "Mes Clients - Devis WhatsApp" %>
 
 <div class="admin-page-header">
   <div>
     <h1>Mes Clients</h1>
-    <p class="text-muted">Consultez et gérez tous vos clients créés via WhatsApp</p>
-  </div>
-  <%= link_to whatsapp_connect_path, class: "btn btn-primary" do %>
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-    </svg>
-    <span>Ajouter un client</span>
-  <% end %>
-</div>
-
-<!-- Info Alert -->
-<div class="alert-item info" style="margin-bottom: var(--spacing-xl);">
-  <div class="alert-icon">ℹ️</div>
-  <div class="alert-content">
-    <div class="alert-title">Comment ajouter un client ?</div>
-    <div class="alert-meta">Envoyez un message vocal ou texte sur WhatsApp avec <strong>"ajouter un client"</strong> ou <strong>"nouveau client"</strong>. L'assistant vous guidera pour collecter le nom, l'adresse, le SIRET (si professionnel), et les contacts.</div>
-  </div>
-  <div style="display: flex; justify-content: flex-end;">
-    <%= link_to whatsapp_connect_path, class: "btn btn-sm btn-primary", style: "width: auto;" do %>
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-      </svg>
-      <span>Connecter WhatsApp</span>
-    <% end %>
+    <p class="text-muted">Gérez tous vos clients et leurs coordonnées</p>
   </div>
 </div>
 
 <!-- Statistics Cards -->
-<div class="stats-grid">
-  <div class="stat-card stat-card-primary">
-    <div class="stat-icon stat-icon-primary">
-      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+<div class="stats-grid" style="margin-bottom: var(--spacing-lg);">
+  <div class="stat-card">
+    <div class="stat-icon bg-blue">
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
         <circle cx="9" cy="7" r="4"></circle>
         <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
@@ -42,188 +19,268 @@
       </svg>
     </div>
     <div class="stat-content">
-      <div class="stat-value">0</div>
-      <div class="stat-label">Clients totaux</div>
-      <div class="stat-change neutral">Dans votre base</div>
+      <div class="stat-value">18</div>
+      <div class="stat-label">Clients actifs</div>
+      <div class="stat-change positive">+5 ce mois-ci</div>
     </div>
   </div>
 
-  <div class="stat-card stat-card-primary">
-    <div class="stat-icon stat-icon-primary">
-      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
-        <circle cx="9" cy="7" r="4"></circle>
-        <line x1="19" y1="8" x2="19" y2="14"></line>
-        <line x1="22" y1="11" x2="16" y2="11"></line>
+  <div class="stat-card">
+    <div class="stat-icon bg-green">
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+        <polyline points="14 2 14 8 20 8"></polyline>
       </svg>
     </div>
     <div class="stat-content">
-      <div class="stat-value">0</div>
-      <div class="stat-label">Nouveaux clients</div>
-      <div class="stat-change neutral">Ce mois-ci</div>
+      <div class="stat-value">42</div>
+      <div class="stat-label">Devis envoyés</div>
+      <div class="stat-change neutral">Total</div>
     </div>
   </div>
 
-  <div class="stat-card stat-card-primary">
-    <div class="stat-icon stat-icon-primary">
-      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
-        <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+  <div class="stat-card">
+    <div class="stat-icon bg-purple">
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+        <polyline points="14 2 14 8 20 8"></polyline>
+        <line x1="9" y1="15" x2="15" y2="15"></line>
       </svg>
     </div>
     <div class="stat-content">
-      <div class="stat-value">0</div>
-      <div class="stat-label">Professionnels</div>
-      <div class="stat-change neutral">Avec SIRET</div>
+      <div class="stat-value">28</div>
+      <div class="stat-label">Factures émises</div>
+      <div class="stat-change neutral">Total</div>
     </div>
   </div>
 
-  <div class="stat-card stat-card-primary">
-    <div class="stat-icon stat-icon-primary">
-      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-        <line x1="9" y1="9" x2="15" y2="9"></line>
-        <line x1="9" y1="13" x2="15" y2="13"></line>
+  <div class="stat-card">
+    <div class="stat-icon bg-orange">
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="12" y1="1" x2="12" y2="23"></line>
+        <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
       </svg>
     </div>
     <div class="stat-content">
-      <div class="stat-value">0</div>
-      <div class="stat-label">Via WhatsApp</div>
-      <div class="stat-change neutral">Ajoutés par chat</div>
+      <div class="stat-value">3 247 €</div>
+      <div class="stat-label">CA moyen / client</div>
+      <div class="stat-change positive">+8% ce mois</div>
     </div>
   </div>
 </div>
 
-<!-- Main Content Grid -->
-<div class="admin-content-grid">
-  <!-- Recent Clients Section -->
-  <div class="admin-card">
-    <div class="card-header">
-      <h2>
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: inline-block; vertical-align: middle; margin-right: 0.5rem;">
-          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-          <circle cx="9" cy="7" r="4"></circle>
-          <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-          <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-        </svg>
-        Clients récents
-      </h2>
+<!-- Filters -->
+<div class="admin-card" style="margin-bottom: var(--spacing-lg);">
+  <div class="filters-bar">
+    <div class="search-box">
+      <input type="text" class="form-input" placeholder="Rechercher un client...">
     </div>
-    <div style="padding: var(--spacing-xl); text-align: center;">
-      <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="margin: 0 auto 1rem; color: var(--text-gray);">
-        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-        <circle cx="9" cy="7" r="4"></circle>
-        <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-        <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-      </svg>
-      <h3 style="font-weight: 600; color: var(--text-dark); margin-bottom: 0.5rem;">Aucun client pour le moment</h3>
-      <p style="color: var(--text-muted); margin-bottom: 1.5rem;">
-        Vos clients ajoutés via WhatsApp apparaîtront ici.
-        Commencez par connecter votre WhatsApp !
-      </p>
-      <%= link_to "Connecter WhatsApp", whatsapp_connect_path, class: "btn btn-sm btn-primary" %>
+    <div class="filter-group">
+      <select class="form-select">
+        <option>Toutes les villes</option>
+        <option>Paris</option>
+        <option>Lyon</option>
+        <option>Marseille</option>
+        <option>Toulouse</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <select class="form-select">
+        <option>Tous les types</option>
+        <option>Entreprises</option>
+        <option>Particuliers</option>
+        <option>Copropriétés</option>
+      </select>
     </div>
   </div>
+</div>
 
-  <!-- Quick Actions Section -->
-  <div class="admin-card">
-    <div class="card-header">
-      <h2>
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: inline-block; vertical-align: middle; margin-right: 0.5rem;">
-          <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
-        </svg>
-        Fonctionnalités
-      </h2>
-    </div>
-    <div class="activity-list">
-      <div class="activity-item">
-        <div class="activity-icon bg-green">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
-            <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
-            <line x1="12" y1="19" x2="12" y2="23"></line>
-            <line x1="8" y1="23" x2="16" y2="23"></line>
-          </svg>
-        </div>
-        <div class="activity-content">
-          <div class="activity-title">Création guidée</div>
-          <div class="activity-meta">Ajoutez vos clients par message vocal ou texte en français ou en turc</div>
-        </div>
-      </div>
-      
-      <div class="activity-item">
-        <div class="activity-icon bg-blue">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-            <circle cx="12" cy="7" r="4"></circle>
-          </svg>
-        </div>
-        <div class="activity-content">
-          <div class="activity-title">Informations complètes</div>
-          <div class="activity-meta">Nom, adresse, SIRET (professionnel), téléphone et email</div>
-        </div>
-      </div>
-      
-      <div class="activity-item">
-        <div class="activity-icon bg-purple">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="10"></circle>
-            <line x1="2" y1="12" x2="22" y2="12"></line>
-            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
-          </svg>
-        </div>
-        <div class="activity-content">
-          <div class="activity-title">Lien WhatsApp</div>
-          <div class="activity-meta">Clients automatiquement liés aux conversations WhatsApp</div>
-        </div>
-      </div>
-      
-      <div class="activity-item">
-        <div class="activity-icon bg-orange">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-            <polyline points="14 2 14 8 20 8"></polyline>
-            <line x1="16" y1="13" x2="8" y2="13"></line>
-          </svg>
-        </div>
-        <div class="activity-content">
-          <div class="activity-title">Historique des documents</div>
-          <div class="activity-meta">Accédez aux devis et factures créés pour chaque client</div>
-        </div>
-      </div>
+<!-- Clients Table -->
+<div class="admin-card">
+  <div class="card-header">
+    <h2>Liste des Clients</h2>
+  </div>
+  <div style="overflow-x: auto;">
+    <table class="admin-table">
+      <thead>
+        <tr>
+          <th>Client</th>
+          <th>Contact</th>
+          <th>Adresse</th>
+          <th>Documents</th>
+          <th>CA Total</th>
+          <th style="text-align: right;">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <div><strong>Entreprise Dubois</strong></div>
+            <div class="text-muted small">SIRET: 123 456 789 00012</div>
+          </td>
+          <td>
+            <div>Marie Dubois</div>
+            <div class="text-muted small">+33 6 98 76 54 32</div>
+            <div class="text-muted small">m.dubois@entreprise-dubois.fr</div>
+          </td>
+          <td>
+            <div>15 rue de la Paix</div>
+            <div class="text-muted small">69001 Lyon</div>
+          </td>
+          <td>
+            <div><strong>8 docs</strong></div>
+            <div class="text-muted small">5 devis, 3 factures</div>
+          </td>
+          <td><strong>42 350 €</strong></td>
+          <td style="text-align: right;">
+            <div class="action-buttons">
+              <%= link_to client_path(1), class: "btn-outline btn-xs" do %>
+                <svg width="14" height="14" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M1 2.5A1.5 1.5 0 0 1 2.5 1h3A1.5 1.5 0 0 1 7 2.5v3A1.5 1.5 0 0 1 5.5 7h-3A1.5 1.5 0 0 1 1 5.5v-3z"/>
+                </svg>
+                <span>Voir</span>
+              <% end %>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div><strong>Martin SAS</strong></div>
+            <div class="text-muted small">SIRET: 987 654 321 00034</div>
+          </td>
+          <td>
+            <div>Pierre Martin</div>
+            <div class="text-muted small">+33 6 45 78 91 23</div>
+            <div class="text-muted small">contact@martin-sas.com</div>
+          </td>
+          <td>
+            <div>89 avenue des Champs</div>
+            <div class="text-muted small">75008 Paris</div>
+          </td>
+          <td>
+            <div><strong>12 docs</strong></div>
+            <div class="text-muted small">7 devis, 5 factures</div>
+          </td>
+          <td><strong>38 920 €</strong></td>
+          <td style="text-align: right;">
+            <div class="action-buttons">
+              <%= link_to client_path(2), class: "btn-outline btn-xs" do %>
+                <svg width="14" height="14" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M1 2.5A1.5 1.5 0 0 1 2.5 1h3A1.5 1.5 0 0 1 7 2.5v3A1.5 1.5 0 0 1 5.5 7h-3A1.5 1.5 0 0 1 1 5.5v-3z"/>
+                </svg>
+                <span>Voir</span>
+              <% end %>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div><strong>Résidence Les Pins</strong></div>
+            <div class="text-muted small">Copropriété</div>
+          </td>
+          <td>
+            <div>Sophie Bernard (Syndic)</div>
+            <div class="text-muted small">+33 6 23 45 67 89</div>
+            <div class="text-muted small">syndic@residence-lespins.fr</div>
+          </td>
+          <td>
+            <div>42 boulevard de la Mer</div>
+            <div class="text-muted small">13008 Marseille</div>
+          </td>
+          <td>
+            <div><strong>6 docs</strong></div>
+            <div class="text-muted small">4 devis, 2 factures</div>
+          </td>
+          <td><strong>28 940 €</strong></td>
+          <td style="text-align: right;">
+            <div class="action-buttons">
+              <%= link_to client_path(3), class: "btn-outline btn-xs" do %>
+                <svg width="14" height="14" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M1 2.5A1.5 1.5 0 0 1 2.5 1h3A1.5 1.5 0 0 1 7 2.5v3A1.5 1.5 0 0 1 5.5 7h-3A1.5 1.5 0 0 1 1 5.5v-3z"/>
+                </svg>
+                <span>Voir</span>
+              <% end %>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div><strong>Société Bertrand</strong></div>
+            <div class="text-muted small">SIRET: 456 789 123 00056</div>
+          </td>
+          <td>
+            <div>Jean Bertrand</div>
+            <div class="text-muted small">+33 6 12 34 56 78</div>
+            <div class="text-muted small">j.bertrand@bertrand-sarl.fr</div>
+          </td>
+          <td>
+            <div>28 rue Victor Hugo</div>
+            <div class="text-muted small">31000 Toulouse</div>
+          </td>
+          <td>
+            <div><strong>5 docs</strong></div>
+            <div class="text-muted small">3 devis, 2 factures</div>
+          </td>
+          <td><strong>15 680 €</strong></td>
+          <td style="text-align: right;">
+            <div class="action-buttons">
+              <%= link_to client_path(4), class: "btn-outline btn-xs" do %>
+                <svg width="14" height="14" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M1 2.5A1.5 1.5 0 0 1 2.5 1h3A1.5 1.5 0 0 1 7 2.5v3A1.5 1.5 0 0 1 5.5 7h-3A1.5 1.5 0 0 1 1 5.5v-3z"/>
+                </svg>
+                <span>Voir</span>
+              <% end %>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div><strong>Copropriété Soleil</strong></div>
+            <div class="text-muted small">Copropriété</div>
+          </td>
+          <td>
+            <div>Laurent Moreau (Syndic)</div>
+            <div class="text-muted small">+33 6 87 65 43 21</div>
+            <div class="text-muted small">syndic@coprosoleil.fr</div>
+          </td>
+          <td>
+            <div>12 promenade des Anglais</div>
+            <div class="text-muted small">06000 Nice</div>
+          </td>
+          <td>
+            <div><strong>10 docs</strong></div>
+            <div class="text-muted small">6 devis, 4 factures</div>
+          </td>
+          <td><strong>52 180 €</strong></td>
+          <td style="text-align: right;">
+            <div class="action-buttons">
+              <%= link_to client_path(5), class: "btn-outline btn-xs" do %>
+                <svg width="14" height="14" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M1 2.5A1.5 1.5 0 0 1 2.5 1h3A1.5 1.5 0 0 1 7 2.5v3A1.5 1.5 0 0 1 5.5 7h-3A1.5 1.5 0 0 1 1 5.5v-3z"/>
+                </svg>
+                <span>Voir</span>
+              <% end %>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 
-      <div class="activity-item">
-        <div class="activity-icon bg-red">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="11" cy="11" r="8"></circle>
-            <path d="m21 21-4.35-4.35"></path>
-          </svg>
-        </div>
-        <div class="activity-content">
-          <div class="activity-title">Recherche facile</div>
-          <div class="activity-meta">Retrouvez rapidement vos clients lors de la création de documents</div>
-        </div>
-      </div>
-    </div>
-    
-    <div style="padding: var(--spacing-lg); display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.5rem; border-top: 1px solid var(--border-color);">
-      <%= link_to quotes_path, class: "btn btn-sm btn-outline" do %>
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-          <polyline points="14 2 14 8 20 8"></polyline>
-          <line x1="16" y1="13" x2="8" y2="13"></line>
-        </svg>
-        <span>Mes devis</span>
-      <% end %>
-      
-      <%= link_to invoices_path, class: "btn btn-sm btn-outline" do %>
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-          <polyline points="14 2 14 8 20 8"></polyline>
-          <line x1="9" y1="15" x2="15" y2="15"></line>
-        </svg>
-        <span>Mes factures</span>
-      <% end %>
-    </div>
+  <!-- Pagination -->
+  <div class="pagination">
+    <button class="btn btn-secondary btn-sm" disabled>
+      <svg width="14" height="14" fill="currentColor" viewBox="0 0 16 16">
+        <path fill-rule="evenodd" d="M12 8a.5.5 0 0 1-.5.5H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5a.5.5 0 0 1 .5.5z"/>
+      </svg>
+      Précédent
+    </button>
+    <span class="pagination-info">Page 1 sur 4</span>
+    <button class="btn btn-secondary btn-sm">
+      Suivant
+      <svg width="14" height="14" fill="currentColor" viewBox="0 0 16 16">
+        <path fill-rule="evenodd" d="M4 8a.5.5 0 0 1 .5-.5h5.793L8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L10.293 8.5H4.5A.5.5 0 0 1 4 8z"/>
+      </svg>
+    </button>
   </div>
 </div>

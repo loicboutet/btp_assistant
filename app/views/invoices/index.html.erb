@@ -1,222 +1,238 @@
-<% content_for :title, "Mes Factures - Factures WhatsApp" %>
+<% content_for :title, "Mes Factures - Devis WhatsApp" %>
 
 <div class="admin-page-header">
   <div>
     <h1>Mes Factures</h1>
     <p class="text-muted">Consultez et gérez toutes vos factures créées via WhatsApp</p>
   </div>
-  <%= link_to whatsapp_connect_path, class: "btn btn-primary" do %>
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-    </svg>
-    <span>Créer une facture</span>
-  <% end %>
-</div>
-
-<!-- Info Alert -->
-<div class="alert-item info" style="margin-bottom: var(--spacing-xl);">
-  <div class="alert-icon">ℹ️</div>
-  <div class="alert-content">
-    <div class="alert-title">Comment créer une facture ?</div>
-    <div class="alert-meta">Envoyez un message vocal ou texte sur WhatsApp avec <strong>"créer une facture"</strong> ou <strong>"nouvelle facture"</strong>. L'assistant vous guidera étape par étape. Vous pouvez lier la facture à un devis existant ou créer une facture indépendante.</div>
-  </div>
-  <div style="display: flex; justify-content: flex-end;">
-    <%= link_to whatsapp_connect_path, class: "btn btn-sm btn-primary", style: "width: auto;" do %>
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-      </svg>
-      <span>Connecter WhatsApp</span>
-    <% end %>
-  </div>
 </div>
 
 <!-- Statistics Cards -->
-<div class="stats-grid">
-  <div class="stat-card stat-card-primary">
-    <div class="stat-icon stat-icon-primary">
-      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+<div class="stats-grid" style="margin-bottom: var(--spacing-lg);">
+  <div class="stat-card">
+    <div class="stat-icon bg-blue">
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
         <polyline points="14 2 14 8 20 8"></polyline>
-        <line x1="9" y1="15" x2="15" y2="15"></line>
       </svg>
     </div>
     <div class="stat-content">
-      <div class="stat-value">0</div>
-      <div class="stat-label">Factures créées</div>
-      <div class="stat-change neutral">Ce mois-ci</div>
+      <div class="stat-value">15</div>
+      <div class="stat-label">Factures émises</div>
+      <div class="stat-change positive">+4 ce mois-ci</div>
     </div>
   </div>
 
-  <div class="stat-card stat-card-primary">
-    <div class="stat-icon stat-icon-primary">
-      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <circle cx="12" cy="12" r="10"></circle>
-        <polyline points="12 6 12 12 16 14"></polyline>
+  <div class="stat-card">
+    <div class="stat-icon bg-green">
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polyline points="20 6 9 17 4 12"></polyline>
       </svg>
     </div>
     <div class="stat-content">
-      <div class="stat-value">0</div>
+      <div class="stat-value">12</div>
+      <div class="stat-label">Payées</div>
+      <div class="stat-change positive">80% taux</div>
+    </div>
+  </div>
+
+  <div class="stat-card">
+    <div class="stat-icon bg-orange">
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M12 8v4l2 2"></path>
+        <circle cx="12" cy="12" r="10"></circle>
+      </svg>
+    </div>
+    <div class="stat-content">
+      <div class="stat-value">2</div>
       <div class="stat-label">En attente</div>
       <div class="stat-change neutral">Non payées</div>
     </div>
   </div>
 
-  <div class="stat-card stat-card-primary">
-    <div class="stat-icon stat-icon-primary">
-      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <polyline points="20 6 9 17 4 12"></polyline>
-      </svg>
-    </div>
-    <div class="stat-content">
-      <div class="stat-value">0</div>
-      <div class="stat-label">Payées</div>
-      <div class="stat-change neutral">Total</div>
-    </div>
-  </div>
-
-  <div class="stat-card stat-card-primary">
-    <div class="stat-icon stat-icon-primary">
-      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <div class="stat-card">
+    <div class="stat-icon bg-purple">
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <line x1="12" y1="1" x2="12" y2="23"></line>
         <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
       </svg>
     </div>
     <div class="stat-content">
-      <div class="stat-value">0 €</div>
-      <div class="stat-label">Montant total</div>
-      <div class="stat-change neutral">Ce mois-ci</div>
+      <div class="stat-value">58 420 €</div>
+      <div class="stat-label">Chiffre d'affaires</div>
+      <div class="stat-change positive">+16 590€ ce mois</div>
     </div>
   </div>
 </div>
 
-<!-- Main Content Grid -->
-<div class="admin-content-grid">
-  <!-- Recent Invoices Section -->
-  <div class="admin-card">
-    <div class="card-header">
-      <h2>
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: inline-block; vertical-align: middle; margin-right: 0.5rem;">
-          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-          <polyline points="14 2 14 8 20 8"></polyline>
-          <line x1="9" y1="15" x2="15" y2="15"></line>
-        </svg>
-        Factures récentes
-      </h2>
+<!-- Filters -->
+<div class="admin-card" style="margin-bottom: var(--spacing-lg);">
+  <div class="filters-bar">
+    <div class="search-box">
+      <input type="text" class="form-input" placeholder="Rechercher une facture...">
     </div>
-    <div style="padding: var(--spacing-xl); text-align: center;">
-      <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="margin: 0 auto 1rem; color: var(--text-gray);">
-        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-        <polyline points="14 2 14 8 20 8"></polyline>
-        <line x1="9" y1="15" x2="15" y2="15"></line>
-      </svg>
-      <h3 style="font-weight: 600; color: var(--text-dark); margin-bottom: 0.5rem;">Aucune facture pour le moment</h3>
-      <p style="color: var(--text-muted); margin-bottom: 1.5rem;">
-        Vos factures créées via WhatsApp apparaîtront ici.
-        Commencez par connecter votre WhatsApp !
-      </p>
-      <%= link_to "Connecter WhatsApp", whatsapp_connect_path, class: "btn btn-sm btn-primary" %>
+    <div class="filter-group">
+      <select class="form-select">
+        <option>Tous les statuts</option>
+        <option>Payées</option>
+        <option>En attente</option>
+        <option>En retard</option>
+        <option>Brouillons</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <select class="form-select">
+        <option>Tous les clients</option>
+        <option>Entreprise Dubois</option>
+        <option>Martin SAS</option>
+        <option>Résidence Les Pins</option>
+      </select>
     </div>
   </div>
+</div>
 
-  <!-- Quick Actions Section -->
-  <div class="admin-card">
-    <div class="card-header">
-      <h2>
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: inline-block; vertical-align: middle; margin-right: 0.5rem;">
-          <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
-        </svg>
-        Fonctionnalités
-      </h2>
-    </div>
-    <div class="activity-list">
-      <div class="activity-item">
-        <div class="activity-icon bg-green">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
-            <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
-            <line x1="12" y1="19" x2="12" y2="23"></line>
-            <line x1="8" y1="23" x2="16" y2="23"></line>
-          </svg>
-        </div>
-        <div class="activity-content">
-          <div class="activity-title">Commande vocale</div>
-          <div class="activity-meta">Créez vos factures par message vocal sur WhatsApp en français ou en turc</div>
-        </div>
-      </div>
-      
-      <div class="activity-item">
-        <div class="activity-icon bg-blue">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-            <polyline points="14 2 14 8 20 8"></polyline>
-            <line x1="16" y1="13" x2="8" y2="13"></line>
-          </svg>
-        </div>
-        <div class="activity-content">
-          <div class="activity-title">Lien avec devis</div>
-          <div class="activity-meta">Créez une facture basée sur un devis existant ou une facture indépendante</div>
-        </div>
-      </div>
-      
-      <div class="activity-item">
-        <div class="activity-icon bg-purple">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-            <polyline points="14 2 14 8 20 8"></polyline>
-          </svg>
-        </div>
-        <div class="activity-content">
-          <div class="activity-title">PDF professionnel</div>
-          <div class="activity-meta">Recevez automatiquement un PDF professionnel sur WhatsApp après validation</div>
-        </div>
-      </div>
-      
-      <div class="activity-item">
-        <div class="activity-icon bg-orange">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="12" y1="1" x2="12" y2="23"></line>
-            <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
-          </svg>
-        </div>
-        <div class="activity-content">
-          <div class="activity-title">Calculs automatiques</div>
-          <div class="activity-meta">TVA et totaux calculés automatiquement pour chaque ligne</div>
-        </div>
-      </div>
+<!-- Invoices Table -->
+<div class="admin-card">
+  <div class="card-header">
+    <h2>Liste des Factures</h2>
+  </div>
+  <div style="overflow-x: auto;">
+    <table class="admin-table">
+      <thead>
+        <tr>
+          <th>Numéro</th>
+          <th>Client</th>
+          <th>Date d'émission</th>
+          <th>Échéance</th>
+          <th>Montant TTC</th>
+          <th>Statut</th>
+          <th style="text-align: right;">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>FACT-2025-0028</strong></td>
+          <td>
+            <div>Entreprise Dubois</div>
+            <div class="text-muted small">Lyon</div>
+          </td>
+          <td>28 oct. 2025</td>
+          <td>27 nov. 2025</td>
+          <td><strong>16 590,00 €</strong></td>
+          <td><span class="status-badge status-success">Payée</span></td>
+          <td style="text-align: right;">
+            <div class="action-buttons">
+              <%= link_to invoice_path(1), class: "btn-outline btn-xs" do %>
+                <svg width="14" height="14" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M1 2.5A1.5 1.5 0 0 1 2.5 1h3A1.5 1.5 0 0 1 7 2.5v3A1.5 1.5 0 0 1 5.5 7h-3A1.5 1.5 0 0 1 1 5.5v-3z"/>
+                </svg>
+                <span>Voir</span>
+              <% end %>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td><strong>FACT-2025-0027</strong></td>
+          <td>
+            <div>Martin SAS</div>
+            <div class="text-muted small">Paris</div>
+          </td>
+          <td>26 oct. 2025</td>
+          <td>25 nov. 2025</td>
+          <td><strong>8 420,00 €</strong></td>
+          <td><span class="status-badge status-info">Envoyée</span></td>
+          <td style="text-align: right;">
+            <div class="action-buttons">
+              <%= link_to invoice_path(2), class: "btn-outline btn-xs" do %>
+                <svg width="14" height="14" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M1 2.5A1.5 1.5 0 0 1 2.5 1h3A1.5 1.5 0 0 1 7 2.5v3A1.5 1.5 0 0 1 5.5 7h-3A1.5 1.5 0 0 1 1 5.5v-3z"/>
+                </svg>
+                <span>Voir</span>
+              <% end %>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td><strong>FACT-2025-0026</strong></td>
+          <td>
+            <div>Résidence Les Pins</div>
+            <div class="text-muted small">Marseille</div>
+          </td>
+          <td>22 oct. 2025</td>
+          <td>21 nov. 2025</td>
+          <td><strong>12 350,00 €</strong></td>
+          <td><span class="status-badge status-success">Payée</span></td>
+          <td style="text-align: right;">
+            <div class="action-buttons">
+              <%= link_to invoice_path(3), class: "btn-outline btn-xs" do %>
+                <svg width="14" height="14" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M1 2.5A1.5 1.5 0 0 1 2.5 1h3A1.5 1.5 0 0 1 7 2.5v3A1.5 1.5 0 0 1 5.5 7h-3A1.5 1.5 0 0 1 1 5.5v-3z"/>
+                </svg>
+                <span>Voir</span>
+              <% end %>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td><strong>FACT-2025-0025</strong></td>
+          <td>
+            <div>Copropriété Soleil</div>
+            <div class="text-muted small">Nice</div>
+          </td>
+          <td>18 oct. 2025</td>
+          <td>17 nov. 2025</td>
+          <td><strong>21 060,00 €</strong></td>
+          <td><span class="status-badge status-success">Payée</span></td>
+          <td style="text-align: right;">
+            <div class="action-buttons">
+              <%= link_to invoice_path(4), class: "btn-outline btn-xs" do %>
+                <svg width="14" height="14" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M1 2.5A1.5 1.5 0 0 1 2.5 1h3A1.5 1.5 0 0 1 7 2.5v3A1.5 1.5 0 0 1 5.5 7h-3A1.5 1.5 0 0 1 1 5.5v-3z"/>
+                </svg>
+                <span>Voir</span>
+              <% end %>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td><strong>FACT-2025-0024</strong></td>
+          <td>
+            <div>Société Bertrand</div>
+            <div class="text-muted small">Toulouse</div>
+          </td>
+          <td>10 oct. 2025</td>
+          <td><span class="danger-text">09 oct. 2025</span></td>
+          <td><strong>7 200,00 €</strong></td>
+          <td><span class="status-badge status-danger">En retard</span></td>
+          <td style="text-align: right;">
+            <div class="action-buttons">
+              <%= link_to invoice_path(5), class: "btn-outline btn-xs" do %>
+                <svg width="14" height="14" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M1 2.5A1.5 1.5 0 0 1 2.5 1h3A1.5 1.5 0 0 1 7 2.5v3A1.5 1.5 0 0 1 5.5 7h-3A1.5 1.5 0 0 1 1 5.5v-3z"/>
+                </svg>
+                <span>Voir</span>
+              <% end %>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 
-      <div class="activity-item">
-        <div class="activity-icon bg-red">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="10"></circle>
-            <polyline points="12 6 12 12 16 14"></polyline>
-          </svg>
-        </div>
-        <div class="activity-content">
-          <div class="activity-title">Suivi des paiements</div>
-          <div class="activity-meta">Statuts : brouillon, envoyée, payée, en retard avec dates d'échéance</div>
-        </div>
-      </div>
-    </div>
-    
-    <div style="padding: var(--spacing-lg); display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.5rem; border-top: 1px solid var(--border-color);">
-      <%= link_to clients_path, class: "btn btn-sm btn-outline" do %>
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-          <circle cx="9" cy="7" r="4"></circle>
-          <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-          <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-        </svg>
-        <span>Mes clients</span>
-      <% end %>
-      
-      <%= link_to quotes_path, class: "btn btn-sm btn-outline" do %>
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-          <polyline points="14 2 14 8 20 8"></polyline>
-          <line x1="16" y1="13" x2="8" y2="13"></line>
-        </svg>
-        <span>Mes devis</span>
-      <% end %>
-    </div>
+  <!-- Pagination -->
+  <div class="pagination">
+    <button class="btn btn-secondary btn-sm" disabled>
+      <svg width="14" height="14" fill="currentColor" viewBox="0 0 16 16">
+        <path fill-rule="evenodd" d="M12 8a.5.5 0 0 1-.5.5H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5a.5.5 0 0 1 .5.5z"/>
+      </svg>
+      Précédent
+    </button>
+    <span class="pagination-info">Page 1 sur 3</span>
+    <button class="btn btn-secondary btn-sm">
+      Suivant
+      <svg width="14" height="14" fill="currentColor" viewBox="0 0 16 16">
+        <path fill-rule="evenodd" d="M4 8a.5.5 0 0 1 .5-.5h5.793L8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L10.293 8.5H4.5A.5.5 0 0 1 4 8z"/>
+      </svg>
+    </button>
   </div>
 </div>

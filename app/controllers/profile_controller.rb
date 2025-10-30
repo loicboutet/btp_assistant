@@ -1,4 +1,6 @@
 class ProfileController < ApplicationController
+  layout 'client'
+  
   def show
   end
 

@@ -1,4 +1,6 @@
 class ConversationsController < ApplicationController
+  layout 'client'
+  
   def index
   end
 

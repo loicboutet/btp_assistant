@@ -88,7 +88,7 @@ Rails.application.routes.draw do
     get 'metrics', to: 'dashboard#metrics'
 
     # User Management
-    resources :users, only: [:index, :show, :edit, :update] do
+    resources :users, only: [:index, :show, :new, :create, :edit, :update] do
       member do
         post :suspend
         post :activate

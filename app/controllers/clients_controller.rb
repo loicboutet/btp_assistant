@@ -1,4 +1,6 @@
 class ClientsController < ApplicationController
+  layout 'client'
+  
   def index
   end
 

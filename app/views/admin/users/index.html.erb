@@ -1,8 +1,20 @@
 <% content_for :title, "Utilisateurs - Admin" %>
 
 <div class="admin-page-header">
-  <h1>Gestion des utilisateurs</h1>
-  <p class="text-muted">47 utilisateurs actifs, 5 suspendus</p>
+  <div class="header-with-actions">
+    <div>
+      <h1>Gestion des Utilisateurs</h1>
+      <p class="text-muted">Gérez tous les comptes artisans de la plateforme</p>
+    </div>
+    <div class="header-actions">
+      <%= link_to new_admin_user_path, class: "btn btn-primary btn-sm" do %>
+        <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+          <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+        </svg>
+        <span>Créer un utilisateur</span>
+      <% end %>
+    </div>
+  </div>
 </div>
 
 <!-- Filters & Search -->

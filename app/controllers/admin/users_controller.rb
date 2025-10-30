@@ -8,6 +8,14 @@ module Admin
     def show
     end
 
+    def new
+    end
+
+    def create
+      # Redirect back to the new form with success message
+      redirect_to new_admin_user_path, notice: 'User created successfully.'
+    end
+
     def edit
     end
 
