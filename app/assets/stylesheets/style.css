@@ -1088,14 +1088,55 @@ h4 {
   /* Client Layout Mobile */
   .client-navbar {
     padding: var(--spacing-sm);
+    position: relative;
+  }
+
+  .client-logo {
+    margin-right: 0;
   }
 
   .client-nav-menu {
-    display: none;
+    position: absolute !important;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background-color: var(--bg-white);
+    flex-direction: column;
+    padding: var(--spacing-sm);
+    box-shadow: var(--shadow-lg);
+    border-top: 1px solid var(--border-light);
+    display: none !important;
+    z-index: 99;
+    gap: 0;
+    margin: 0 !important;
+  }
+
+  .client-nav-menu.active {
+    display: flex !important;
+  }
+
+  .client-nav-item {
+    width: 100%;
+    padding: var(--spacing-sm) var(--spacing-md);
+    text-align: left;
   }
 
   .mobile-menu-toggle {
     display: block;
+    position: absolute;
+    right: 60px;
+    top: 50%;
+    transform: translateY(-50%);
+    padding: var(--spacing-xs);
+     width: 50px;
+        
+  }
+
+  .client-user-dropdown {
+    position: absolute;
+    right: var(--spacing-sm);
+    top: 50%;
+    transform: translateY(-50%);
   }
 
   .client-user-info {
@@ -1171,6 +1212,9 @@ h4 {
   box-shadow: var(--shadow-md);
   cursor: pointer;
   display: none;
+  right: 100px;
+        left: auto;
+        top: 52px;
 }
 
 .mobile-menu-toggle svg {

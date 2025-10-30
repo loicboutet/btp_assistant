@@ -21,7 +21,7 @@
   </head>
 
   <body>
-    <div class="client-layout">
+    <div class="client-layout" data-controller="client-layout">
       <!-- Top Header -->
       <header class="client-header">
         <nav class="client-navbar">
@@ -33,22 +33,22 @@
           </div>
 
           <!-- Mobile Menu Toggle -->
-          <button class="mobile-menu-toggle" id="mobile-menu-toggle">
+          <button class="mobile-menu-toggle" data-action="click->client-layout#toggleMobileMenu">
             ☰
           </button>
 
           <!-- Navigation Menu -->
-          <div class="client-nav-menu" id="client-nav-menu">
-            <%= link_to "Tableau de bord", client_dashboard_path, class: "client-nav-item #{current_page?(client_dashboard_path) ? 'active' : ''}" %>
-            <%= link_to "Devis", quotes_path, class: "client-nav-item #{current_page?(quotes_path) ? 'active' : ''}" %>
-            <%= link_to "Factures", invoices_path, class: "client-nav-item #{current_page?(invoices_path) ? 'active' : ''}" %>
-            <%= link_to "Clients", clients_path, class: "client-nav-item #{current_page?(clients_path) ? 'active' : ''}" %>
-            <%= link_to "Conversations", conversations_path, class: "client-nav-item #{current_page?(conversations_path) ? 'active' : ''}" %>
+          <div class="client-nav-menu" data-client-layout-target="mobileMenu">
+            <%= link_to "Tableau de bord", client_dashboard_path, class: "client-nav-item #{current_page?(client_dashboard_path) ? 'active' : ''}", data: { action: "click->client-layout#closeMenuOnNavClick" } %>
+            <%= link_to "Devis", quotes_path, class: "client-nav-item #{current_page?(quotes_path) ? 'active' : ''}", data: { action: "click->client-layout#closeMenuOnNavClick" } %>
+            <%= link_to "Factures", invoices_path, class: "client-nav-item #{current_page?(invoices_path) ? 'active' : ''}", data: { action: "click->client-layout#closeMenuOnNavClick" } %>
+            <%= link_to "Clients", clients_path, class: "client-nav-item #{current_page?(clients_path) ? 'active' : ''}", data: { action: "click->client-layout#closeMenuOnNavClick" } %>
+            <%= link_to "Conversations", conversations_path, class: "client-nav-item #{current_page?(conversations_path) ? 'active' : ''}", data: { action: "click->client-layout#closeMenuOnNavClick" } %>
           </div>
 
           <!-- User Dropdown -->
           <div class="client-user-dropdown">
-            <div class="client-user-button" id="user-dropdown-button">
+            <div class="client-user-button" data-action="click->client-layout#toggleProfileDropdown">
               <!-- User Avatar -->
               <div class="client-user-avatar">
                 A
@@ -65,7 +65,7 @@
             </div>
 
             <!-- Dropdown Menu -->
-            <div class="client-dropdown-menu" id="user-dropdown-menu">
+            <div class="client-dropdown-menu" data-client-layout-target="profileDropdown">
               <%= link_to client_profile_path, class: "client-dropdown-item" do %>
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
@@ -119,37 +119,5 @@
       <!-- Footer -->
       <%= render "shared/footer" %>
     </div>
-
-    <!-- Dropdown Toggle Script -->
-    <script>
-      document.addEventListener('DOMContentLoaded', function() {
-        const dropdownButton = document.getElementById('user-dropdown-button');
-        const dropdownMenu = document.getElementById('user-dropdown-menu');
-        const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
-        const navMenu = document.getElementById('client-nav-menu');
-
-        // User dropdown toggle
-        if (dropdownButton && dropdownMenu) {
-          dropdownButton.addEventListener('click', function(e) {
-            e.stopPropagation();
-            dropdownMenu.classList.toggle('active');
-          });
-
-          // Close dropdown when clicking outside
-          document.addEventListener('click', function(e) {
-            if (!dropdownButton.contains(e.target)) {
-              dropdownMenu.classList.remove('active');
-            }
-          });
-        }
-
-        // Mobile menu toggle
-        if (mobileMenuToggle && navMenu) {
-          mobileMenuToggle.addEventListener('click', function() {
-            navMenu.style.display = navMenu.style.display === 'flex' ? 'none' : 'flex';
-          });
-        }
-      });
-    </script>
   </body>
 </html>
