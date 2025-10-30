@@ -4,9 +4,11 @@
   <div style="display: flex; justify-content: space-between; align-items: center;">
     <div>
       <h1>Détails de l'abonnement</h1>
-      <p class="text-muted">Abonnement #SUB_12345678</p>
+      <p class="text-muted">Abonnement #<%= @subscription.id %></p>
     </div>
-    <%= link_to "← Retour aux abonnements", admin_subscriptions_path, class: "btn btn-outline" %>
+    <%= link_to admin_subscriptions_path, class: "btn btn-outline" do %>
+      ← Retour aux abonnements
+    <% end %>
   </div>
 </div>
 
@@ -17,11 +19,13 @@
   </div>
   <div style="padding: var(--spacing-lg);">
     <div class="user-info" style="margin-bottom: var(--spacing-lg);">
-      <div class="user-avatar" style="width: 60px; height: 60px; font-size: 24px;">JD</div>
+      <div class="user-avatar" style="width: 60px; height: 60px; font-size: 24px;"><%= @subscription.user.name.split.map(&:first).join.upcase %></div>
       <div>
-        <div class="user-name" style="font-size: 1.25rem; font-weight: 600;">Jean Dupont</div>
-        <div class="user-email">jean.dupont@example.fr</div>
-        <%= link_to "Voir le profil complet", admin_user_path(1), class: "btn btn-sm btn-outline" style="margin-top: var(--spacing-sm);" %>
+        <div class="user-name" style="font-size: 1.25rem; font-weight: 600;"><%= @subscription.user.name %></div>
+        <div class="user-email"><%= @subscription.user.email %></div>
+        <%= link_to admin_user_path(@subscription.user.id), class: "btn btn-sm btn-outline", style: "margin-top: var(--spacing-sm);" do %>
+          👤 Voir le profil complet
+        <% end %>
       </div>
     </div>
   </div>
@@ -36,29 +40,29 @@
     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: var(--spacing-lg);">
       <div>
         <div class="text-muted small">Plan</div>
-        <div style="font-weight: 600; margin-top: var(--spacing-xs);">Mensuel</div>
+        <div style="font-weight: 600; margin-top: var(--spacing-xs);"><%= @subscription.plan %></div>
       </div>
       <div>
         <div class="text-muted small">Statut</div>
         <div style="margin-top: var(--spacing-xs);">
-          <span class="status-badge status-success">Actif</span>
+          <span class="status-badge status-success"><%= @subscription.status.capitalize %></span>
         </div>
       </div>
       <div>
         <div class="text-muted small">Montant</div>
-        <div style="font-weight: 600; margin-top: var(--spacing-xs); color: var(--color-success);">59€ / mois</div>
+        <div style="font-weight: 600; margin-top: var(--spacing-xs); color: var(--color-success);"><%= @subscription.amount %>€ / <%= @subscription.interval %></div>
       </div>
       <div>
         <div class="text-muted small">Date de début</div>
-        <div style="font-weight: 600; margin-top: var(--spacing-xs);">15 mars 2025</div>
+        <div style="font-weight: 600; margin-top: var(--spacing-xs);"><%= @subscription.current_period_start.strftime('%d %B %Y') rescue 'N/A' %></div>
       </div>
       <div>
         <div class="text-muted small">Prochain paiement</div>
-        <div style="font-weight: 600; margin-top: var(--spacing-xs);">15 juin 2025</div>
+        <div style="font-weight: 600; margin-top: var(--spacing-xs);"><%= @subscription.current_period_end.strftime('%d %B %Y') rescue 'N/A' %></div>
       </div>
       <div>
-        <div class="text-muted small">Période d'essai</div>
-        <div style="font-weight: 600; margin-top: var(--spacing-xs);">Terminée le 29 mars 2025</div>
+        <div class="text-muted small">Créé le</div>
+        <div style="font-weight: 600; margin-top: var(--spacing-xs);"><%= @subscription.created_at.strftime('%d %B %Y') rescue 'N/A' %></div>
       </div>
     </div>
   </div>
@@ -72,25 +76,19 @@
   <div style="padding: var(--spacing-lg);">
     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: var(--spacing-lg);">
       <div>
-        <div class="text-muted small">Customer ID</div>
-        <div style="font-family: monospace; margin-top: var(--spacing-xs);">cus_AbCdEfGh</div>
-        <a href="https://dashboard.stripe.com/customers/cus_AbCdEfGh" target="_blank" class="btn btn-sm btn-outline" style="margin-top: var(--spacing-sm);">
-          Voir dans Stripe →
-        </a>
-      </div>
-      <div>
-        <div class="text-muted small">Subscription ID</div>
-        <div style="font-family: monospace; margin-top: var(--spacing-xs);">sub_12345678</div>
-        <a href="https://dashboard.stripe.com/subscriptions/sub_12345678" target="_blank" class="btn btn-sm btn-outline" style="margin-top: var(--spacing-sm);">
-          Voir dans Stripe →
-        </a>
-      </div>
-      <div>
         <div class="text-muted small">Méthode de paiement</div>
         <div style="margin-top: var(--spacing-xs);">
-          <div>💳 Visa •••• 4242</div>
-          <div class="text-muted small">Expire 12/2027</div>
+          <div>💳 <%= @subscription.payment_method.brand %> •••• <%= @subscription.payment_method.last4 %></div>
+          <div class="text-muted small">Expire <%= @subscription.payment_method.exp_month %>/<%= @subscription.payment_method.exp_year %></div>
         </div>
+      </div>
+      <div>
+        <div class="text-muted small">Devise</div>
+        <div style="font-weight: 600; margin-top: var(--spacing-xs);"><%= @subscription.currency.upcase %></div>
+      </div>
+      <div>
+        <div class="text-muted small">Type d'intervalle</div>
+        <div style="font-weight: 600; margin-top: var(--spacing-xs);"><%= @subscription.interval.capitalize %></div>
       </div>
     </div>
   </div>
@@ -108,43 +106,17 @@
         <th>Invoice ID</th>
         <th>Montant</th>
         <th>Statut</th>
-        <th>Actions</th>
       </tr>
     </thead>
     <tbody>
-      <tr>
-        <td>15 mai 2025</td>
-        <td style="font-family: monospace;">in_1234567</td>
-        <td class="font-weight-bold">59€</td>
-        <td><span class="status-badge status-success">Payé</span></td>
-        <td>
-          <a href="https://dashboard.stripe.com/invoices/in_1234567" target="_blank" class="btn btn-sm btn-outline">
-            Voir
-          </a>
-        </td>
-      </tr>
-      <tr>
-        <td>15 avril 2025</td>
-        <td style="font-family: monospace;">in_1234566</td>
-        <td class="font-weight-bold">59€</td>
-        <td><span class="status-badge status-success">Payé</span></td>
-        <td>
-          <a href="https://dashboard.stripe.com/invoices/in_1234566" target="_blank" class="btn btn-sm btn-outline">
-            Voir
-          </a>
-        </td>
-      </tr>
-      <tr>
-        <td>15 mars 2025</td>
-        <td style="font-family: monospace;">in_1234565</td>
-        <td class="font-weight-bold">0€</td>
-        <td><span class="status-badge status-info">Essai gratuit</span></td>
-        <td>
-          <a href="https://dashboard.stripe.com/invoices/in_1234565" target="_blank" class="btn btn-sm btn-outline">
-            Voir
-          </a>
-        </td>
-      </tr>
+      <% @subscription.invoices.each do |invoice| %>
+        <tr>
+          <td><%= invoice.date.strftime('%d %B %Y') rescue 'N/A' %></td>
+          <td style="font-family: monospace;">inv_<%= invoice.id %></td>
+          <td class="font-weight-bold"><%= invoice.amount %>€</td>
+          <td><span class="status-badge status-success"><%= invoice.status.capitalize %></span></td>
+        </tr>
+      <% end %>
     </tbody>
   </table>
 </div>
@@ -157,16 +129,16 @@
   <div style="padding: var(--spacing-lg);">
     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: var(--spacing-md);">
       <button class="btn btn-primary">
-        Accéder au portail Stripe
+        💳 Accéder au portail Stripe
       </button>
       <button class="btn btn-outline">
-        Annuler l'abonnement
+        ❌ Annuler l'abonnement
       </button>
       <button class="btn btn-outline">
-        Suspendre l'abonnement
+        ⏸️ Suspendre l'abonnement
       </button>
       <button class="btn btn-outline">
-        Modifier le plan
+        📝 Modifier le plan
       </button>
     </div>
   </div>
