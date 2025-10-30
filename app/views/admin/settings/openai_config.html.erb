@@ -65,19 +65,35 @@
 <div class="admin-card" style="margin-top: var(--spacing-xl);">
   <div class="card-header">
     <h2>Configuration API</h2>
-    <button class="btn btn-primary">Sauvegarder</button>
   </div>
   <form class="settings-form">
-    <div class="form-group">
-      <label class="form-label">API Key</label>
-      <input type="password" class="form-input" value="sk-••••••••••••••••••••••••••••••••" placeholder="sk-...">
-      <small class="form-hint">Clé API OpenAI</small>
+    <div class="form-fields-grid">
+      <div class="form-group">
+        <label class="form-label">API Key</label>
+        <input type="password" class="form-input" value="sk-••••••••••••••••••••••••••••••••" placeholder="sk-...">
+        <small class="form-hint">Clé API OpenAI</small>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Organization ID</label>
+        <input type="text" class="form-input" value="org-••••••••••••••••" placeholder="org-...">
+        <small class="form-hint">ID de votre organisation OpenAI (optionnel)</small>
+      </div>
     </div>
 
-    <div class="form-group">
-      <label class="form-label">Organization ID</label>
-      <input type="text" class="form-input" value="org-••••••••••••••••" placeholder="org-...">
-      <small class="form-hint">ID de votre organisation OpenAI (optionnel)</small>
+    <div class="form-actions">
+      <button type="button" class="btn btn-outline btn-with-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="20" height="20">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+        <span>Annuler</span>
+      </button>
+      <button type="submit" class="btn btn-primary btn-with-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="20" height="20">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+        </svg>
+        <span>Sauvegarder</span>
+      </button>
     </div>
   </form>
 </div>
@@ -86,44 +102,60 @@
 <div class="admin-card" style="margin-top: var(--spacing-xl);">
   <div class="card-header">
     <h2>Configuration GPT (Traitement de texte)</h2>
-    <button class="btn btn-primary">Sauvegarder</button>
   </div>
   <form class="settings-form">
-    <div class="form-group">
-      <label class="form-label">Modèle GPT</label>
-      <select class="form-select">
-        <option>GPT-3.5 Turbo</option>
-        <option selected>GPT-4</option>
-        <option>GPT-4 Turbo</option>
-      </select>
-      <small class="form-hint">Modèle utilisé pour le traitement des conversations</small>
-    </div>
-
-    <div class="form-group">
-      <label class="form-label">Temperature</label>
-      <input type="number" class="form-input" value="0.7" min="0" max="2" step="0.1">
-      <small class="form-hint">Contrôle la créativité des réponses (0-2). Recommandé: 0.7</small>
-    </div>
-
-    <div class="form-group">
-      <label class="form-label">Max Tokens</label>
-      <input type="number" class="form-input" value="2000" min="100" max="4000" step="100">
-      <small class="form-hint">Longueur maximale des réponses</small>
-    </div>
-
-    <div class="form-group">
-      <label class="form-label">Langues supportées</label>
-      <div class="checkbox-group">
-        <label class="checkbox-label">
-          <input type="checkbox" checked disabled>
-          <span>🇫🇷 Français</span>
-        </label>
-        <label class="checkbox-label">
-          <input type="checkbox" checked disabled>
-          <span>🇹🇷 Turc</span>
-        </label>
+    <div class="form-fields-grid">
+      <div class="form-group">
+        <label class="form-label">Modèle GPT</label>
+        <select class="form-select">
+          <option>GPT-3.5 Turbo</option>
+          <option selected>GPT-4</option>
+          <option>GPT-4 Turbo</option>
+        </select>
+        <small class="form-hint">Modèle utilisé pour le traitement des conversations</small>
       </div>
-      <small class="form-hint">GPT détecte automatiquement la langue de l'utilisateur</small>
+
+      <div class="form-group">
+        <label class="form-label">Temperature</label>
+        <input type="number" class="form-input" value="0.7" min="0" max="2" step="0.1">
+        <small class="form-hint">Contrôle la créativité des réponses (0-2). Recommandé: 0.7</small>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Max Tokens</label>
+        <input type="number" class="form-input" value="2000" min="100" max="4000" step="100">
+        <small class="form-hint">Longueur maximale des réponses</small>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Langues supportées</label>
+        <div class="checkbox-group">
+          <label class="checkbox-label">
+            <input type="checkbox" checked disabled>
+            <span>🇫🇷 Français</span>
+          </label>
+          <label class="checkbox-label">
+            <input type="checkbox" checked disabled>
+            <span>🇹🇷 Turc</span>
+          </label>
+        </div>
+        <small class="form-hint">GPT détecte automatiquement la langue de l'utilisateur</small>
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <button type="button" class="btn btn-outline btn-with-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="20" height="20">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+        <span>Annuler</span>
+      </button>
+      <button type="submit" class="btn btn-primary btn-with-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="20" height="20">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+        </svg>
+        <span>Sauvegarder</span>
+      </button>
     </div>
   </form>
 </div>
@@ -132,30 +164,46 @@
 <div class="admin-card" style="margin-top: var(--spacing-xl);">
   <div class="card-header">
     <h2>Configuration Whisper (Transcription vocale)</h2>
-    <button class="btn btn-primary">Sauvegarder</button>
   </div>
   <form class="settings-form">
-    <div class="form-group">
-      <label class="form-label">Modèle Whisper</label>
-      <select class="form-select">
-        <option selected>Whisper-1</option>
-      </select>
-      <small class="form-hint">Modèle utilisé pour la transcription audio</small>
+    <div class="form-fields-grid">
+      <div class="form-group">
+        <label class="form-label">Modèle Whisper</label>
+        <select class="form-select">
+          <option selected>Whisper-1</option>
+        </select>
+        <small class="form-hint">Modèle utilisé pour la transcription audio</small>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Détection automatique de langue</label>
+        <label class="checkbox-label">
+          <input type="checkbox" checked>
+          <span>Activer la détection automatique</span>
+        </label>
+        <small class="form-hint">Whisper détecte automatiquement la langue parlée</small>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Format audio supporté</label>
+        <input type="text" class="form-input" value="mp3, wav, ogg, m4a" readonly>
+        <small class="form-hint">Formats audio acceptés par Whisper</small>
+      </div>
     </div>
 
-    <div class="form-group">
-      <label class="form-label">Détection automatique de langue</label>
-      <label class="checkbox-label">
-        <input type="checkbox" checked>
-        <span>Activer la détection automatique</span>
-      </label>
-      <small class="form-hint">Whisper détecte automatiquement la langue parlée</small>
-    </div>
-
-    <div class="form-group">
-      <label class="form-label">Format audio supporté</label>
-      <input type="text" class="form-input" value="mp3, wav, ogg, m4a" readonly>
-      <small class="form-hint">Formats audio acceptés par Whisper</small>
+    <div class="form-actions">
+      <button type="button" class="btn btn-outline btn-with-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="20" height="20">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+        <span>Annuler</span>
+      </button>
+      <button type="submit" class="btn btn-primary btn-with-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="20" height="20">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+        </svg>
+        <span>Sauvegarder</span>
+      </button>
     </div>
   </form>
 </div>
