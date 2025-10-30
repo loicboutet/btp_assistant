@@ -9,24 +9,52 @@
 <!-- Status Overview -->
 <div class="stats-grid">
   <div class="stat-card">
-    <div class="stat-label">Statut API</div>
-    <div class="stat-value"><span class="status-badge status-success">Actif</span></div>
-    <div class="stat-detail">Mode Production</div>
+    <div class="stat-icon bg-green">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="32" height="32">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+      </svg>
+    </div>
+    <div class="stat-content">
+      <div class="stat-value"><span class="status-badge status-success">Actif</span></div>
+      <div class="stat-label">Statut API</div>
+      <div class="stat-detail">Mode Production</div>
+    </div>
   </div>
   <div class="stat-card">
-    <div class="stat-label">MRR</div>
-    <div class="stat-value">2 847€</div>
-    <div class="stat-detail">47 abonnements actifs</div>
+    <div class="stat-icon bg-blue">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="32" height="32">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5z" />
+      </svg>
+    </div>
+    <div class="stat-content">
+      <div class="stat-value">2 847€</div>
+      <div class="stat-label">MRR</div>
+      <div class="stat-detail">47 abonnements actifs</div>
+    </div>
   </div>
   <div class="stat-card">
-    <div class="stat-label">Webhooks (24h)</div>
-    <div class="stat-value">18</div>
-    <div class="stat-detail success-text">100% succès</div>
+    <div class="stat-icon bg-purple">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="32" height="32">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m13.35-.622l1.757-1.757a4.5 4.5 0 00-6.364-6.364l-4.5 4.5a4.5 4.5 0 001.242 7.244" />
+      </svg>
+    </div>
+    <div class="stat-content">
+      <div class="stat-value">18</div>
+      <div class="stat-label">Webhooks (24h)</div>
+      <div class="stat-detail success-text">100% succès</div>
+    </div>
   </div>
   <div class="stat-card">
-    <div class="stat-label">Dernière transaction</div>
-    <div class="stat-value">5 min</div>
-    <div class="stat-detail">59€</div>
+    <div class="stat-icon bg-orange">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="32" height="32">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+      </svg>
+    </div>
+    <div class="stat-content">
+      <div class="stat-value">5 min</div>
+      <div class="stat-label">Dernière transaction</div>
+      <div class="stat-detail">59€</div>
+    </div>
   </div>
 </div>
 
@@ -34,7 +62,12 @@
 <div class="admin-card" style="margin-top: var(--spacing-xl);">
   <div class="card-header">
     <h2>Configuration API</h2>
-    <button class="btn btn-primary">Sauvegarder</button>
+    <button class="btn btn-primary" style="display: inline-flex; align-items: center; gap: 0.5rem;">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="16" height="16">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+      </svg>
+      <span>Sauvegarder</span>
+    </button>
   </div>
   <form class="settings-form">
     <div class="form-group">
@@ -82,7 +115,12 @@
 <div class="admin-card" style="margin-top: var(--spacing-xl);">
   <div class="card-header">
     <h2>Stripe Dashboard</h2>
-    <a href="https://dashboard.stripe.com" target="_blank" class="btn btn-primary">Ouvrir Stripe Dashboard →</a>
+    <a href="https://dashboard.stripe.com" target="_blank" class="btn btn-primary" style="display: inline-flex; align-items: center; gap: 0.5rem;">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="16" height="16">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
+      </svg>
+      <span>Ouvrir Stripe Dashboard</span>
+    </a>
   </div>
   <p class="text-muted">Gérez vos paiements, abonnements et clients directement dans Stripe Dashboard</p>
 </div>
