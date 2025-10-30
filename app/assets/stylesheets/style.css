@@ -304,13 +304,15 @@ h4 {
 }
 
 .btn-primary {
-  background-color: var(--primary-green);
-  color: #FFFFFF;
+  background-color: transparent;
+  color: var(--primary-green);
+  border: 2px solid var(--primary-green);
   box-shadow: var(--shadow-whatsapp);
 }
 
 .btn-primary:hover {
-  background-color: var(--dark-green);
+  background-color: var(--primary-green);
+  color: #FFFFFF;
 }
 
 .btn-secondary {
@@ -871,32 +873,40 @@ h4 {
 .client-logo {
   display: flex;
   align-items: center;
+  margin-right: auto;
 }
 
 .client-logo img {
-  height: 40px;
+  height: 120px;
   width: auto;
+  transition: var(--transition-base);
+}
+
+.client-logo:hover img {
+  transform: scale(1.05);
 }
 
 .client-nav-menu {
   display: flex;
   align-items: center;
   gap: var(--spacing-md);
+  margin-left: auto;
+  margin-right: var(--spacing-md);
 }
 
 .client-nav-item {
-  color: var(--text-dark);
+  color: var(--primary-green);
   text-decoration: none;
-  padding: var(--spacing-sm) var(--spacing-sm);
-  font-weight: var(--font-weight-regular);
+  padding: var(--spacing-xs) var(--spacing-md);
+  font-weight: var(--font-weight-semibold);
   transition: var(--transition-colors);
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-md);
 }
 
 .client-nav-item:hover,
 .client-nav-item.active {
-  color: var(--primary-green);
-  background-color: var(--light-green);
+  color: #FFFFFF;
+  background-color: var(--primary-green);
 }
 
 .client-user-dropdown {
@@ -945,6 +955,7 @@ h4 {
 .client-user-email {
   font-size: var(--font-size-xs);
   color: var(--text-gray);
+  display: none;
 }
 
 .client-dropdown-icon {
@@ -1352,6 +1363,20 @@ h4 {
   transform: translateY(-2px);
 }
 
+/* Principal Color Stat Cards */
+.stat-card-primary {
+  border: 2px solid transparent;
+  background: linear-gradient(white, white) padding-box,
+              linear-gradient(135deg, var(--primary-green) 0%, var(--accent-euro) 100%) border-box;
+  transition: all 0.3s ease;
+}
+
+.stat-card-primary:hover {
+  box-shadow: var(--shadow-whatsapp);
+  transform: translateY(-4px);
+  border-color: var(--primary-green);
+}
+
 .stat-icon {
   width: 64px;
   height: 64px;
@@ -1361,6 +1386,12 @@ h4 {
   justify-content: center;
   flex-shrink: 0;
   color: #FFFFFF;
+}
+
+/* Principal Color Stat Icon */
+.stat-icon-primary {
+  background: linear-gradient(135deg, var(--primary-green) 0%, var(--accent-euro) 100%);
+  box-shadow: 0 4px 14px rgba(31, 157, 85, 0.3);
 }
 
 .stat-icon.bg-blue {
@@ -1388,6 +1419,10 @@ h4 {
   font-weight: var(--font-weight-bold);
   color: var(--text-dark);
   margin-bottom: var(--spacing-xs);
+}
+
+.stat-card-primary .stat-value {
+  color: var(--primary-green);
 }
 
 .stat-label {
