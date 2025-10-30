@@ -1,4 +1,6 @@
 class QuotesController < ApplicationController
+  layout 'client'
+
   def index
   end
 

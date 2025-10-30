@@ -1,4 +1,5 @@
 class InvoicesController < ApplicationController
+   layout 'client'
   def index
   end
 
