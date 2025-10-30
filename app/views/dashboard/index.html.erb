@@ -1,0 +1,706 @@
+<% content_for :title, "Tableau de bord - Devis WhatsApp" %>
+
+<div class="dashboard-container">
+  <!-- Page Header -->
+  <div class="dashboard-header">
+    <div class="dashboard-header-content">
+      <h1 class="dashboard-title">Tableau de bord</h1>
+      <p class="dashboard-subtitle">Bienvenue sur votre assistant de devis et facturation WhatsApp</p>
+    </div>
+    
+    <div class="dashboard-header-actions">
+      <%= link_to "/whatsapp/connect", class: "btn btn-primary" do %>
+        <span>📱</span>
+        <span>Connecter WhatsApp</span>
+      <% end %>
+    </div>
+  </div>
+
+  <!-- WhatsApp Connection Status -->
+  <div class="dashboard-alert dashboard-alert-info">
+    <div class="dashboard-alert-icon">ℹ️</div>
+    <div class="dashboard-alert-content">
+      <h3 class="dashboard-alert-title">Connectez votre WhatsApp</h3>
+      <p class="dashboard-alert-text">
+        Pour commencer à créer des devis et factures par commande vocale, 
+        connectez votre compte WhatsApp personnel. C'est simple et sécurisé !
+      </p>
+      <div class="dashboard-alert-actions">
+        <%= link_to "Voir le guide de connexion →", "/whatsapp/connect", class: "dashboard-alert-link" %>
+      </div>
+    </div>
+  </div>
+
+  <!-- Statistics Cards -->
+  <div class="dashboard-stats-grid">
+    <!-- Quotes Stats -->
+    <div class="dashboard-stat-card">
+      <div class="dashboard-stat-icon dashboard-stat-icon-blue">
+        📄
+      </div>
+      <div class="dashboard-stat-content">
+        <h3 class="dashboard-stat-label">Devis créés</h3>
+        <p class="dashboard-stat-value">0</p>
+        <p class="dashboard-stat-change dashboard-stat-change-neutral">Ce mois-ci</p>
+      </div>
+    </div>
+
+    <!-- Invoices Stats -->
+    <div class="dashboard-stat-card">
+      <div class="dashboard-stat-icon dashboard-stat-icon-green">
+        🧾
+      </div>
+      <div class="dashboard-stat-content">
+        <h3 class="dashboard-stat-label">Factures créées</h3>
+        <p class="dashboard-stat-value">0</p>
+        <p class="dashboard-stat-change dashboard-stat-change-neutral">Ce mois-ci</p>
+      </div>
+    </div>
+
+    <!-- Clients Stats -->
+    <div class="dashboard-stat-card">
+      <div class="dashboard-stat-icon dashboard-stat-icon-purple">
+        👥
+      </div>
+      <div class="dashboard-stat-content">
+        <h3 class="dashboard-stat-label">Clients actifs</h3>
+        <p class="dashboard-stat-value">0</p>
+        <p class="dashboard-stat-change dashboard-stat-change-neutral">Total</p>
+      </div>
+    </div>
+
+    <!-- Revenue Stats -->
+    <div class="dashboard-stat-card">
+      <div class="dashboard-stat-icon dashboard-stat-icon-orange">
+        💰
+      </div>
+      <div class="dashboard-stat-content">
+        <h3 class="dashboard-stat-label">Chiffre d'affaires</h3>
+        <p class="dashboard-stat-value">0 €</p>
+        <p class="dashboard-stat-change dashboard-stat-change-neutral">Ce mois-ci</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content Grid -->
+  <div class="dashboard-content-grid">
+    <!-- Recent Activity Section -->
+    <div class="dashboard-section">
+      <div class="dashboard-section-header">
+        <h2 class="dashboard-section-title">
+          <span>📊</span>
+          <span>Activité récente</span>
+        </h2>
+        <%= link_to "Voir tout →", "/conversations", class: "dashboard-section-link" %>
+      </div>
+      
+      <div class="dashboard-section-content">
+        <div class="dashboard-empty-state">
+          <div class="dashboard-empty-icon">💬</div>
+          <h3 class="dashboard-empty-title">Aucune activité récente</h3>
+          <p class="dashboard-empty-text">
+            Vos conversations WhatsApp et documents créés apparaîtront ici.
+            Commencez par connecter votre WhatsApp pour créer votre premier devis !
+          </p>
+          <%= link_to "Connecter WhatsApp", "/whatsapp/connect", class: "btn btn-primary btn-sm" %>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick Actions Section -->
+    <div class="dashboard-section">
+      <div class="dashboard-section-header">
+        <h2 class="dashboard-section-title">
+          <span>⚡</span>
+          <span>Actions rapides</span>
+        </h2>
+      </div>
+      
+      <div class="dashboard-section-content">
+        <div class="dashboard-actions-list">
+          <!-- WhatsApp Commands Info -->
+          <div class="dashboard-action-card">
+            <div class="dashboard-action-icon">📝</div>
+            <div class="dashboard-action-content">
+              <h3 class="dashboard-action-title">Créer un devis</h3>
+              <p class="dashboard-action-text">
+                Envoyez <strong>"créer un devis"</strong> ou <strong>"nouveau devis"</strong> sur WhatsApp
+              </p>
+            </div>
+          </div>
+
+          <div class="dashboard-action-card">
+            <div class="dashboard-action-icon">📋</div>
+            <div class="dashboard-action-content">
+              <h3 class="dashboard-action-title">Créer une facture</h3>
+              <p class="dashboard-action-text">
+                Envoyez <strong>"créer une facture"</strong> ou <strong>"nouvelle facture"</strong> sur WhatsApp
+              </p>
+            </div>
+          </div>
+
+          <div class="dashboard-action-card">
+            <div class="dashboard-action-icon">👤</div>
+            <div class="dashboard-action-content">
+              <h3 class="dashboard-action-title">Ajouter un client</h3>
+              <p class="dashboard-action-text">
+                Envoyez <strong>"créer un client"</strong> ou <strong>"nouveau client"</strong> sur WhatsApp
+              </p>
+            </div>
+          </div>
+
+          <div class="dashboard-action-card">
+            <div class="dashboard-action-icon">❓</div>
+            <div class="dashboard-action-content">
+              <h3 class="dashboard-action-title">Obtenir de l'aide</h3>
+              <p class="dashboard-action-text">
+                Envoyez <strong>"aide"</strong> ou <strong>"help"</strong> sur WhatsApp
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Web Quick Links -->
+        <div class="dashboard-quick-links">
+          <%= link_to "/clients", class: "dashboard-quick-link" do %>
+            <span>👥</span>
+            <span>Gérer les clients</span>
+          <% end %>
+          
+          <%= link_to "/quotes", class: "dashboard-quick-link" do %>
+            <span>📄</span>
+            <span>Voir les devis</span>
+          <% end %>
+          
+          <%= link_to "/invoices", class: "dashboard-quick-link" do %>
+            <span>🧾</span>
+            <span>Voir les factures</span>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Subscription Status Section -->
+  <div class="dashboard-subscription-banner">
+    <div class="dashboard-subscription-content">
+      <div class="dashboard-subscription-icon">✅</div>
+      <div class="dashboard-subscription-info">
+        <h3 class="dashboard-subscription-title">Abonnement actif</h3>
+        <p class="dashboard-subscription-text">
+          Votre abonnement mensuel est actif. Profitez de toutes les fonctionnalités !
+        </p>
+      </div>
+    </div>
+    <div class="dashboard-subscription-actions">
+      <%= link_to "Gérer l'abonnement", "/subscription/portal", method: :post, class: "btn btn-outline" %>
+    </div>
+  </div>
+
+  <!-- Features Overview -->
+  <div class="dashboard-features">
+    <h2 class="dashboard-features-title">🎯 Comment ça marche ?</h2>
+    
+    <div class="dashboard-features-grid">
+      <div class="dashboard-feature-card">
+        <div class="dashboard-feature-number">1</div>
+        <div class="dashboard-feature-icon">📱</div>
+        <h3 class="dashboard-feature-title">Connectez WhatsApp</h3>
+        <p class="dashboard-feature-text">
+          Scannez le QR code pour connecter votre compte WhatsApp personnel en toute sécurité.
+        </p>
+      </div>
+
+      <div class="dashboard-feature-card">
+        <div class="dashboard-feature-number">2</div>
+        <div class="dashboard-feature-icon">🎤</div>
+        <h3 class="dashboard-feature-title">Commandes vocales</h3>
+        <p class="dashboard-feature-text">
+          Créez devis et factures par message vocal ou texte en français ou turc.
+        </p>
+      </div>
+
+      <div class="dashboard-feature-card">
+        <div class="dashboard-feature-number">3</div>
+        <div class="dashboard-feature-icon">🤖</div>
+        <h3 class="dashboard-feature-title">Assistant IA</h3>
+        <p class="dashboard-feature-text">
+          L'assistant vous guide étape par étape pour créer vos documents professionnels.
+        </p>
+      </div>
+
+      <div class="dashboard-feature-card">
+        <div class="dashboard-feature-number">4</div>
+        <div class="dashboard-feature-icon">📄</div>
+        <h3 class="dashboard-feature-title">PDF automatiques</h3>
+        <p class="dashboard-feature-text">
+          Recevez instantanément vos devis et factures en PDF directement sur WhatsApp.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Help Section -->
+  <div class="dashboard-help-banner">
+    <div class="dashboard-help-content">
+      <h3 class="dashboard-help-title">📚 Besoin d'aide ?</h3>
+      <p class="dashboard-help-text">
+        Consultez nos guides ou envoyez "aide" sur WhatsApp pour découvrir toutes les commandes disponibles.
+      </p>
+    </div>
+    <div class="dashboard-help-actions">
+      <%= link_to "Guide d'utilisation", "/help", class: "btn btn-secondary" %>
+    </div>
+  </div>
+</div>
+
+<style>
+.dashboard-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.dashboard-title {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #1a202c;
+  margin: 0;
+}
+
+.dashboard-subtitle {
+  color: #718096;
+  margin: 0.5rem 0 0 0;
+}
+
+.dashboard-alert {
+  display: flex;
+  padding: 1.5rem;
+  border-radius: 0.5rem;
+  margin-bottom: 2rem;
+  gap: 1rem;
+}
+
+.dashboard-alert-info {
+  background-color: #ebf8ff;
+  border: 1px solid #bee3f8;
+}
+
+.dashboard-alert-icon {
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+
+.dashboard-alert-content {
+  flex: 1;
+}
+
+.dashboard-alert-title {
+  font-weight: 600;
+  color: #2c5282;
+  margin: 0 0 0.5rem 0;
+}
+
+.dashboard-alert-text {
+  color: #2d3748;
+  margin: 0 0 1rem 0;
+}
+
+.dashboard-alert-link {
+  color: #3182ce;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.dashboard-alert-link:hover {
+  text-decoration: underline;
+}
+
+.dashboard-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.dashboard-stat-card {
+  background: white;
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  display: flex;
+  gap: 1rem;
+}
+
+.dashboard-stat-icon {
+  font-size: 2.5rem;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.5rem;
+  flex-shrink: 0;
+}
+
+.dashboard-stat-icon-blue { background-color: #ebf8ff; }
+.dashboard-stat-icon-green { background-color: #f0fff4; }
+.dashboard-stat-icon-purple { background-color: #faf5ff; }
+.dashboard-stat-icon-orange { background-color: #fffaf0; }
+
+.dashboard-stat-content {
+  flex: 1;
+}
+
+.dashboard-stat-label {
+  color: #718096;
+  font-size: 0.875rem;
+  margin: 0 0 0.5rem 0;
+}
+
+.dashboard-stat-value {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #1a202c;
+  margin: 0;
+}
+
+.dashboard-stat-change {
+  font-size: 0.875rem;
+  margin: 0.25rem 0 0 0;
+}
+
+.dashboard-stat-change-neutral {
+  color: #718096;
+}
+
+.dashboard-content-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.dashboard-section {
+  background: white;
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.dashboard-section-header {
+  padding: 1.5rem;
+  border-bottom: 1px solid #e2e8f0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.dashboard-section-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #1a202c;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.dashboard-section-link {
+  color: #3182ce;
+  text-decoration: none;
+  font-size: 0.875rem;
+}
+
+.dashboard-section-link:hover {
+  text-decoration: underline;
+}
+
+.dashboard-section-content {
+  padding: 1.5rem;
+}
+
+.dashboard-empty-state {
+  text-align: center;
+  padding: 2rem 1rem;
+}
+
+.dashboard-empty-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.dashboard-empty-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #2d3748;
+  margin: 0 0 0.5rem 0;
+}
+
+.dashboard-empty-text {
+  color: #718096;
+  margin: 0 0 1.5rem 0;
+  max-width: 400px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.dashboard-actions-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.dashboard-action-card {
+  display: flex;
+  gap: 1rem;
+  padding: 1rem;
+  background: #f7fafc;
+  border-radius: 0.5rem;
+  border: 1px solid #e2e8f0;
+}
+
+.dashboard-action-icon {
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+
+.dashboard-action-content {
+  flex: 1;
+}
+
+.dashboard-action-title {
+  font-weight: 600;
+  color: #2d3748;
+  margin: 0 0 0.25rem 0;
+  font-size: 0.875rem;
+}
+
+.dashboard-action-text {
+  color: #718096;
+  margin: 0;
+  font-size: 0.875rem;
+}
+
+.dashboard-quick-links {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.dashboard-quick-link {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.375rem;
+  color: #2d3748;
+  text-decoration: none;
+  font-size: 0.875rem;
+  transition: all 0.2s;
+}
+
+.dashboard-quick-link:hover {
+  background: #f7fafc;
+  border-color: #cbd5e0;
+}
+
+.dashboard-subscription-banner {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 1.5rem;
+  border-radius: 0.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.dashboard-subscription-content {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.dashboard-subscription-icon {
+  font-size: 2rem;
+}
+
+.dashboard-subscription-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin: 0 0 0.25rem 0;
+}
+
+.dashboard-subscription-text {
+  margin: 0;
+  opacity: 0.9;
+}
+
+.dashboard-features {
+  margin-bottom: 2rem;
+}
+
+.dashboard-features-title {
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #1a202c;
+  margin-bottom: 2rem;
+}
+
+.dashboard-features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+}
+
+.dashboard-feature-card {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  position: relative;
+}
+
+.dashboard-feature-number {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  width: 2rem;
+  height: 2rem;
+  background: #edf2f7;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  color: #4a5568;
+}
+
+.dashboard-feature-icon {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.dashboard-feature-title {
+  font-weight: 600;
+  color: #2d3748;
+  margin: 0 0 0.5rem 0;
+}
+
+.dashboard-feature-text {
+  color: #718096;
+  margin: 0;
+  font-size: 0.875rem;
+}
+
+.dashboard-help-banner {
+  background: #f7fafc;
+  border: 1px solid #e2e8f0;
+  padding: 1.5rem;
+  border-radius: 0.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.dashboard-help-title {
+  font-weight: 600;
+  color: #2d3748;
+  margin: 0 0 0.5rem 0;
+}
+
+.dashboard-help-text {
+  color: #718096;
+  margin: 0;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: 0.375rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 0.2s;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-primary {
+  background: #3182ce;
+  color: white;
+}
+
+.btn-primary:hover {
+  background: #2c5282;
+}
+
+.btn-secondary {
+  background: #718096;
+  color: white;
+}
+
+.btn-secondary:hover {
+  background: #4a5568;
+}
+
+.btn-outline {
+  background: transparent;
+  color: white;
+  border: 1px solid white;
+}
+
+.btn-outline:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.btn-sm {
+  padding: 0.375rem 0.75rem;
+  font-size: 0.875rem;
+}
+
+@media (max-width: 768px) {
+  .dashboard-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .dashboard-stats-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .dashboard-content-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .dashboard-features-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .dashboard-subscription-banner,
+  .dashboard-help-banner {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+</style>
