@@ -1,4 +1,268 @@
-<div>
-  <h1 class="font-bold text-4xl">Home#index</h1>
-  <p>Find me in app/views/home/index.html.erb</p>
+<% content_for :title, "Application Routes - Devis WhatsApp" %>
+
+<div style="max-width: 1400px; margin: 0 auto; padding: 2rem;">
+  <div style="text-align: center; margin-bottom: 3rem;">
+    
+    <h1 style="font-size: 2.5rem; font-weight: bold; color: #1F2937; margin-bottom: 0.5rem;">Devis WhatsApp</h1>
+   
+  </div>
+
+  <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 2rem; margin-bottom: 2rem;">
+    
+    <!-- ADMIN SECTION -->
+    <div style="background: white; border-radius: 12px; padding: 2rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+      <h2 style="font-size: 1.875rem; font-weight: bold; color: #DC2626; margin-bottom: 1.5rem; border-bottom: 3px solid #DC2626; padding-bottom: 0.5rem;">
+        🔧 Admin Panel Routes
+      </h2>
+
+      <!-- Dashboard -->
+      <div style="margin-bottom: 1.5rem;">
+        <h3 style="font-size: 1.25rem; font-weight: 600; color: #374151; margin-bottom: 0.75rem;">📊 Dashboard</h3>
+        <ul style="list-style: none; padding-left: 0;">
+          <li style="margin-bottom: 0.5rem;">
+            <%= link_to "Dashboard Home", admin_dashboard_path, style: "color: #2563EB; text-decoration: none; hover: text-decoration: underline;" %>
+          </li>
+          <li style="margin-bottom: 0.5rem;">
+            <%= link_to "Metrics", admin_metrics_path, style: "color: #2563EB; text-decoration: none; hover: text-decoration: underline;" %>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Users Management -->
+      <div style="margin-bottom: 1.5rem;">
+        <h3 style="font-size: 1.25rem; font-weight: 600; color: #374151; margin-bottom: 0.75rem;">👥 Users Management</h3>
+        <ul style="list-style: none; padding-left: 0;">
+          <li style="margin-bottom: 0.5rem;">
+            <%= link_to "Users List", admin_users_path, style: "color: #2563EB; text-decoration: none; hover: text-decoration: underline;" %>
+          </li>
+          <li style="margin-bottom: 0.5rem;">
+            <%= link_to "User Detail (Show)", admin_user_path(1), style: "color: #2563EB; text-decoration: none; hover: text-decoration: underline;" %>
+          </li>
+          <li style="margin-bottom: 0.5rem;">
+            <%= link_to "Create New User", new_admin_user_path, style: "color: #2563EB; text-decoration: none; hover: text-decoration: underline;" %>
+          </li>
+          <li style="margin-bottom: 0.5rem;">
+            <%= link_to "Edit User", edit_admin_user_path(1), style: "color: #2563EB; text-decoration: none; hover: text-decoration: underline;" %>
+          </li>
+          <li style="margin-bottom: 0.5rem;">
+            <%= link_to "User Logs", logs_admin_user_path(1), style: "color: #2563EB; text-decoration: none; hover: text-decoration: underline;" %>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Subscriptions -->
+      <div style="margin-bottom: 1.5rem;">
+        <h3 style="font-size: 1.25rem; font-weight: 600; color: #374151; margin-bottom: 0.75rem;">💳 Subscriptions</h3>
+        <ul style="list-style: none; padding-left: 0;">
+          <li style="margin-bottom: 0.5rem;">
+            <%= link_to "Subscriptions List", admin_subscriptions_path, style: "color: #2563EB; text-decoration: none; hover: text-decoration: underline;" %>
+          </li>
+          <li style="margin-bottom: 0.5rem;">
+            <%= link_to "Subscription Detail", admin_subscription_path(1), style: "color: #2563EB; text-decoration: none; hover: text-decoration: underline;" %>
+          </li>
+          <li style="margin-bottom: 0.5rem;">
+            <%= link_to "Overdue Subscriptions", overdue_admin_subscriptions_path, style: "color: #2563EB; text-decoration: none; hover: text-decoration: underline;" %>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Webhooks -->
+      <div style="margin-bottom: 1.5rem;">
+        <h3 style="font-size: 1.25rem; font-weight: 600; color: #374151; margin-bottom: 0.75rem;">🔗 Webhooks</h3>
+        <ul style="list-style: none; padding-left: 0;">
+          <li style="margin-bottom: 0.5rem;">
+            <%= link_to "Webhooks List", admin_webhooks_path, style: "color: #2563EB; text-decoration: none; hover: text-decoration: underline;" %>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Logs -->
+      <div style="margin-bottom: 1.5rem;">
+        <h3 style="font-size: 1.25rem; font-weight: 600; color: #374151; margin-bottom: 0.75rem;">📋 System Logs</h3>
+        <ul style="list-style: none; padding-left: 0;">
+          <li style="margin-bottom: 0.5rem;">
+            <%= link_to "Logs List", admin_logs_path, style: "color: #2563EB; text-decoration: none; hover: text-decoration: underline;" %>
+          </li>
+          <li style="margin-bottom: 0.5rem;">
+            <%= link_to "Log Detail", admin_log_path(1), style: "color: #2563EB; text-decoration: none; hover: text-decoration: underline;" %>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Settings -->
+      <div style="margin-bottom: 1.5rem;">
+        <h3 style="font-size: 1.25rem; font-weight: 600; color: #374151; margin-bottom: 0.75rem;">⚙️ Settings</h3>
+        <ul style="list-style: none; padding-left: 0;">
+          <li style="margin-bottom: 0.5rem;">
+            <%= link_to "Settings Home", admin_settings_path, style: "color: #2563EB; text-decoration: none; hover: text-decoration: underline;" %>
+          </li>
+          <li style="margin-bottom: 0.5rem;">
+            <%= link_to "Unipile Configuration", admin_settings_unipile_path, style: "color: #2563EB; text-decoration: none; hover: text-decoration: underline;" %>
+          </li>
+          <li style="margin-bottom: 0.5rem;">
+            <%= link_to "Stripe Configuration", admin_settings_stripe_path, style: "color: #2563EB; text-decoration: none; hover: text-decoration: underline;" %>
+          </li>
+          <li style="margin-bottom: 0.5rem;">
+            <%= link_to "OpenAI Configuration", admin_settings_openai_path, style: "color: #2563EB; text-decoration: none; hover: text-decoration: underline;" %>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- CLIENT SECTION -->
+    <div style="background: white; border-radius: 12px; padding: 2rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+      <h2 style="font-size: 1.875rem; font-weight: bold; color: #059669; margin-bottom: 1.5rem; border-bottom: 3px solid #059669; padding-bottom: 0.5rem;">
+        👤 Client Panel Routes
+      </h2>
+
+      <!-- Dashboard -->
+      <div style="margin-bottom: 1.5rem;">
+        <h3 style="font-size: 1.25rem; font-weight: 600; color: #374151; margin-bottom: 0.75rem;">🏠 Dashboard</h3>
+        <ul style="list-style: none; padding-left: 0;">
+          <li style="margin-bottom: 0.5rem;">
+            <%= link_to "Client Dashboard", client_dashboard_path, style: "color: #2563EB; text-decoration: none; hover: text-decoration: underline;" %>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Profile -->
+      <div style="margin-bottom: 1.5rem;">
+        <h3 style="font-size: 1.25rem; font-weight: 600; color: #374151; margin-bottom: 0.75rem;">👤 Profile</h3>
+        <ul style="list-style: none; padding-left: 0;">
+          <li style="margin-bottom: 0.5rem;">
+            <%= link_to "My Profile", client_profile_path, style: "color: #2563EB; text-decoration: none; hover: text-decoration: underline;" %>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Quotes -->
+      <div style="margin-bottom: 1.5rem;">
+        <h3 style="font-size: 1.25rem; font-weight: 600; color: #374151; margin-bottom: 0.75rem;">📄 Quotes (Devis)</h3>
+        <ul style="list-style: none; padding-left: 0;">
+          <li style="margin-bottom: 0.5rem;">
+            <%= link_to "Quotes List", quotes_path, style: "color: #2563EB; text-decoration: none; hover: text-decoration: underline;" %>
+          </li>
+          <li style="margin-bottom: 0.5rem;">
+            <%= link_to "Quote Detail", quote_path(1), style: "color: #2563EB; text-decoration: none; hover: text-decoration: underline;" %>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Invoices -->
+      <div style="margin-bottom: 1.5rem;">
+        <h3 style="font-size: 1.25rem; font-weight: 600; color: #374151; margin-bottom: 0.75rem;">🧾 Invoices (Factures)</h3>
+        <ul style="list-style: none; padding-left: 0;">
+          <li style="margin-bottom: 0.5rem;">
+            <%= link_to "Invoices List", invoices_path, style: "color: #2563EB; text-decoration: none; hover: text-decoration: underline;" %>
+          </li>
+          <li style="margin-bottom: 0.5rem;">
+            <%= link_to "Invoice Detail", invoice_path(1), style: "color: #2563EB; text-decoration: none; hover: text-decoration: underline;" %>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Clients -->
+      <div style="margin-bottom: 1.5rem;">
+        <h3 style="font-size: 1.25rem; font-weight: 600; color: #374151; margin-bottom: 0.75rem;">🏢 Clients</h3>
+        <ul style="list-style: none; padding-left: 0;">
+          <li style="margin-bottom: 0.5rem;">
+            <%= link_to "Clients List", clients_path, style: "color: #2563EB; text-decoration: none; hover: text-decoration: underline;" %>
+          </li>
+          <li style="margin-bottom: 0.5rem;">
+            <%= link_to "Client Detail", client_path(1), style: "color: #2563EB; text-decoration: none; hover: text-decoration: underline;" %>
+          </li>
+          <li style="margin-bottom: 0.5rem;">
+            <%= link_to "Edit Client", edit_client_path(1), style: "color: #2563EB; text-decoration: none; hover: text-decoration: underline;" %>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Conversations -->
+      <div style="margin-bottom: 1.5rem;">
+        <h3 style="font-size: 1.25rem; font-weight: 600; color: #374151; margin-bottom: 0.75rem;">💬 Conversations</h3>
+        <ul style="list-style: none; padding-left: 0;">
+          <li style="margin-bottom: 0.5rem;">
+            <%= link_to "Conversations List", conversations_path, style: "color: #2563EB; text-decoration: none; hover: text-decoration: underline;" %>
+          </li>
+          <li style="margin-bottom: 0.5rem;">
+            <%= link_to "Conversation Detail", conversation_path(1), style: "color: #2563EB; text-decoration: none; hover: text-decoration: underline;" %>
+          </li>
+        </ul>
+      </div>
+
+      <!-- WhatsApp -->
+      <div style="margin-bottom: 1.5rem;">
+        <h3 style="font-size: 1.25rem; font-weight: 600; color: #374151; margin-bottom: 0.75rem;">📱 WhatsApp</h3>
+        <ul style="list-style: none; padding-left: 0;">
+          <li style="margin-bottom: 0.5rem;">
+            <%= link_to "Connect WhatsApp", whatsapp_connect_path, style: "color: #2563EB; text-decoration: none; hover: text-decoration: underline;" %>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- PUBLIC & AUTH SECTION -->
+    <div style="background: white; border-radius: 12px; padding: 2rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+    <h2 style="font-size: 1.875rem; font-weight: bold; color: #7C3AED; margin-bottom: 1.5rem; border-bottom: 3px solid #7C3AED; padding-bottom: 0.5rem;">
+      🌐 Public & Authentication Routes
+    </h2>
+
+      <!-- Public Pages -->
+      <div style="margin-bottom: 1.5rem;">
+        <h3 style="font-size: 1.25rem; font-weight: 600; color: #374151; margin-bottom: 0.75rem;">📄 Public Pages</h3>
+        <ul style="list-style: none; padding-left: 0;">
+          <li style="margin-bottom: 0.5rem;">
+            <%= link_to "Legal", legal_path, style: "color: #2563EB; text-decoration: none; hover: text-decoration: underline;" %>
+          </li>
+          <li style="margin-bottom: 0.5rem;">
+            <%= link_to "Terms of Service", terms_path, style: "color: #2563EB; text-decoration: none; hover: text-decoration: underline;" %>
+          </li>
+          <li style="margin-bottom: 0.5rem;">
+            <%= link_to "Privacy Policy", privacy_path, style: "color: #2563EB; text-decoration: none; hover: text-decoration: underline;" %>
+          </li>
+          <li style="margin-bottom: 0.5rem;">
+            <%= link_to "About", about_path, style: "color: #2563EB; text-decoration: none; hover: text-decoration: underline;" %>
+          </li>
+          <li style="margin-bottom: 0.5rem;">
+            <%= link_to "Support", support_path, style: "color: #2563EB; text-decoration: none; hover: text-decoration: underline;" %>
+          </li>
+          <li style="margin-bottom: 0.5rem;">
+            <%= link_to "Contact", contact_path, style: "color: #2563EB; text-decoration: none; hover: text-decoration: underline;" %>
+          </li>
+          <li style="margin-bottom: 0.5rem;">
+            <%= link_to "Registration Success", registration_success_path, style: "color: #2563EB; text-decoration: none; hover: text-decoration: underline;" %>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Authentication -->
+      <div style="margin-bottom: 1.5rem;">
+        <h3 style="font-size: 1.25rem; font-weight: 600; color: #374151; margin-bottom: 0.75rem;">🔐 Authentication</h3>
+        <ul style="list-style: none; padding-left: 0;">
+          <li style="margin-bottom: 0.5rem;">
+            <%= link_to "Login", new_user_session_path, style: "color: #2563EB; text-decoration: none; hover: text-decoration: underline;" %>
+          </li>
+          <li style="margin-bottom: 0.5rem;">
+            <%= link_to "Sign Up", new_user_registration_path, style: "color: #2563EB; text-decoration: none; hover: text-decoration: underline;" %>
+          </li>
+          <li style="margin-bottom: 0.5rem;">
+            <%= link_to "Edit Registration", edit_user_registration_path, style: "color: #2563EB; text-decoration: none; hover: text-decoration: underline;" %>
+          </li>
+          <li style="margin-bottom: 0.5rem;">
+            <%= link_to "Forgot Password", new_user_password_path, style: "color: #2563EB; text-decoration: none; hover: text-decoration: underline;" %>
+          </li>
+          <li style="margin-bottom: 0.5rem;">
+            <%= link_to "Edit Password", edit_user_password_path(reset_password_token: "sample"), style: "color: #2563EB; text-decoration: none; hover: text-decoration: underline;" %>
+          </li>
+          
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer Note -->
+  <div style="text-align: center; color: #6B7280; font-size: 0.875rem; margin-top: 2rem;">
+    <p>📝 This page lists all GET routes with clickable links to their corresponding views.</p>
+    <p style="margin-top: 0.5rem;">Note: Some routes may require authentication or specific parameters to display correctly.</p>
+  </div>
 </div>
