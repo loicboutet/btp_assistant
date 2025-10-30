@@ -94,7 +94,8 @@ Rails.application.routes.draw do
         post :activate
         post :reset_whatsapp
         get :logs
-        post :stripe_portal
+        get :stripe_portal
+        post :create_stripe_portal
       end
     end
 

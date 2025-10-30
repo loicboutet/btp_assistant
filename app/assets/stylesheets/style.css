@@ -306,6 +306,8 @@ h4 {
 
 .btn svg {
   flex-shrink: 0;
+  width: 20px;
+  height: 20px;
 }
 
 .btn span {
@@ -357,6 +359,8 @@ h4 {
 
 .btn-sm svg {
   flex-shrink: 0;
+  width: 18px;
+  height: 18px;
 }
 
 .btn-sm span {
@@ -375,6 +379,8 @@ h4 {
 
 .btn-xs svg {
   flex-shrink: 0;
+  width: 16px;
+  height: 16px;
 }
 
 .btn-xs span {
@@ -1696,6 +1702,8 @@ h4 {
 
 .btn-outline svg {
   flex-shrink: 0;
+  width: 18px;
+  height: 18px;
 }
 
 .btn-outline span {
@@ -1718,8 +1726,8 @@ h4 {
   }
   
   .btn-outline svg {
-    width: 14px;
-    height: 14px;
+    width: 16px;
+    height: 16px;
   }
 }
 

@@ -8,9 +8,24 @@
       <p class="text-muted">Dupont Maçonnerie • Membre depuis 3 mois</p>
     </div>
     <div class="header-actions">
-      <%= link_to "Modifier", edit_admin_user_path(1), class: "btn btn-primary" %>
-      <%= link_to "Stripe Portal", stripe_portal_admin_user_path(1), method: :post, class: "btn btn-outline" %>
-      <%= link_to "Suspendre", suspend_admin_user_path(1), method: :post, class: "btn btn-danger", data: { confirm: "Êtes-vous sûr de vouloir suspendre ce compte ?" } %>
+      <%= link_to edit_admin_user_path(1), class: "btn btn-primary" do %>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="16" height="16" style="display: inline-block; vertical-align: middle; margin-right: 4px;">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
+        </svg>
+        <span>Modifier</span>
+      <% end %>
+      <%= link_to stripe_portal_admin_user_path(1), method: :post, class: "btn btn-outline" do %>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="16" height="16" style="display: inline-block; vertical-align: middle; margin-right: 4px;">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5z" />
+        </svg>
+        <span>Stripe Portal</span>
+      <% end %>
+      <%= link_to suspend_admin_user_path(1), method: :post, class: "btn btn-danger", data: { confirm: "Êtes-vous sûr de vouloir suspendre ce compte ?" } do %>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="16" height="16" style="display: inline-block; vertical-align: middle; margin-right: 4px;">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
+        </svg>
+        <span>Suspendre</span>
+      <% end %>
     </div>
   </div>
 </div>
@@ -44,7 +59,12 @@
   <div class="admin-card">
     <div class="card-header">
       <h2>Informations personnelles</h2>
-      <%= link_to "Modifier", edit_admin_user_path(1), class: "btn btn-sm btn-outline" %>
+      <%= link_to edit_admin_user_path(1), class: "btn btn-sm btn-outline" do %>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="14" height="14" style="display: inline-block; vertical-align: middle; margin-right: 4px;">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
+        </svg>
+        <span>Modifier</span>
+      <% end %>
     </div>
     <div class="details-list">
       <div class="detail-item">
@@ -103,7 +123,12 @@
 <div class="admin-card" style="margin-top: var(--spacing-xl);">
   <div class="card-header">
     <h2>Détails de l'abonnement</h2>
-    <%= link_to "Ouvrir Stripe Dashboard", "#", class: "btn btn-sm btn-outline", target: "_blank" %>
+    <%= link_to "#", class: "btn btn-sm btn-outline", target: "_blank" do %>
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="14" height="14" style="display: inline-block; vertical-align: middle; margin-right: 4px;">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
+      </svg>
+      <span>Ouvrir Stripe Dashboard</span>
+    <% end %>
   </div>
   <div class="details-list">
     <div class="detail-item">
@@ -141,7 +166,12 @@
 <div class="admin-card" style="margin-top: var(--spacing-xl);">
   <div class="card-header">
     <h2>Activité récente</h2>
-    <%= link_to "Voir tous les logs", logs_admin_user_path(1), class: "btn btn-sm btn-outline" %>
+    <%= link_to logs_admin_user_path(1), class: "btn btn-sm btn-outline" do %>
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="14" height="14" style="display: inline-block; vertical-align: middle; margin-right: 4px;">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 12h16.5m-16.5 3.75h16.5M3.75 19.5h16.5M5.625 4.5h12.75a1.875 1.875 0 010 3.75H5.625a1.875 1.875 0 010-3.75z" />
+      </svg>
+      <span>Voir tous les logs</span>
+    <% end %>
   </div>
   <div class="activity-list">
     <div class="activity-item">
@@ -189,19 +219,34 @@
   </div>
   <div class="quick-actions-grid">
     <%= link_to reset_whatsapp_admin_user_path(1), method: :post, class: "btn btn-outline btn-block", data: { confirm: "Forcer la reconnexion WhatsApp ?" } do %>
-      🔄 Réinitialiser WhatsApp
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="16" height="16" style="display: inline-block; vertical-align: middle; margin-right: 4px;">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" />
+      </svg>
+      <span>Réinitialiser WhatsApp</span>
     <% end %>
     <%= link_to stripe_portal_admin_user_path(1), method: :post, class: "btn btn-outline btn-block" do %>
-      💳 Ouvrir Stripe Portal
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="16" height="16" style="display: inline-block; vertical-align: middle; margin-right: 4px;">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5z" />
+      </svg>
+      <span>Ouvrir Stripe Portal</span>
     <% end %>
     <%= link_to edit_admin_user_path(1), class: "btn btn-outline btn-block" do %>
-      ✏️ Modifier les informations
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="16" height="16" style="display: inline-block; vertical-align: middle; margin-right: 4px;">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
+      </svg>
+      <span>Modifier les informations</span>
     <% end %>
     <%= link_to logs_admin_user_path(1), class: "btn btn-outline btn-block" do %>
-      📝 Voir tous les logs
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="16" height="16" style="display: inline-block; vertical-align: middle; margin-right: 4px;">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 12h16.5m-16.5 3.75h16.5M3.75 19.5h16.5M5.625 4.5h12.75a1.875 1.875 0 010 3.75H5.625a1.875 1.875 0 010-3.75z" />
+      </svg>
+      <span>Voir tous les logs</span>
     <% end %>
     <%= link_to suspend_admin_user_path(1), method: :post, class: "btn btn-danger btn-block", data: { confirm: "Êtes-vous sûr de vouloir suspendre ce compte ?" } do %>
-      ⛔ Suspendre le compte
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="16" height="16" style="display: inline-block; vertical-align: middle; margin-right: 4px;">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
+      </svg>
+      <span>Suspendre le compte</span>
     <% end %>
   </div>
 </div>

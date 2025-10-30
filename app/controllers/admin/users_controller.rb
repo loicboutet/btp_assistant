@@ -84,6 +84,22 @@ module Admin
     end
 
     def stripe_portal
+      @user = OpenStruct.new(
+        id: params[:id],
+        email: 'demo@example.com',
+        first_name: 'Jean',
+        last_name: 'Dupont',
+        company_name: 'BTP Solutions SARL',
+        subscription_status: 'active',
+        subscription_plan: 'Professional',
+        stripe_customer_id: 'cus_AbCdEfGhIjKl',
+        stripe_subscription_id: 'sub_1234567890'
+      )
+    end
+
+    def create_stripe_portal
+      # In production, this would create a Stripe portal session
+      # For now, just redirect with a success message
       redirect_to admin_user_path(params[:id]), notice: 'Stripe portal session created.'
     end
   end
