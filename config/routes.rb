@@ -110,6 +110,7 @@ Rails.application.routes.draw do
     
     resources :webhooks, only: [:index] do
       member do
+        get :replay
         post :replay
       end
     end
