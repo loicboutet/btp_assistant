@@ -23,17 +23,17 @@
   <body>
     <div style="display: flex; flex-direction: column; min-height: 100vh; background-color: var(--bg-light);">
       <!-- Main Content Area -->
-      <main style="flex: 1; display: flex; align-items: center; justify-content: center; padding: var(--spacing-lg);">
+      <main style="flex: 1; display: flex; align-items: center; justify-content: center; padding-bottom: var(--spacing-md);">
         <div style="width: 100%; max-width: 480px;">
           <!-- Logo -->
-          <div style="text-align: center; margin-bottom: var(--spacing-xl);">
+          <div style="text-align: center; display: flex; ; justify-content: center">
             <%= link_to root_path do %>
               <%= image_tag "logo.png", alt: "Devis WhatsApp", style: "max-width: 180px; height: auto;" %>
             <% end %>
           </div>
 
           <!-- Card Container -->
-          <div class="card" style="padding: var(--spacing-xl);">
+          <div class="card" style="padding: var(--spacing-lg);">
             <!-- Flash Messages -->
             <% if notice %>
               <div class="alert alert-success">
@@ -52,7 +52,7 @@
           </div>
 
           <!-- Additional Links -->
-          <div style="text-align: center; margin-top: var(--spacing-md);">
+          <div style="text-align: center; margin-top: var(--spacing-sm);">
             <p style="font-size: var(--font-size-sm); color: var(--text-gray);">
               <%= link_to "Retour à l'accueil", root_path, style: "color: var(--primary-green); text-decoration: none; font-weight: var(--font-weight-semibold);" %>
             </p>

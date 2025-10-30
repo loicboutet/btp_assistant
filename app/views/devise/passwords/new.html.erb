@@ -1,16 +1,48 @@
-<h2>Forgot your password?</h2>
+<% content_for :title, "Mot de passe oublié - Devis WhatsApp" %>
 
+<!-- Page Title -->
+<div style="text-align: center; margin-bottom: var(--spacing-lg);">
+  <h1 style="font-size: var(--font-size-2xl); font-weight: var(--font-weight-bold); color: var(--text-dark); margin-bottom: var(--spacing-xs);">
+    Mot de passe oublié ?
+  </h1>
+  <p style="font-size: var(--font-size-sm); color: var(--text-gray);">
+    Entrez votre adresse e-mail pour réinitialiser votre mot de passe
+  </p>
+</div>
+
+<!-- Password Reset Form -->
 <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f| %>
   <%= render "devise/shared/error_messages", resource: resource %>
 
-  <div class="field">
-    <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
+  <!-- Email Field -->
+  <div class="form-group">
+    <%= f.label :email, "Adresse e-mail", class: "form-label" %>
+    <%= f.email_field :email, autofocus: true, autocomplete: "email", 
+        class: "form-input", 
+        placeholder: "votre@email.com" %>
+    <span class="form-hint">
+      Nous vous enverrons un lien pour réinitialiser votre mot de passe
+    </span>
   </div>
 
-  <div class="actions">
-    <%= f.submit "Send me reset password instructions" %>
+  <!-- Submit Button -->
+  <div class="form-group">
+    <%= f.submit "Envoyer les instructions", class: "btn btn-primary", style: "width: 100%;" %>
   </div>
 <% end %>
 
-<%= render "devise/shared/links" %>
+<!-- Additional Links -->
+<div style="margin-top: var(--spacing-md); text-align: center;">
+  <div style="display: flex; flex-direction: column; gap: var(--spacing-xs);">
+    <p style="font-size: var(--font-size-sm); color: var(--text-gray);">
+      <%= link_to "← Retour à la connexion", new_session_path(resource_name), class: "text-link" %>
+    </p>
+    
+    <% if devise_mapping.registerable? %>
+      <p style="font-size: var(--font-size-sm); color: var(--text-gray);">
+        Pas encore de compte ? 
+        <%= link_to "Créer un compte", new_registration_path(resource_name), class: "text-link" %>
+      </p>
+    <% end %>
+  </div>
+</div>

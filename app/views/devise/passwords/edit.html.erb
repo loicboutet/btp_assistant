@@ -1,25 +1,50 @@
-<h2>Change your password</h2>
+<% content_for :title, "Nouveau mot de passe - Devis WhatsApp" %>
 
+<!-- Page Title -->
+<div style="text-align: center; margin-bottom: var(--spacing-lg);">
+  <h1 style="font-size: var(--font-size-2xl); font-weight: var(--font-weight-bold); color: var(--text-dark); margin-bottom: var(--spacing-xs);">
+    Changer votre mot de passe
+  </h1>
+  <p style="font-size: var(--font-size-sm); color: var(--text-gray);">
+    Choisissez un nouveau mot de passe sécurisé
+  </p>
+</div>
+
+<!-- Password Change Form -->
 <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put }) do |f| %>
   <%= render "devise/shared/error_messages", resource: resource %>
   <%= f.hidden_field :reset_password_token %>
 
-  <div class="field">
-    <%= f.label :password, "New password" %><br />
+  <!-- New Password Field -->
+  <div class="form-group">
+    <%= f.label :password, "Nouveau mot de passe", class: "form-label" %>
     <% if @minimum_password_length %>
-      <em>(<%= @minimum_password_length %> characters minimum)</em><br />
+      <span class="form-hint">
+        (<%= @minimum_password_length %> caractères minimum)
+      </span>
     <% end %>
-    <%= f.password_field :password, autofocus: true, autocomplete: "new-password" %>
+    <%= f.password_field :password, autofocus: true, autocomplete: "new-password", 
+        class: "form-input", 
+        placeholder: "Votre nouveau mot de passe" %>
   </div>
 
-  <div class="field">
-    <%= f.label :password_confirmation, "Confirm new password" %><br />
-    <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
+  <!-- Password Confirmation Field -->
+  <div class="form-group">
+    <%= f.label :password_confirmation, "Confirmation du mot de passe", class: "form-label" %>
+    <%= f.password_field :password_confirmation, autocomplete: "new-password", 
+        class: "form-input", 
+        placeholder: "Confirmez votre nouveau mot de passe" %>
   </div>
 
-  <div class="actions">
-    <%= f.submit "Change my password" %>
+  <!-- Submit Button -->
+  <div class="form-group">
+    <%= f.submit "Changer mon mot de passe", class: "btn btn-primary", style: "width: 100%;" %>
   </div>
 <% end %>
 
-<%= render "devise/shared/links" %>
+<!-- Additional Links -->
+<div style="margin-top: var(--spacing-md); text-align: center;">
+  <p style="font-size: var(--font-size-sm); color: var(--text-gray);">
+    <%= link_to "← Retour à la connexion", new_session_path(resource_name), class: "text-link" %>
+  </p>
+</div>
