@@ -9,8 +9,8 @@
     </div>
     <div class="header-actions">
       <%= link_to "Modifier", edit_admin_user_path(1), class: "btn btn-primary" %>
-      <%= link_to "Stripe Portal", admin_user_stripe_portal_path(1), method: :post, class: "btn btn-outline" %>
-      <%= link_to "Suspendre", admin_user_suspend_path(1), method: :post, class: "btn btn-danger", data: { confirm: "Êtes-vous sûr de vouloir suspendre ce compte ?" } %>
+      <%= link_to "Stripe Portal", stripe_portal_admin_user_path(1), method: :post, class: "btn btn-outline" %>
+      <%= link_to "Suspendre", suspend_admin_user_path(1), method: :post, class: "btn btn-danger", data: { confirm: "Êtes-vous sûr de vouloir suspendre ce compte ?" } %>
     </div>
   </div>
 </div>
@@ -141,7 +141,7 @@
 <div class="admin-card" style="margin-top: var(--spacing-xl);">
   <div class="card-header">
     <h2>Activité récente</h2>
-    <%= link_to "Voir tous les logs", admin_user_logs_path(1), class: "btn btn-sm btn-outline" %>
+    <%= link_to "Voir tous les logs", logs_admin_user_path(1), class: "btn btn-sm btn-outline" %>
   </div>
   <div class="activity-list">
     <div class="activity-item">
@@ -188,19 +188,19 @@
     <h2>Actions rapides</h2>
   </div>
   <div class="quick-actions-grid">
-    <%= link_to admin_user_reset_whatsapp_path(1), method: :post, class: "btn btn-outline btn-block", data: { confirm: "Forcer la reconnexion WhatsApp ?" } do %>
+    <%= link_to reset_whatsapp_admin_user_path(1), method: :post, class: "btn btn-outline btn-block", data: { confirm: "Forcer la reconnexion WhatsApp ?" } do %>
       🔄 Réinitialiser WhatsApp
     <% end %>
-    <%= link_to admin_user_stripe_portal_path(1), method: :post, class: "btn btn-outline btn-block" do %>
+    <%= link_to stripe_portal_admin_user_path(1), method: :post, class: "btn btn-outline btn-block" do %>
       💳 Ouvrir Stripe Portal
     <% end %>
     <%= link_to edit_admin_user_path(1), class: "btn btn-outline btn-block" do %>
       ✏️ Modifier les informations
     <% end %>
-    <%= link_to admin_user_logs_path(1), class: "btn btn-outline btn-block" do %>
+    <%= link_to logs_admin_user_path(1), class: "btn btn-outline btn-block" do %>
       📝 Voir tous les logs
     <% end %>
-    <%= link_to admin_user_suspend_path(1), method: :post, class: "btn btn-danger btn-block", data: { confirm: "Êtes-vous sûr de vouloir suspendre ce compte ?" } do %>
+    <%= link_to suspend_admin_user_path(1), method: :post, class: "btn btn-danger btn-block", data: { confirm: "Êtes-vous sûr de vouloir suspendre ce compte ?" } do %>
       ⛔ Suspendre le compte
     <% end %>
   </div>
