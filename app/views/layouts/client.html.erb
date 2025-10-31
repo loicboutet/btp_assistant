@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= content_for(:title) || "Devis WhatsApp" %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= yield :head %>
+
+    <link rel="icon" href="/icon.png" type="image/png">
+    <link rel="icon" href="/icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/icon.png">
+
+    <%= stylesheet_link_tag "tailwind", "inter-font", "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag "style", "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+  </head>
+
+  <body>
+    <div class="client-layout" data-controller="client-layout">
+      <!-- Top Header -->
+      <header class="client-header">
+        <nav class="client-navbar">
+          <!-- Logo -->
+          <div class="client-logo">
+            <%= link_to root_path do %>
+              <%= image_tag "logo.png", alt: "Devis WhatsApp", style: "height: 80px;" %>
+            <% end %>
+          </div>
+
+          <!-- Mobile Menu Toggle -->
+          <button class="mobile-menu-toggle" data-action="click->client-layout#toggleMobileMenu">
+            ☰
+          </button>
+
+          <!-- Navigation Menu -->
+          <div class="client-nav-menu" data-client-layout-target="mobileMenu">
+            <%= link_to "Tableau de bord", client_dashboard_path, class: "client-nav-item #{current_page?(client_dashboard_path) ? 'active' : ''}", data: { action: "click->client-layout#closeMenuOnNavClick" } %>
+            <%= link_to "Devis", quotes_path, class: "client-nav-item #{current_page?(quotes_path) ? 'active' : ''}", data: { action: "click->client-layout#closeMenuOnNavClick" } %>
+            <%= link_to "Factures", invoices_path, class: "client-nav-item #{current_page?(invoices_path) ? 'active' : ''}", data: { action: "click->client-layout#closeMenuOnNavClick" } %>
+            <%= link_to "Clients", clients_path, class: "client-nav-item #{current_page?(clients_path) ? 'active' : ''}", data: { action: "click->client-layout#closeMenuOnNavClick" } %>
+            <%= link_to "Conversations", conversations_path, class: "client-nav-item #{current_page?(conversations_path) ? 'active' : ''}", data: { action: "click->client-layout#closeMenuOnNavClick" } %>
+          </div>
+
+          <!-- User Dropdown -->
+          <div class="client-user-dropdown">
+            <div class="client-user-button" data-action="click->client-layout#toggleProfileDropdown">
+              <!-- User Avatar -->
+              <div class="client-user-avatar">
+                A
+              </div>
+              
+              <!-- User Info (hidden on mobile) -->
+              <div class="client-user-info">
+                <span class="client-user-name">Artisan</span>
+                <span class="client-user-email">artisan@example.com</span>
+              </div>
+              
+              <!-- Dropdown Icon -->
+              <span class="client-dropdown-icon">▼</span>
+            </div>
+
+            <!-- Dropdown Menu -->
+            <div class="client-dropdown-menu" data-client-layout-target="profileDropdown">
+              <%= link_to client_profile_path, class: "client-dropdown-item" do %>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+                <span>Mon profil</span>
+              <% end %>
+
+              <%= button_to client_subscription_path, method: :post, class: "client-dropdown-item", style: "background: none; border: none; width: 100%; text-align: left; cursor: pointer; padding: 0.75rem 1rem; display: flex; align-items: center; gap: 0.5rem;" do %>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect>
+                  <line x1="1" y1="10" x2="23" y2="10"></line>
+                </svg>
+                <span>Abonnement</span>
+              <% end %>
+
+              <div class="client-dropdown-divider"></div>
+
+              <%= link_to "#", class: "client-dropdown-item" do %>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                  <polyline points="16 17 21 12 16 7"></polyline>
+                  <line x1="21" y1="12" x2="9" y2="12"></line>
+                </svg>
+                <span>Déconnexion</span>
+              <% end %>
+            </div>
+          </div>
+        </nav>
+      </header>
+
+      <!-- Main Content Area -->
+      <main class="client-main-content">
+        <!-- Flash Messages -->
+        <% if notice %>
+          <div class="alert alert-success">
+            <%= notice %>
+          </div>
+        <% end %>
+        
+        <% if alert %>
+          <div class="alert alert-error">
+            <%= alert %>
+          </div>
+        <% end %>
+
+        <!-- Page Content -->
+        <%= yield %>
+      </main>
+
+      <!-- Footer -->
+      <%= render "shared/footer" %>
+    </div>
+  </body>
+</html>

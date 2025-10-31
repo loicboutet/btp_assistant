@@ -1,0 +1,383 @@
+<% content_for :title, "Utilisateurs - Admin" %>
+
+<div class="admin-page-header">
+  <div class="header-with-actions">
+    <div>
+      <h1>Gestion des Utilisateurs</h1>
+      <p class="text-muted">Gérez tous les comptes artisans de la plateforme</p>
+    </div>
+    <div class="header-actions">
+      <%= link_to new_admin_user_path, class: "btn btn-primary btn-sm" do %>
+        <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+          <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+        </svg>
+        <span>Créer un utilisateur</span>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<!-- Filters & Search -->
+<div class="admin-card" style="margin-bottom: var(--spacing-lg);">
+  <h3 class="filters-title">Filtres de recherche</h3>
+  <div class="filters-bar">
+    <div class="search-box">
+      <input type="search" placeholder="Rechercher par nom, email, SIRET..." class="form-input">
+    </div>
+    <div class="filter-group">
+      <select class="form-select">
+        <option>Tous les statuts</option>
+        <option selected>Actifs</option>
+        <option>Suspendus</option>
+        <option>Essai</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <select class="form-select">
+        <option>Toutes les langues</option>
+        <option>Français</option>
+        <option>Turc</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <select class="form-select">
+        <option>WhatsApp (Tous)</option>
+        <option>Connectés</option>
+        <option>Non connectés</option>
+      </select>
+    </div>
+    <div class="filter-actions">
+      <button class="btn btn-outline">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="20" height="20">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+        <span>Effacer</span>
+      </button>
+      <button class="btn btn-primary">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="20" height="20">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 3c2.755 0 5.455.232 8.083.678.533.09.917.556.917 1.096v1.044a2.25 2.25 0 01-.659 1.591l-5.432 5.432a2.25 2.25 0 00-.659 1.591v2.927a2.25 2.25 0 01-1.244 2.013L9.75 21v-6.568a2.25 2.25 0 00-.659-1.591L3.659 7.409A2.25 2.25 0 013 5.818V4.774c0-.54.384-1.006.917-1.096A48.32 48.32 0 0112 3z" />
+        </svg>
+        <span>Filtrer</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Users Table -->
+<div class="admin-card">
+  <table class="admin-table">
+    <thead>
+      <tr>
+        <th>Utilisateur</th>
+        <th>Entreprise</th>
+        <th>Langue</th>
+        <th>WhatsApp</th>
+        <th>Abonnement</th>
+        <th>Documents</th>
+        <th>Statut</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <div class="user-info">
+            <div class="user-avatar">JD</div>
+            <div>
+              <div class="user-name">Jean Dupont</div>
+              <div class="user-email">jean.dupont@example.fr</div>
+            </div>
+          </div>
+        </td>
+        <td>
+          <div>Dupont Maçonnerie</div>
+          <div class="text-muted small">SIRET: 123 456 789 00012</div>
+        </td>
+        <td><span class="badge badge-blue">🇫🇷 FR</span></td>
+        <td><span class="status-badge status-success">Connecté</span></td>
+        <td>
+          <div>Actif</div>
+          <div class="text-muted small">Depuis 3 mois</div>
+        </td>
+        <td>
+          <div>87 docs</div>
+          <div class="text-muted small">42 devis, 45 factures</div>
+        </td>
+        <td><span class="status-badge status-success">Actif</span></td>
+        <td>
+          <div class="action-buttons">
+            <%= link_to admin_user_path(1), class: "btn btn-xs btn-outline" do %>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="14" height="14" style="display: inline-block; vertical-align: middle; margin-right: 4px;">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+              </svg>
+              <span>Voir</span>
+            <% end %>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <div class="user-info">
+            <div class="user-avatar">MY</div>
+            <div>
+              <div class="user-name">Mehmet Yılmaz</div>
+              <div class="user-email">mehmet.yilmaz@example.com</div>
+            </div>
+          </div>
+        </td>
+        <td>
+          <div>Yılmaz İnşaat</div>
+          <div class="text-muted small">SIRET: 987 654 321 00034</div>
+        </td>
+        <td><span class="badge badge-red">🇹🇷 TR</span></td>
+        <td><span class="status-badge status-success">Connecté</span></td>
+        <td>
+          <div>Actif</div>
+          <div class="text-muted small">Depuis 1 mois</div>
+        </td>
+        <td>
+          <div>52 docs</div>
+          <div class="text-muted small">28 devis, 24 factures</div>
+        </td>
+        <td><span class="status-badge status-success">Actif</span></td>
+        <td>
+          <div class="action-buttons">
+            <%= link_to admin_user_path(2), class: "btn btn-xs btn-outline" do %>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="14" height="14" style="display: inline-block; vertical-align: middle; margin-right: 4px;">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+              </svg>
+              <span>Voir</span>
+            <% end %>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <div class="user-info">
+            <div class="user-avatar">MM</div>
+            <div>
+              <div class="user-name">Marie Martin</div>
+              <div class="user-email">marie.martin@example.fr</div>
+            </div>
+          </div>
+        </td>
+        <td>
+          <div>Martin Rénovation</div>
+          <div class="text-muted small">SIRET: 456 789 123 00056</div>
+        </td>
+        <td><span class="badge badge-blue">🇫🇷 FR</span></td>
+        <td><span class="status-badge status-success">Connecté</span></td>
+        <td>
+          <div>Actif</div>
+          <div class="text-muted small">Depuis 6 mois</div>
+        </td>
+        <td>
+          <div>143 docs</div>
+          <div class="text-muted small">65 devis, 78 factures</div>
+        </td>
+        <td><span class="status-badge status-success">Actif</span></td>
+        <td>
+          <div class="action-buttons">
+            <%= link_to admin_user_path(3), class: "btn btn-xs btn-outline" do %>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="14" height="14" style="display: inline-block; vertical-align: middle; margin-right: 4px;">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+              </svg>
+              <span>Voir</span>
+            <% end %>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <div class="user-info">
+            <div class="user-avatar">AD</div>
+            <div>
+              <div class="user-name">Ahmet Demir</div>
+              <div class="user-email">ahmet.demir@example.com</div>
+            </div>
+          </div>
+        </td>
+        <td>
+          <div>Demir Construction</div>
+          <div class="text-muted small">SIRET: 789 123 456 00078</div>
+        </td>
+        <td><span class="badge badge-red">🇹🇷 TR</span></td>
+        <td><span class="status-badge status-success">Connecté</span></td>
+        <td>
+          <div>Actif</div>
+          <div class="text-muted small">Depuis 4 mois</div>
+        </td>
+        <td>
+          <div>98 docs</div>
+          <div class="text-muted small">47 devis, 51 factures</div>
+        </td>
+        <td><span class="status-badge status-success">Actif</span></td>
+        <td>
+          <div class="action-buttons">
+            <%= link_to admin_user_path(4), class: "btn btn-xs btn-outline" do %>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="14" height="14" style="display: inline-block; vertical-align: middle; margin-right: 4px;">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+              </svg>
+              <span>Voir</span>
+            <% end %>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <div class="user-info">
+            <div class="user-avatar">PL</div>
+            <div>
+              <div class="user-name">Pierre Lefebvre</div>
+              <div class="user-email">pierre.lefebvre@example.fr</div>
+            </div>
+          </div>
+        </td>
+        <td>
+          <div>Lefebvre Plâtrerie</div>
+          <div class="text-muted small">SIRET: 321 654 987 00090</div>
+        </td>
+        <td><span class="badge badge-blue">🇫🇷 FR</span></td>
+        <td><span class="status-badge status-warning">Non connecté</span></td>
+        <td>
+          <div>Actif</div>
+          <div class="text-muted small">Depuis 2 semaines</div>
+        </td>
+        <td>
+          <div>12 docs</div>
+          <div class="text-muted small">8 devis, 4 factures</div>
+        </td>
+        <td><span class="status-badge status-success">Actif</span></td>
+        <td>
+          <div class="action-buttons">
+            <%= link_to admin_user_path(5), class: "btn btn-xs btn-outline" do %>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="14" height="14" style="display: inline-block; vertical-align: middle; margin-right: 4px;">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+              </svg>
+              <span>Voir</span>
+            <% end %>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <div class="user-info">
+            <div class="user-avatar">AÖ</div>
+            <div>
+              <div class="user-name">Ali Öztürk</div>
+              <div class="user-email">ali.ozturk@example.com</div>
+            </div>
+          </div>
+        </td>
+        <td>
+          <div>Öztürk Tadilat</div>
+          <div class="text-muted small">SIRET: 654 987 321 00112</div>
+        </td>
+        <td><span class="badge badge-red">🇹🇷 TR</span></td>
+        <td><span class="status-badge status-success">Connecté</span></td>
+        <td>
+          <div class="warning-text">Paiement échoué</div>
+          <div class="text-muted small">2 jours restants</div>
+        </td>
+        <td>
+          <div>76 docs</div>
+          <div class="text-muted small">38 devis, 38 factures</div>
+        </td>
+        <td><span class="status-badge status-warning">Paiement échoué</span></td>
+        <td>
+          <div class="action-buttons">
+            <%= link_to admin_user_path(6), class: "btn btn-xs btn-outline" do %>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="14" height="14" style="display: inline-block; vertical-align: middle; margin-right: 4px;">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+              </svg>
+              <span>Voir</span>
+            <% end %>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <div class="user-info">
+            <div class="user-avatar">SB</div>
+            <div>
+              <div class="user-name">Sophie Bernard</div>
+              <div class="user-email">sophie.bernard@example.fr</div>
+            </div>
+          </div>
+        </td>
+        <td>
+          <div>Bernard Peinture</div>
+          <div class="text-muted small">SIRET: 147 258 369 00134</div>
+        </td>
+        <td><span class="badge badge-blue">🇫🇷 FR</span></td>
+        <td><span class="status-badge status-success">Connecté</span></td>
+        <td>
+          <div class="danger-text">Suspendu</div>
+          <div class="text-muted small">Impayé 15 jours</div>
+        </td>
+        <td>
+          <div>124 docs</div>
+          <div class="text-muted small">58 devis, 66 factures</div>
+        </td>
+        <td><span class="status-badge status-danger">Suspendu</span></td>
+        <td>
+          <div class="action-buttons">
+            <%= link_to admin_user_path(7), class: "btn btn-xs btn-outline" do %>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="14" height="14" style="display: inline-block; vertical-align: middle; margin-right: 4px;">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+              </svg>
+              <span>Voir</span>
+            <% end %>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <div class="user-info">
+            <div class="user-avatar">CK</div>
+            <div>
+              <div class="user-name">Can Kaya</div>
+              <div class="user-email">can.kaya@example.com</div>
+            </div>
+          </div>
+        </td>
+        <td>
+          <div>Kaya Ustası</div>
+          <div class="text-muted small">SIRET: 369 147 258 00156</div>
+        </td>
+        <td><span class="badge badge-red">🇹🇷 TR</span></td>
+        <td><span class="status-badge status-success">Connecté</span></td>
+        <td>
+          <div>Actif</div>
+          <div class="text-muted small">Renouvellement: 3 jours</div>
+        </td>
+        <td>
+          <div>64 docs</div>
+          <div class="text-muted small">32 devis, 32 factures</div>
+        </td>
+        <td><span class="status-badge status-success">Actif</span></td>
+        <td>
+          <div class="action-buttons">
+            <%= link_to admin_user_path(8), class: "btn btn-xs btn-outline" do %>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="14" height="14" style="display: inline-block; vertical-align: middle; margin-right: 4px;">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+              </svg>
+              <span>Voir</span>
+            <% end %>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Pagination -->
+<%= render 'shared/pagination', collection: @users || [] %>

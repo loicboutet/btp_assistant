@@ -1,4 +1,266 @@
-<div>
-  <h1 class="font-bold text-4xl">Home#index</h1>
-  <p>Find me in app/views/home/index.html.erb</p>
+<% content_for :title, "Routes de l'Application - Devis WhatsApp" %>
+
+<div style="max-width: 1400px; margin: 0 auto; padding: 2rem;">
+  <div style="text-align: center; margin-bottom: 3rem;">
+    
+    <h1 style="font-size: 2.5rem; font-weight: bold; color: #1F2937; margin-bottom: 0.5rem;">Devis WhatsApp</h1>
+   
+  </div>
+
+  <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 2rem; margin-bottom: 2rem;">
+    
+    <!-- ADMIN SECTION -->
+    <div style="background: white; border-radius: 12px; padding: 2rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+      <h2 style="font-size: 1.875rem; font-weight: bold; color: #DC2626; margin-bottom: 1.5rem; border-bottom: 3px solid #DC2626; padding-bottom: 0.5rem;">
+        🔧 Routes du Panneau d'Administration
+      </h2>
+
+      <!-- Dashboard -->
+      <div style="margin-bottom: 1.5rem;">
+        <h3 style="font-size: 1.25rem; font-weight: 600; color: #374151; margin-bottom: 0.75rem;">📊 Tableau de Bord</h3>
+        <ul style="list-style: none; padding-left: 0;">
+          <li style="margin-bottom: 0.5rem;">
+            <%= link_to "Accueil du Tableau de Bord", admin_dashboard_path, style: "color: #2563EB; text-decoration: none; hover: text-decoration: underline;" %>
+          </li>
+          <li style="margin-bottom: 0.5rem;">
+            <%= link_to "Métriques", admin_metrics_path, style: "color: #2563EB; text-decoration: none; hover: text-decoration: underline;" %>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Users Management -->
+      <div style="margin-bottom: 1.5rem;">
+        <h3 style="font-size: 1.25rem; font-weight: 600; color: #374151; margin-bottom: 0.75rem;">👥 Gestion des Utilisateurs</h3>
+        <ul style="list-style: none; padding-left: 0;">
+          <li style="margin-bottom: 0.5rem;">
+            <%= link_to "Liste des Utilisateurs", admin_users_path, style: "color: #2563EB; text-decoration: none; hover: text-decoration: underline;" %>
+          </li>
+          <li style="margin-bottom: 0.5rem;">
+            <%= link_to "Détail de l'Utilisateur", admin_user_path(1), style: "color: #2563EB; text-decoration: none; hover: text-decoration: underline;" %>
+          </li>
+          <li style="margin-bottom: 0.5rem;">
+            <%= link_to "Créer un Nouvel Utilisateur", new_admin_user_path, style: "color: #2563EB; text-decoration: none; hover: text-decoration: underline;" %>
+          </li>
+          <li style="margin-bottom: 0.5rem;">
+            <%= link_to "Modifier l'Utilisateur", edit_admin_user_path(1), style: "color: #2563EB; text-decoration: none; hover: text-decoration: underline;" %>
+          </li>
+          <li style="margin-bottom: 0.5rem;">
+            <%= link_to "Journaux de l'Utilisateur", logs_admin_user_path(1), style: "color: #2563EB; text-decoration: none; hover: text-decoration: underline;" %>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Subscriptions -->
+      <div style="margin-bottom: 1.5rem;">
+        <h3 style="font-size: 1.25rem; font-weight: 600; color: #374151; margin-bottom: 0.75rem;">💳 Abonnements</h3>
+        <ul style="list-style: none; padding-left: 0;">
+          <li style="margin-bottom: 0.5rem;">
+            <%= link_to "Liste des Abonnements", admin_subscriptions_path, style: "color: #2563EB; text-decoration: none; hover: text-decoration: underline;" %>
+          </li>
+          <li style="margin-bottom: 0.5rem;">
+            <%= link_to "Détail de l'Abonnement", admin_subscription_path(1), style: "color: #2563EB; text-decoration: none; hover: text-decoration: underline;" %>
+          </li>
+          <li style="margin-bottom: 0.5rem;">
+            <%= link_to "Abonnements en Retard", overdue_admin_subscriptions_path, style: "color: #2563EB; text-decoration: none; hover: text-decoration: underline;" %>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Webhooks -->
+      <div style="margin-bottom: 1.5rem;">
+        <h3 style="font-size: 1.25rem; font-weight: 600; color: #374151; margin-bottom: 0.75rem;">🔗 Webhooks</h3>
+        <ul style="list-style: none; padding-left: 0;">
+          <li style="margin-bottom: 0.5rem;">
+            <%= link_to "Liste des Webhooks", admin_webhooks_path, style: "color: #2563EB; text-decoration: none; hover: text-decoration: underline;" %>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Logs -->
+      <div style="margin-bottom: 1.5rem;">
+        <h3 style="font-size: 1.25rem; font-weight: 600; color: #374151; margin-bottom: 0.75rem;">📋 Journaux Système</h3>
+        <ul style="list-style: none; padding-left: 0;">
+          <li style="margin-bottom: 0.5rem;">
+            <%= link_to "Liste des Journaux", admin_logs_path, style: "color: #2563EB; text-decoration: none; hover: text-decoration: underline;" %>
+          </li>
+          <li style="margin-bottom: 0.5rem;">
+            <%= link_to "Détail du Journal", admin_log_path(1), style: "color: #2563EB; text-decoration: none; hover: text-decoration: underline;" %>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Settings -->
+      <div style="margin-bottom: 1.5rem;">
+        <h3 style="font-size: 1.25rem; font-weight: 600; color: #374151; margin-bottom: 0.75rem;">⚙️ Paramètres</h3>
+        <ul style="list-style: none; padding-left: 0;">
+          <li style="margin-bottom: 0.5rem;">
+            <%= link_to "Accueil des Paramètres", admin_settings_path, style: "color: #2563EB; text-decoration: none; hover: text-decoration: underline;" %>
+          </li>
+          <li style="margin-bottom: 0.5rem;">
+            <%= link_to "Configuration Unipile", admin_settings_unipile_path, style: "color: #2563EB; text-decoration: none; hover: text-decoration: underline;" %>
+          </li>
+          <li style="margin-bottom: 0.5rem;">
+            <%= link_to "Configuration Stripe", admin_settings_stripe_path, style: "color: #2563EB; text-decoration: none; hover: text-decoration: underline;" %>
+          </li>
+          <li style="margin-bottom: 0.5rem;">
+            <%= link_to "Configuration OpenAI", admin_settings_openai_path, style: "color: #2563EB; text-decoration: none; hover: text-decoration: underline;" %>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- CLIENT SECTION -->
+    <div style="background: white; border-radius: 12px; padding: 2rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+      <h2 style="font-size: 1.875rem; font-weight: bold; color: #059669; margin-bottom: 1.5rem; border-bottom: 3px solid #059669; padding-bottom: 0.5rem;">
+        👤 Routes du Panneau Client
+      </h2>
+
+      <!-- Dashboard -->
+      <div style="margin-bottom: 1.5rem;">
+        <h3 style="font-size: 1.25rem; font-weight: 600; color: #374151; margin-bottom: 0.75rem;">🏠 Tableau de Bord</h3>
+        <ul style="list-style: none; padding-left: 0;">
+          <li style="margin-bottom: 0.5rem;">
+            <%= link_to "Tableau de Bord Client", client_dashboard_path, style: "color: #2563EB; text-decoration: none; hover: text-decoration: underline;" %>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Profile -->
+      <div style="margin-bottom: 1.5rem;">
+        <h3 style="font-size: 1.25rem; font-weight: 600; color: #374151; margin-bottom: 0.75rem;">👤 Profil</h3>
+        <ul style="list-style: none; padding-left: 0;">
+          <li style="margin-bottom: 0.5rem;">
+            <%= link_to "Mon Profil", client_profile_path, style: "color: #2563EB; text-decoration: none; hover: text-decoration: underline;" %>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Quotes -->
+      <div style="margin-bottom: 1.5rem;">
+        <h3 style="font-size: 1.25rem; font-weight: 600; color: #374151; margin-bottom: 0.75rem;">📄 Devis</h3>
+        <ul style="list-style: none; padding-left: 0;">
+          <li style="margin-bottom: 0.5rem;">
+            <%= link_to "Liste des Devis", quotes_path, style: "color: #2563EB; text-decoration: none; hover: text-decoration: underline;" %>
+          </li>
+          <li style="margin-bottom: 0.5rem;">
+            <%= link_to "Détail du Devis", quote_path(1), style: "color: #2563EB; text-decoration: none; hover: text-decoration: underline;" %>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Invoices -->
+      <div style="margin-bottom: 1.5rem;">
+        <h3 style="font-size: 1.25rem; font-weight: 600; color: #374151; margin-bottom: 0.75rem;">🧾 Factures</h3>
+        <ul style="list-style: none; padding-left: 0;">
+          <li style="margin-bottom: 0.5rem;">
+            <%= link_to "Liste des Factures", invoices_path, style: "color: #2563EB; text-decoration: none; hover: text-decoration: underline;" %>
+          </li>
+          <li style="margin-bottom: 0.5rem;">
+            <%= link_to "Détail de la Facture", invoice_path(1), style: "color: #2563EB; text-decoration: none; hover: text-decoration: underline;" %>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Clients -->
+      <div style="margin-bottom: 1.5rem;">
+        <h3 style="font-size: 1.25rem; font-weight: 600; color: #374151; margin-bottom: 0.75rem;">🏢 Clients</h3>
+        <ul style="list-style: none; padding-left: 0;">
+          <li style="margin-bottom: 0.5rem;">
+            <%= link_to "Liste des Clients", clients_path, style: "color: #2563EB; text-decoration: none; hover: text-decoration: underline;" %>
+          </li>
+          <li style="margin-bottom: 0.5rem;">
+            <%= link_to "Détail du Client", client_path(1), style: "color: #2563EB; text-decoration: none; hover: text-decoration: underline;" %>
+          </li>
+          <li style="margin-bottom: 0.5rem;">
+            <%= link_to "Modifier le Client", edit_client_path(1), style: "color: #2563EB; text-decoration: none; hover: text-decoration: underline;" %>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Conversations -->
+      <div style="margin-bottom: 1.5rem;">
+        <h3 style="font-size: 1.25rem; font-weight: 600; color: #374151; margin-bottom: 0.75rem;">💬 Conversations</h3>
+        <ul style="list-style: none; padding-left: 0;">
+          <li style="margin-bottom: 0.5rem;">
+            <%= link_to "Liste des Conversations", conversations_path, style: "color: #2563EB; text-decoration: none; hover: text-decoration: underline;" %>
+          </li>
+          <li style="margin-bottom: 0.5rem;">
+            <%= link_to "Détail de la Conversation", conversation_path(1), style: "color: #2563EB; text-decoration: none; hover: text-decoration: underline;" %>
+          </li>
+        </ul>
+      </div>
+
+      <!-- WhatsApp -->
+      <div style="margin-bottom: 1.5rem;">
+        <h3 style="font-size: 1.25rem; font-weight: 600; color: #374151; margin-bottom: 0.75rem;">📱 WhatsApp</h3>
+        <ul style="list-style: none; padding-left: 0;">
+          <li style="margin-bottom: 0.5rem;">
+            <%= link_to "Connecter WhatsApp", whatsapp_connect_path, style: "color: #2563EB; text-decoration: none; hover: text-decoration: underline;" %>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- PUBLIC & AUTH SECTION -->
+    <div style="background: white; border-radius: 12px; padding: 2rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+    <h2 style="font-size: 1.875rem; font-weight: bold; color: #7C3AED; margin-bottom: 1.5rem; border-bottom: 3px solid #7C3AED; padding-bottom: 0.5rem;">
+      🌐 Routes Publiques et d'Authentification
+    </h2>
+
+      <!-- Public Pages -->
+      <div style="margin-bottom: 1.5rem;">
+        <h3 style="font-size: 1.25rem; font-weight: 600; color: #374151; margin-bottom: 0.75rem;">📄 Pages Publiques</h3>
+        <ul style="list-style: none; padding-left: 0;">
+          <li style="margin-bottom: 0.5rem;">
+            <%= link_to "Mentions Légales", legal_path, style: "color: #2563EB; text-decoration: none; hover: text-decoration: underline;" %>
+          </li>
+          <li style="margin-bottom: 0.5rem;">
+            <%= link_to "Conditions d'Utilisation", terms_path, style: "color: #2563EB; text-decoration: none; hover: text-decoration: underline;" %>
+          </li>
+          <li style="margin-bottom: 0.5rem;">
+            <%= link_to "Politique de Confidentialité", privacy_path, style: "color: #2563EB; text-decoration: none; hover: text-decoration: underline;" %>
+          </li>
+          <li style="margin-bottom: 0.5rem;">
+            <%= link_to "À Propos", about_path, style: "color: #2563EB; text-decoration: none; hover: text-decoration: underline;" %>
+          </li>
+          <li style="margin-bottom: 0.5rem;">
+            <%= link_to "Support", support_path, style: "color: #2563EB; text-decoration: none; hover: text-decoration: underline;" %>
+          </li>
+          <li style="margin-bottom: 0.5rem;">
+            <%= link_to "Contact", contact_path, style: "color: #2563EB; text-decoration: none; hover: text-decoration: underline;" %>
+          </li>
+         
+        </ul>
+      </div>
+
+      <!-- Authentication -->
+      <div style="margin-bottom: 1.5rem;">
+        <h3 style="font-size: 1.25rem; font-weight: 600; color: #374151; margin-bottom: 0.75rem;">🔐 Authentification</h3>
+        <ul style="list-style: none; padding-left: 0;">
+          <li style="margin-bottom: 0.5rem;">
+            <%= link_to "Connexion", new_user_session_path, style: "color: #2563EB; text-decoration: none; hover: text-decoration: underline;" %>
+          </li>
+          <li style="margin-bottom: 0.5rem;">
+            <%= link_to "Inscription", new_user_registration_path, style: "color: #2563EB; text-decoration: none; hover: text-decoration: underline;" %>
+          </li>
+          <li style="margin-bottom: 0.5rem;">
+            <%= link_to "Modifier l'Inscription", edit_user_registration_path, style: "color: #2563EB; text-decoration: none; hover: text-decoration: underline;" %>
+          </li>
+          <li style="margin-bottom: 0.5rem;">
+            <%= link_to "Mot de Passe Oublié", new_user_password_path, style: "color: #2563EB; text-decoration: none; hover: text-decoration: underline;" %>
+          </li>
+          <li style="margin-bottom: 0.5rem;">
+            <%= link_to "Modifier le Mot de Passe", edit_user_password_path(reset_password_token: "sample"), style: "color: #2563EB; text-decoration: none; hover: text-decoration: underline;" %>
+          </li>
+          
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer Note -->
+  <div style="text-align: center; color: #6B7280; font-size: 0.875rem; margin-top: 2rem;">
+    <p>📝 Cette page liste toutes les routes GET avec des liens cliquables vers leurs vues correspondantes.</p>
+    <p style="margin-top: 0.5rem;">Note : Certaines routes peuvent nécessiter une authentification ou des paramètres spécifiques pour s'afficher correctement.</p>
+  </div>
 </div>

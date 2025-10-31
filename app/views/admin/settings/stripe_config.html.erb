@@ -1,0 +1,227 @@
+<% content_for :title, "Configuration Stripe - Paramètres Admin" %>
+
+<div class="admin-page-header">
+  <%= link_to "← Retour aux paramètres", admin_settings_path, class: "back-link" %>
+  <h1>Configuration Stripe</h1>
+  <p class="text-muted">Gestion des paiements et abonnements</p>
+</div>
+
+<!-- Status Overview -->
+<div class="stats-grid">
+  <div class="stat-card">
+    <div class="stat-icon bg-green">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="32" height="32">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+      </svg>
+    </div>
+    <div class="stat-content">
+      <div class="stat-value"><span class="status-badge status-success">Actif</span></div>
+      <div class="stat-label">Statut API</div>
+      <div class="stat-detail">Mode Production</div>
+    </div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon bg-blue">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="32" height="32">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5z" />
+      </svg>
+    </div>
+    <div class="stat-content">
+      <div class="stat-value">2 847€</div>
+      <div class="stat-label">MRR</div>
+      <div class="stat-detail">47 abonnements actifs</div>
+    </div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon bg-purple">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="32" height="32">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m13.35-.622l1.757-1.757a4.5 4.5 0 00-6.364-6.364l-4.5 4.5a4.5 4.5 0 001.242 7.244" />
+      </svg>
+    </div>
+    <div class="stat-content">
+      <div class="stat-value">18</div>
+      <div class="stat-label">Webhooks (24h)</div>
+      <div class="stat-detail success-text">100% succès</div>
+    </div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon bg-orange">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="32" height="32">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+      </svg>
+    </div>
+    <div class="stat-content">
+      <div class="stat-value">5 min</div>
+      <div class="stat-label">Dernière transaction</div>
+      <div class="stat-detail">59€</div>
+    </div>
+  </div>
+</div>
+
+<!-- Configuration Form -->
+<div class="admin-card" style="margin-top: var(--spacing-xl);">
+  <div class="card-header">
+    <h2>Configuration API</h2>
+    <button class="btn btn-primary" style="display: inline-flex; align-items: center; gap: 0.5rem;">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="16" height="16">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+      </svg>
+      <span>Sauvegarder</span>
+    </button>
+  </div>
+  <form class="settings-form">
+    <div class="form-group">
+      <label class="form-label">Mode</label>
+      <select class="form-select">
+        <option>Test</option>
+        <option selected>Production</option>
+      </select>
+      <small class="form-hint">Environnement Stripe utilisé</small>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Publishable Key (Production)</label>
+      <input type="text" class="form-input" value="pk_live_••••••••••••••••" placeholder="pk_live_..." readonly>
+      <small class="form-hint">Clé publique pour le checkout</small>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Secret Key (Production)</label>
+      <input type="password" class="form-input" value="sk_live_••••••••••••••••" placeholder="sk_live_...">
+      <small class="form-hint">Clé secrète pour les opérations API</small>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Webhook Secret</label>
+      <input type="password" class="form-input" value="whsec_••••••••••••••••" placeholder="whsec_...">
+      <small class="form-hint">Secret pour la vérification des webhooks</small>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Price ID (Abonnement mensuel)</label>
+      <input type="text" class="form-input" value="price_1234567890abcdef" placeholder="price_...">
+      <small class="form-hint">ID du prix configuré dans Stripe (59€/mois)</small>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Webhook URL</label>
+      <input type="url" class="form-input" value="https://deviswhatsapp.fr/webhooks/stripe" readonly>
+      <small class="form-hint">URL configurée dans Stripe Dashboard</small>
+    </div>
+  </form>
+</div>
+
+<!-- Stripe Dashboard Link -->
+<div class="admin-card" style="margin-top: var(--spacing-xl);">
+  <div class="card-header">
+    <h2>Stripe Dashboard</h2>
+    <a href="https://dashboard.stripe.com" target="_blank" class="btn btn-primary" style="display: inline-flex; align-items: center; gap: 0.5rem;">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="16" height="16">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
+      </svg>
+      <span>Ouvrir Stripe Dashboard</span>
+    </a>
+  </div>
+  <p class="text-muted">Gérez vos paiements, abonnements et clients directement dans Stripe Dashboard</p>
+</div>
+
+<!-- Webhook Events -->
+<div class="admin-card" style="margin-top: var(--spacing-xl);">
+  <div class="card-header">
+    <h2>Événements Webhook configurés</h2>
+  </div>
+  <div class="webhook-events-list">
+    <div class="webhook-event-item">
+      <span class="status-badge status-success">✓</span>
+      <div>
+        <strong>checkout.session.completed</strong>
+        <p class="text-muted small">Premier paiement réussi → activation compte</p>
+      </div>
+    </div>
+    <div class="webhook-event-item">
+      <span class="status-badge status-success">✓</span>
+      <div>
+        <strong>invoice.payment_succeeded</strong>
+        <p class="text-muted small">Paiement récurrent réussi → maintien statut actif</p>
+      </div>
+    </div>
+    <div class="webhook-event-item">
+      <span class="status-badge status-success">✓</span>
+      <div>
+        <strong>invoice.payment_failed</strong>
+        <p class="text-muted small">Paiement échoué → suspension compte + email</p>
+      </div>
+    </div>
+    <div class="webhook-event-item">
+      <span class="status-badge status-success">✓</span>
+      <div>
+        <strong>customer.subscription.updated</strong>
+        <p class="text-muted small">Abonnement modifié → mise à jour statut</p>
+      </div>
+    </div>
+    <div class="webhook-event-item">
+      <span class="status-badge status-success">✓</span>
+      <div>
+        <strong>customer.subscription.deleted</strong>
+        <p class="text-muted small">Abonnement annulé → marquer comme annulé</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Statistics -->
+<div class="admin-card" style="margin-top: var(--spacing-xl);">
+  <div class="card-header">
+    <h2>Statistiques financières (30j)</h2>
+  </div>
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-icon bg-green">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="32" height="32">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18.75a60.07 60.07 0 0115.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 013 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 00-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 01-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 003 15h-.75M15 10.5a3 3 0 11-6 0 3 3 0 016 0zm3 0h.008v.008H18V10.5zm-12 0h.008v.008H6V10.5z" />
+        </svg>
+      </div>
+      <div class="stat-content">
+        <div class="stat-value">2 847€</div>
+        <div class="stat-label">Revenus totaux</div>
+        <div class="stat-change positive">+8.2%</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon bg-blue">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="32" height="32">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" />
+        </svg>
+      </div>
+      <div class="stat-content">
+        <div class="stat-value">12</div>
+        <div class="stat-label">Nouveaux abonnements</div>
+        <div class="stat-change positive">+20%</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon bg-orange">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="32" height="32">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
+        </svg>
+      </div>
+      <div class="stat-content">
+        <div class="stat-value">5</div>
+        <div class="stat-label">Paiements échoués</div>
+        <div class="stat-change neutral">10.6% du total</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon bg-purple">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="32" height="32">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+      </div>
+      <div class="stat-content">
+        <div class="stat-value">3</div>
+        <div class="stat-label">Annulations</div>
+        <div class="stat-change neutral">Churn: 2.1%</div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,252 @@
+<% content_for :title, "Jean Dupont - Utilisateur" %>
+
+<div class="admin-page-header">
+  <div class="header-with-actions">
+    <div>
+      <%= link_to "← Retour aux utilisateurs", admin_users_path, class: "back-link" %>
+      <h1>Jean Dupont</h1>
+      <p class="text-muted">Dupont Maçonnerie • Membre depuis 3 mois</p>
+    </div>
+    <div class="header-actions">
+      <%= link_to edit_admin_user_path(1), class: "btn btn-primary" do %>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="16" height="16" style="display: inline-block; vertical-align: middle; margin-right: 4px;">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
+        </svg>
+        <span>Modifier</span>
+      <% end %>
+      <%= link_to stripe_portal_admin_user_path(1), method: :post, class: "btn btn-outline" do %>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="16" height="16" style="display: inline-block; vertical-align: middle; margin-right: 4px;">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5z" />
+        </svg>
+        <span>Stripe Portal</span>
+      <% end %>
+      <%= link_to suspend_admin_user_path(1), method: :post, class: "btn btn-danger", data: { confirm: "Êtes-vous sûr de vouloir suspendre ce compte ?" } do %>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="16" height="16" style="display: inline-block; vertical-align: middle; margin-right: 4px;">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
+        </svg>
+        <span>Suspendre</span>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<!-- User Overview Cards -->
+<div class="stats-grid">
+  <div class="stat-card">
+    <div class="stat-label">Documents générés</div>
+    <div class="stat-value">87</div>
+    <div class="stat-detail">42 devis, 45 factures</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">Abonnement</div>
+    <div class="stat-value success-text">Actif</div>
+    <div class="stat-detail">Prochain paiement: 15 juin 2025</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">WhatsApp</div>
+    <div class="stat-value success-text">Connecté</div>
+    <div class="stat-detail">+33 6 12 34 56 78</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">Messages WhatsApp</div>
+    <div class="stat-value">247</div>
+    <div class="stat-detail">Ce mois: 89 messages</div>
+  </div>
+</div>
+
+<!-- User Details -->
+<div class="admin-content-grid">
+  <div class="admin-card">
+    <div class="card-header">
+      <h2>Informations personnelles</h2>
+      <%= link_to edit_admin_user_path(1), class: "btn btn-sm btn-outline" do %>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="14" height="14" style="display: inline-block; vertical-align: middle; margin-right: 4px;">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
+        </svg>
+        <span>Modifier</span>
+      <% end %>
+    </div>
+    <div class="details-list">
+      <div class="detail-item">
+        <span class="detail-label">Nom complet</span>
+        <span class="detail-value">Jean Dupont</span>
+      </div>
+      <div class="detail-item">
+        <span class="detail-label">Email</span>
+        <span class="detail-value">jean.dupont@example.fr</span>
+      </div>
+      <div class="detail-item">
+        <span class="detail-label">Téléphone</span>
+        <span class="detail-value">+33 6 12 34 56 78</span>
+      </div>
+      <div class="detail-item">
+        <span class="detail-label">Langue préférée</span>
+        <span class="detail-value">🇫🇷 Français</span>
+      </div>
+      <div class="detail-item">
+        <span class="detail-label">Date d'inscription</span>
+        <span class="detail-value">15 mars 2025</span>
+      </div>
+      <div class="detail-item">
+        <span class="detail-label">Dernière connexion</span>
+        <span class="detail-value">Aujourd'hui à 14:23</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="admin-card">
+    <div class="card-header">
+      <h2>Informations entreprise</h2>
+    </div>
+    <div class="details-list">
+      <div class="detail-item">
+        <span class="detail-label">Nom de l'entreprise</span>
+        <span class="detail-value">Dupont Maçonnerie</span>
+      </div>
+      <div class="detail-item">
+        <span class="detail-label">SIRET</span>
+        <span class="detail-value">123 456 789 00012</span>
+      </div>
+      <div class="detail-item">
+        <span class="detail-label">Numéro de TVA</span>
+        <span class="detail-value">FR12345678901</span>
+      </div>
+      <div class="detail-item">
+        <span class="detail-label">Adresse</span>
+        <span class="detail-value">15 Rue de la Maçonnerie<br>75010 Paris, France</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Subscription Details -->
+<div class="admin-card" style="margin-top: var(--spacing-xl);">
+  <div class="card-header">
+    <h2>Détails de l'abonnement</h2>
+    <%= link_to "#", class: "btn btn-sm btn-outline", target: "_blank" do %>
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="14" height="14" style="display: inline-block; vertical-align: middle; margin-right: 4px;">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
+      </svg>
+      <span>Ouvrir Stripe Dashboard</span>
+    <% end %>
+  </div>
+  <div class="details-list">
+    <div class="detail-item">
+      <span class="detail-label">Statut</span>
+      <span class="detail-value"><span class="status-badge status-success">Actif</span></span>
+    </div>
+    <div class="detail-item">
+      <span class="detail-label">Plan</span>
+      <span class="detail-value">Mensuel - 59€/mois</span>
+    </div>
+    <div class="detail-item">
+      <span class="detail-label">Stripe Customer ID</span>
+      <span class="detail-value">cus_AbCdEfGhIjKl</span>
+    </div>
+    <div class="detail-item">
+      <span class="detail-label">Stripe Subscription ID</span>
+      <span class="detail-value">sub_1234567890</span>
+    </div>
+    <div class="detail-item">
+      <span class="detail-label">Date de début</span>
+      <span class="detail-value">15 mars 2025</span>
+    </div>
+    <div class="detail-item">
+      <span class="detail-label">Prochain paiement</span>
+      <span class="detail-value">15 juin 2025</span>
+    </div>
+    <div class="detail-item">
+      <span class="detail-label">Moyen de paiement</span>
+      <span class="detail-value">Carte •••• 4242</span>
+    </div>
+  </div>
+</div>
+
+<!-- Recent Activity -->
+<div class="admin-card" style="margin-top: var(--spacing-xl);">
+  <div class="card-header">
+    <h2>Activité récente</h2>
+    <%= link_to logs_admin_user_path(1), class: "btn btn-sm btn-outline" do %>
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="14" height="14" style="display: inline-block; vertical-align: middle; margin-right: 4px;">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 12h16.5m-16.5 3.75h16.5M3.75 19.5h16.5M5.625 4.5h12.75a1.875 1.875 0 010 3.75H5.625a1.875 1.875 0 010-3.75z" />
+      </svg>
+      <span>Voir tous les logs</span>
+    <% end %>
+  </div>
+  <div class="activity-list">
+    <div class="activity-item">
+      <div class="activity-icon bg-blue">📄</div>
+      <div class="activity-content">
+        <div class="activity-title">Facture créée via WhatsApp</div>
+        <div class="activity-meta">Facture #F-2025-0234 - Il y a 2 heures</div>
+      </div>
+    </div>
+    <div class="activity-item">
+      <div class="activity-icon bg-green">💬</div>
+      <div class="activity-content">
+        <div class="activity-title">Message WhatsApp traité</div>
+        <div class="activity-meta">Command vocale transcrite - Il y a 2 heures</div>
+      </div>
+    </div>
+    <div class="activity-item">
+      <div class="activity-icon bg-purple">📋</div>
+      <div class="activity-content">
+        <div class="activity-title">Devis créé via WhatsApp</div>
+        <div class="activity-meta">Devis #D-2025-0456 - Il y a 5 heures</div>
+      </div>
+    </div>
+    <div class="activity-item">
+      <div class="activity-icon bg-green">💳</div>
+      <div class="activity-content">
+        <div class="activity-title">Paiement mensuel reçu</div>
+        <div class="activity-meta">59€ - Il y a 3 jours</div>
+      </div>
+    </div>
+    <div class="activity-item">
+      <div class="activity-icon bg-blue">👤</div>
+      <div class="activity-content">
+        <div class="activity-title">Connexion au dashboard</div>
+        <div class="activity-meta">IP: 192.168.1.1 - Il y a 1 semaine</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Quick Actions -->
+<div class="admin-card" style="margin-top: var(--spacing-xl);">
+  <div class="card-header">
+    <h2>Actions rapides</h2>
+  </div>
+  <div class="quick-actions-grid">
+    <%= link_to reset_whatsapp_admin_user_path(1), method: :post, class: "btn btn-outline btn-block", data: { confirm: "Forcer la reconnexion WhatsApp ?" } do %>
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="16" height="16" style="display: inline-block; vertical-align: middle; margin-right: 4px;">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" />
+      </svg>
+      <span>Réinitialiser WhatsApp</span>
+    <% end %>
+    <%= link_to stripe_portal_admin_user_path(1), method: :post, class: "btn btn-outline btn-block" do %>
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="16" height="16" style="display: inline-block; vertical-align: middle; margin-right: 4px;">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5z" />
+      </svg>
+      <span>Ouvrir Stripe Portal</span>
+    <% end %>
+    <%= link_to edit_admin_user_path(1), class: "btn btn-outline btn-block" do %>
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="16" height="16" style="display: inline-block; vertical-align: middle; margin-right: 4px;">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
+      </svg>
+      <span>Modifier les informations</span>
+    <% end %>
+    <%= link_to logs_admin_user_path(1), class: "btn btn-outline btn-block" do %>
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="16" height="16" style="display: inline-block; vertical-align: middle; margin-right: 4px;">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 12h16.5m-16.5 3.75h16.5M3.75 19.5h16.5M5.625 4.5h12.75a1.875 1.875 0 010 3.75H5.625a1.875 1.875 0 010-3.75z" />
+      </svg>
+      <span>Voir tous les logs</span>
+    <% end %>
+    <%= link_to suspend_admin_user_path(1), method: :post, class: "btn btn-danger btn-block", data: { confirm: "Êtes-vous sûr de vouloir suspendre ce compte ?" } do %>
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="16" height="16" style="display: inline-block; vertical-align: middle; margin-right: 4px;">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
+      </svg>
+      <span>Suspendre le compte</span>
+    <% end %>
+  </div>
+</div>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= content_for(:title) || "Connexion - Devis WhatsApp" %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= yield :head %>
+
+    <link rel="icon" href="/icon.png" type="image/png">
+    <link rel="icon" href="/icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/icon.png">
+
+    <%= stylesheet_link_tag "tailwind", "inter-font", "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag "style", "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+  </head>
+
+  <body>
+    <div style="display: flex; flex-direction: column; min-height: 100vh; background-color: var(--bg-light);">
+      <!-- Main Content Area -->
+      <main style="flex: 1; display: flex; align-items: center; justify-content: center; padding: var(--spacing-sm) 0;">
+        <div style="width: 100%; max-width: <%= controller_name == 'registrations' && action_name == 'new' ? '720px' : '480px' %>;">
+          <!-- Logo -->
+          <div style="text-align: center; display: flex; justify-content: center; margin-bottom: var(--spacing-xs);">
+            <%= link_to root_path do %>
+              <%= image_tag "logo.png", alt: "Devis WhatsApp", style: "max-width: 140px; height: auto;" %>
+            <% end %>
+          </div>
+
+          <!-- Card Container -->
+          <div class="card" style="padding: var(--spacing-md);">
+            <!-- Flash Messages -->
+            <% if notice %>
+              <div class="alert alert-success">
+                <%= notice %>
+              </div>
+            <% end %>
+            
+            <% if alert %>
+              <div class="alert alert-error">
+                <%= alert %>
+              </div>
+            <% end %>
+
+            <!-- Page Content -->
+            <%= yield %>
+          </div>
+
+          <!-- Additional Links -->
+          <div style="text-align: center; margin-top: var(--spacing-xs);">
+            <p style="font-size: var(--font-size-sm); color: var(--text-gray);">
+              <%= link_to "Retour à l'accueil", root_path, style: "color: var(--primary-green); text-decoration: none; font-weight: var(--font-weight-semibold);" %>
+            </p>
+          </div>
+        </div>
+      </main>
+
+      <!-- Footer -->
+      <%= render "shared/footer" %>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,202 @@
+<% content_for :title, "Détails Abonnement - Admin" %>
+
+<div class="admin-page-header">
+  <div style="display: flex; justify-content: space-between; align-items: center;">
+    <div>
+      <h1>Détails de l'abonnement</h1>
+      <p class="text-muted">Abonnement #<%= @subscription.id %></p>
+    </div>
+    <%= link_to admin_subscriptions_path, class: "btn btn-outline" do %>
+      ← Retour aux abonnements
+    <% end %>
+  </div>
+</div>
+
+<!-- User Information -->
+<div class="admin-card">
+  <div class="card-header">
+    <h2>Informations utilisateur</h2>
+  </div>
+  <div style="padding: var(--spacing-lg);">
+    <div class="user-info" style="margin-bottom: var(--spacing-lg);">
+      <div class="user-avatar" style="width: 60px; height: 60px; font-size: 24px;"><%= @subscription.user.name.split.map(&:first).join.upcase %></div>
+      <div>
+        <div class="user-name" style="font-size: 1.25rem; font-weight: 600;"><%= @subscription.user.name %></div>
+        <div class="user-email"><%= @subscription.user.email %></div>
+        <%= link_to admin_user_path(@subscription.user.id), class: "btn btn-sm btn-outline", style: "margin-top: var(--spacing-sm);" do %>
+          👤 Voir le profil complet
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Subscription Details -->
+<div class="admin-card" style="margin-top: var(--spacing-lg);">
+  <div class="card-header">
+    <h2>Détails de l'abonnement</h2>
+  </div>
+  <div style="padding: var(--spacing-lg);">
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: var(--spacing-lg);">
+      <div>
+        <div class="text-muted small">Plan</div>
+        <div style="font-weight: 600; margin-top: var(--spacing-xs);"><%= @subscription.plan %></div>
+      </div>
+      <div>
+        <div class="text-muted small">Statut</div>
+        <div style="margin-top: var(--spacing-xs);">
+          <span class="status-badge status-success"><%= @subscription.status.capitalize %></span>
+        </div>
+      </div>
+      <div>
+        <div class="text-muted small">Montant</div>
+        <div style="font-weight: 600; margin-top: var(--spacing-xs); color: var(--color-success);"><%= @subscription.amount %>€ / <%= @subscription.interval %></div>
+      </div>
+      <div>
+        <div class="text-muted small">Date de début</div>
+        <div style="font-weight: 600; margin-top: var(--spacing-xs);"><%= @subscription.current_period_start.strftime('%d %B %Y') rescue 'N/A' %></div>
+      </div>
+      <div>
+        <div class="text-muted small">Prochain paiement</div>
+        <div style="font-weight: 600; margin-top: var(--spacing-xs);"><%= @subscription.current_period_end.strftime('%d %B %Y') rescue 'N/A' %></div>
+      </div>
+      <div>
+        <div class="text-muted small">Créé le</div>
+        <div style="font-weight: 600; margin-top: var(--spacing-xs);"><%= @subscription.created_at.strftime('%d %B %Y') rescue 'N/A' %></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Stripe Information -->
+<div class="admin-card" style="margin-top: var(--spacing-lg);">
+  <div class="card-header">
+    <h2>Informations Stripe</h2>
+  </div>
+  <div style="padding: var(--spacing-lg);">
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: var(--spacing-lg);">
+      <div>
+        <div class="text-muted small">Méthode de paiement</div>
+        <div style="margin-top: var(--spacing-xs);">
+          <div>💳 <%= @subscription.payment_method.brand %> •••• <%= @subscription.payment_method.last4 %></div>
+          <div class="text-muted small">Expire <%= @subscription.payment_method.exp_month %>/<%= @subscription.payment_method.exp_year %></div>
+        </div>
+      </div>
+      <div>
+        <div class="text-muted small">Devise</div>
+        <div style="font-weight: 600; margin-top: var(--spacing-xs);"><%= @subscription.currency.upcase %></div>
+      </div>
+      <div>
+        <div class="text-muted small">Type d'intervalle</div>
+        <div style="font-weight: 600; margin-top: var(--spacing-xs);"><%= @subscription.interval.capitalize %></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Payment History -->
+<div class="admin-card" style="margin-top: var(--spacing-lg);">
+  <div class="card-header">
+    <h2>Historique des paiements</h2>
+  </div>
+  <table class="admin-table">
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th>Invoice ID</th>
+        <th>Montant</th>
+        <th>Statut</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @subscription.invoices.each do |invoice| %>
+        <tr>
+          <td><%= invoice.date.strftime('%d %B %Y') rescue 'N/A' %></td>
+          <td style="font-family: monospace;">inv_<%= invoice.id %></td>
+          <td class="font-weight-bold"><%= invoice.amount %>€</td>
+          <td><span class="status-badge status-success"><%= invoice.status.capitalize %></span></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
+<!-- Actions -->
+<div class="admin-card" style="margin-top: var(--spacing-lg);">
+  <div class="card-header">
+    <h2>Actions</h2>
+  </div>
+  <div style="padding: var(--spacing-lg);">
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: var(--spacing-md);">
+      <button class="btn btn-primary">
+        💳 Accéder au portail Stripe
+      </button>
+      <button class="btn btn-outline">
+        ❌ Annuler l'abonnement
+      </button>
+      <button class="btn btn-outline">
+        ⏸️ Suspendre l'abonnement
+      </button>
+      <button class="btn btn-outline">
+        📝 Modifier le plan
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Stats -->
+<div class="admin-card" style="margin-top: var(--spacing-xl);">
+  <div class="card-header">
+    <h2>Statistiques</h2>
+  </div>
+  <div class="stats-grid">
+    <div class="stat-card" style="background: linear-gradient(135deg, #128C7E 0%, #0d5f54 100%);">
+      <div class="stat-icon bg-green">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="32" height="32">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18.75a60.07 60.07 0 0115.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 013 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 00-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 01-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 003 15h-.75M15 10.5a3 3 0 11-6 0 3 3 0 016 0zm3 0h.008v.008H18V10.5zm-12 0h.008v.008H6V10.5z" />
+        </svg>
+      </div>
+      <div class="stat-content">
+        <div class="stat-value" style="color: #FFFFFF;">177€</div>
+        <div class="stat-label" style="color: rgba(255, 255, 255, 0.9);">Revenu total</div>
+        <div class="stat-change" style="background-color: rgba(255, 255, 255, 0.2); color: #FFFFFF;">3 paiements</div>
+      </div>
+    </div>
+    <div class="stat-card" style="background: linear-gradient(135deg, #128C7E 0%, #0d5f54 100%);">
+      <div class="stat-icon bg-blue">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="32" height="32">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z" />
+        </svg>
+      </div>
+      <div class="stat-content">
+        <div class="stat-value" style="color: #FFFFFF;">177€</div>
+        <div class="stat-label" style="color: rgba(255, 255, 255, 0.9);">LTV (Lifetime Value)</div>
+        <div class="stat-change" style="background-color: rgba(255, 255, 255, 0.2); color: #FFFFFF;">Depuis 3 mois</div>
+      </div>
+    </div>
+    <div class="stat-card" style="background: linear-gradient(135deg, #128C7E 0%, #0d5f54 100%);">
+      <div class="stat-icon bg-purple">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="32" height="32">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+      </div>
+      <div class="stat-content">
+        <div class="stat-value" style="color: #FFFFFF;">100%</div>
+        <div class="stat-label" style="color: rgba(255, 255, 255, 0.9);">Taux de succès</div>
+        <div class="stat-change" style="background-color: rgba(34, 197, 94, 0.3); color: #FFFFFF;">3/3 paiements réussis</div>
+      </div>
+    </div>
+    <div class="stat-card" style="background: linear-gradient(135deg, #128C7E 0%, #0d5f54 100%);">
+      <div class="stat-icon bg-orange">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="32" height="32">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" />
+        </svg>
+      </div>
+      <div class="stat-content">
+        <div class="stat-value" style="color: #FFFFFF;">15 jours</div>
+        <div class="stat-label" style="color: rgba(255, 255, 255, 0.9);">Prochain paiement</div>
+        <div class="stat-change" style="background-color: rgba(255, 255, 255, 0.2); color: #FFFFFF;">Le 15 juin 2025</div>
+      </div>
+    </div>
+  </div>
+</div>

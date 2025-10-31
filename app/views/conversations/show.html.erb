@@ -1,0 +1,293 @@
+<div class="admin-page-header">
+  <%= link_to conversations_path, class: "back-link" do %>
+    <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16" style="margin-right: 4px;">
+      <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
+    </svg>
+    Retour aux conversations
+  <% end %>
+  <div class="header-with-actions">
+    <div>
+      <h1>Détails de la Conversation</h1>
+      <p class="text-muted">Création de devis - Entreprise Dubois</p>
+    </div>
+    <div class="header-actions">
+      <span class="status-badge status-success">Active</span>
+    </div>
+  </div>
+</div>
+
+<div class="admin-content-grid">
+  <!-- Conversation Overview -->
+  <div class="admin-card">
+    <div class="card-header">
+      <h2>Informations Générales</h2>
+    </div>
+    <div class="details-list">
+      <div class="detail-item">
+        <span class="detail-label">Type de conversation</span>
+        <span class="detail-value">
+          <span class="badge badge-blue">Création de devis</span>
+        </span>
+      </div>
+      <div class="detail-item">
+        <span class="detail-label">Statut</span>
+        <span class="detail-value">
+          <span class="status-badge status-success">Active</span>
+        </span>
+      </div>
+      <div class="detail-item">
+        <span class="detail-label">Client</span>
+        <span class="detail-value">
+          <%= link_to "Entreprise Dubois", client_path(1), class: "text-link" %>
+        </span>
+      </div>
+      <div class="detail-item">
+        <span class="detail-label">Contact</span>
+        <span class="detail-value">Marie Dubois • +33 6 98 76 54 32</span>
+      </div>
+      <div class="detail-item">
+        <span class="detail-label">Langue détectée</span>
+        <span class="detail-value">
+          <span class="badge badge-gray">🇫🇷 Français</span>
+        </span>
+      </div>
+      <div class="detail-item">
+        <span class="detail-label">Démarrée le</span>
+        <span class="detail-value">30 octobre 2025 à 15:45</span>
+      </div>
+      <div class="detail-item">
+        <span class="detail-label">Dernière activité</span>
+        <span class="detail-value">Il y a 2 minutes</span>
+      </div>
+      <div class="detail-item">
+        <span class="detail-label">Durée</span>
+        <span class="detail-value">8 minutes</span>
+      </div>
+      <div class="detail-item">
+        <span class="detail-label">Messages échangés</span>
+        <span class="detail-value">12 messages (6 reçus, 6 envoyés)</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Progress Card -->
+  <div class="admin-card">
+    <div class="card-header">
+      <h2>Progression du Workflow</h2>
+    </div>
+    <div style="padding: var(--spacing-md);">
+      <div style="margin-bottom: var(--spacing-md);">
+        <div style="display: flex; justify-content: space-between; margin-bottom: var(--spacing-xs);">
+          <span class="text-muted small">Étape 3 sur 5</span>
+          <span class="text-muted small">60%</span>
+        </div>
+        <div style="width: 100%; height: 8px; background-color: var(--bg-light); border-radius: 4px; overflow: hidden;">
+          <div style="width: 60%; height: 100%; background-color: var(--primary-green); transition: width 0.3s;"></div>
+        </div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: var(--spacing-sm);">
+        <div style="display: flex; align-items: center; gap: var(--spacing-sm);">
+          <div style="width: 24px; height: 24px; border-radius: 50%; background-color: var(--primary-green); color: white; display: flex; align-items: center; justify-content: center; font-size: 12px; flex-shrink: 0;">✓</div>
+          <span style="color: var(--text-dark);">Sélection du client</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: var(--spacing-sm);">
+          <div style="width: 24px; height: 24px; border-radius: 50%; background-color: var(--primary-green); color: white; display: flex; align-items: center; justify-content: center; font-size: 12px; flex-shrink: 0;">✓</div>
+          <span style="color: var(--text-dark);">Confirmation du client</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: var(--spacing-sm);">
+          <div style="width: 24px; height: 24px; border-radius: 50%; background-color: var(--primary-blue); color: white; display: flex; align-items: center; justify-content: center; font-size: 12px; flex-shrink: 0;">→</div>
+          <span style="color: var(--text-dark); font-weight: 600;">Collecte des lignes de prestation</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: var(--spacing-sm);">
+          <div style="width: 24px; height: 24px; border-radius: 50%; background-color: var(--bg-gray); color: var(--text-muted); display: flex; align-items: center; justify-content: center; font-size: 12px; flex-shrink: 0;">4</div>
+          <span style="color: var(--text-muted);">Calcul des totaux</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: var(--spacing-sm);">
+          <div style="width: 24px; height: 24px; border-radius: 50%; background-color: var(--bg-gray); color: var(--text-muted); display: flex; align-items: center; justify-content: center; font-size: 12px; flex-shrink: 0;">5</div>
+          <span style="color: var(--text-muted);">Génération et envoi du PDF</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Context Data -->
+<div class="admin-card" style="margin-top: var(--spacing-lg);">
+  <div class="card-header">
+    <h2>Données Collectées</h2>
+  </div>
+  <div class="details-list">
+    <div class="detail-item">
+      <span class="detail-label">Client sélectionné</span>
+      <span class="detail-value">
+        <%= link_to "Entreprise Dubois", client_path(1), class: "text-link" %>
+      </span>
+    </div>
+    <div class="detail-item">
+      <span class="detail-label">Lignes de prestation</span>
+      <span class="detail-value">2 lignes ajoutées</span>
+    </div>
+  </div>
+
+  <div style="margin-top: var(--spacing-md); padding: var(--spacing-md); background-color: var(--bg-light); border-radius: var(--radius-md);">
+    <h4 style="margin: 0 0 var(--spacing-sm) 0; font-size: var(--font-size-sm); color: var(--text-gray);">Lignes du devis en cours:</h4>
+    <div style="display: flex; flex-direction: column; gap: var(--spacing-sm);">
+      <div style="padding: var(--spacing-sm); background-color: white; border-radius: var(--radius-sm); border: 1px solid var(--border-color);">
+        <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+          <strong style="color: var(--text-dark);">Maçonnerie mur extérieur</strong>
+          <span style="color: var(--text-gray);">4 250,00 €</span>
+        </div>
+        <p class="text-muted small" style="margin: 0;">Quantité: 50 m² • Prix unitaire: 85,00 €</p>
+      </div>
+      <div style="padding: var(--spacing-sm); background-color: white; border-radius: var(--radius-sm); border: 1px solid var(--border-color);">
+        <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+          <strong style="color: var(--text-dark);">Enduit de façade</strong>
+          <span style="color: var(--text-gray);">2 100,00 €</span>
+        </div>
+        <p class="text-muted small" style="margin: 0;">Quantité: 50 m² • Prix unitaire: 42,00 €</p>
+      </div>
+    </div>
+    <div style="margin-top: var(--spacing-sm); padding-top: var(--spacing-sm); border-top: 1px solid var(--border-color);">
+      <div style="display: flex; justify-content: space-between;">
+        <strong style="color: var(--text-gray);">Sous-total (HT):</strong>
+        <strong style="color: var(--text-dark);">6 350,00 €</strong>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Message History -->
+<div class="admin-card" style="margin-top: var(--spacing-lg);">
+  <div class="card-header">
+    <h2>Historique des Messages</h2>
+    <span class="badge badge-blue">12 messages</span>
+  </div>
+
+  <div style="display: flex; flex-direction: column; gap: var(--spacing-md); padding: var(--spacing-md);">
+    <!-- Inbound Message -->
+    <div style="display: flex; gap: var(--spacing-sm); align-items: flex-start;">
+      <div style="width: 40px; height: 40px; border-radius: 50%; background-color: var(--primary-blue); color: white; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-weight: 600;">MD</div>
+      <div style="flex: 1; max-width: 70%;">
+        <div style="display: flex; align-items: center; gap: var(--spacing-xs); margin-bottom: 4px;">
+          <strong style="font-size: var(--font-size-sm);">Marie Dubois</strong>
+          <span class="text-muted small">30 oct. 15:45</span>
+          <span class="badge badge-green" style="font-size: 10px;">WhatsApp</span>
+        </div>
+        <div style="background-color: var(--bg-light); padding: var(--spacing-sm); border-radius: var(--radius-md); border-left: 3px solid var(--primary-blue);">
+          <p style="margin: 0; color: var(--text-dark);">Bonjour, je voudrais un devis pour des travaux de maçonnerie</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Outbound Message -->
+    <div style="display: flex; gap: var(--spacing-sm); align-items: flex-start; flex-direction: row-reverse;">
+      <div style="width: 40px; height: 40px; border-radius: 50%; background-color: var(--primary-green); color: white; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-weight: 600;">MY</div>
+      <div style="flex: 1; max-width: 70%;">
+        <div style="display: flex; align-items: center; gap: var(--spacing-xs); margin-bottom: 4px; justify-content: flex-end;">
+          <span class="badge badge-purple" style="font-size: 10px;">Assistant IA</span>
+          <span class="text-muted small">30 oct. 15:45</span>
+          <strong style="font-size: var(--font-size-sm);">Assistant</strong>
+        </div>
+        <div style="background-color: #E8F5E9; padding: var(--spacing-sm); border-radius: var(--radius-md); border-right: 3px solid var(--primary-green);">
+          <p style="margin: 0; color: var(--text-dark);">Bonjour Marie ! Je serais ravi de vous aider à créer un devis. Pour qui est ce devis ? Souhaitez-vous utiliser le client "Entreprise Dubois" ou créer un nouveau client ?</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Inbound Message -->
+    <div style="display: flex; gap: var(--spacing-sm); align-items: flex-start;">
+      <div style="width: 40px; height: 40px; border-radius: 50%; background-color: var(--primary-blue); color: white; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-weight: 600;">MD</div>
+      <div style="flex: 1; max-width: 70%;">
+        <div style="display: flex; align-items: center; gap: var(--spacing-xs); margin-bottom: 4px;">
+          <strong style="font-size: var(--font-size-sm);">Marie Dubois</strong>
+          <span class="text-muted small">30 oct. 15:46</span>
+          <span class="badge badge-green" style="font-size: 10px;">WhatsApp</span>
+        </div>
+        <div style="background-color: var(--bg-light); padding: var(--spacing-sm); border-radius: var(--radius-md); border-left: 3px solid var(--primary-blue);">
+          <p style="margin: 0; color: var(--text-dark);">Oui pour Entreprise Dubois</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Outbound Message -->
+    <div style="display: flex; gap: var(--spacing-sm); align-items: flex-start; flex-direction: row-reverse;">
+      <div style="width: 40px; height: 40px; border-radius: 50%; background-color: var(--primary-green); color: white; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-weight: 600;">MY</div>
+      <div style="flex: 1; max-width: 70%;">
+        <div style="display: flex; align-items: center; gap: var(--spacing-xs); margin-bottom: 4px; justify-content: flex-end;">
+          <span class="badge badge-purple" style="font-size: 10px;">Assistant IA</span>
+          <span class="text-muted small">30 oct. 15:46</span>
+          <strong style="font-size: var(--font-size-sm);">Assistant</strong>
+        </div>
+        <div style="background-color: #E8F5E9; padding: var(--spacing-sm); border-radius: var(--radius-md); border-right: 3px solid var(--primary-green);">
+          <p style="margin: 0; color: var(--text-dark);">Parfait ! Le devis sera pour Entreprise Dubois, 42 Avenue de la République, 69003 Lyon. Maintenant, décrivez-moi la première prestation du devis.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Voice Message (Inbound) -->
+    <div style="display: flex; gap: var(--spacing-sm); align-items: flex-start;">
+      <div style="width: 40px; height: 40px; border-radius: 50%; background-color: var(--primary-blue); color: white; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-weight: 600;">MD</div>
+      <div style="flex: 1; max-width: 70%;">
+        <div style="display: flex; align-items: center; gap: var(--spacing-xs); margin-bottom: 4px;">
+          <strong style="font-size: var(--font-size-sm);">Marie Dubois</strong>
+          <span class="text-muted small">30 oct. 15:47</span>
+          <span class="badge badge-orange" style="font-size: 10px;">🎤 Audio</span>
+        </div>
+        <div style="background-color: var(--bg-light); padding: var(--spacing-sm); border-radius: var(--radius-md); border-left: 3px solid var(--primary-blue);">
+          <div style="display: flex; align-items: center; gap: var(--spacing-xs); margin-bottom: var(--spacing-xs); padding: var(--spacing-xs); background-color: rgba(255, 152, 0, 0.1); border-radius: 4px;">
+            <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+              <path d="M5 3a3 3 0 0 1 6 0v5a3 3 0 0 1-6 0V3z"/>
+              <path d="M3.5 6.5A.5.5 0 0 1 4 7v1a4 4 0 0 0 8 0V7a.5.5 0 0 1 1 0v1a5 5 0 0 1-4.5 4.975V15h3a.5.5 0 0 1 0 1h-7a.5.5 0 0 1 0-1h3v-2.025A5 5 0 0 1 3 8V7a.5.5 0 0 1 .5-.5z"/>
+            </svg>
+            <span class="text-muted small">Message vocal (15s) - Transcrit automatiquement</span>
+          </div>
+          <p style="margin: 0; color: var(--text-dark); font-style: italic;">"Maçonnerie pour mur extérieur, cinquante mètres carrés à quatre-vingt-cinq euros le mètre carré"</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Outbound Message -->
+    <div style="display: flex; gap: var(--spacing-sm); align-items: flex-start; flex-direction: row-reverse;">
+      <div style="width: 40px; height: 40px; border-radius: 50%; background-color: var(--primary-green); color: white; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-weight: 600;">MY</div>
+      <div style="flex: 1; max-width: 70%;">
+        <div style="display: flex; align-items: center; gap: var(--spacing-xs); margin-bottom: 4px; justify-content: flex-end;">
+          <span class="badge badge-purple" style="font-size: 10px;">Assistant IA</span>
+          <span class="text-muted small">30 oct. 15:47</span>
+          <strong style="font-size: var(--font-size-sm);">Assistant</strong>
+        </div>
+        <div style="background-color: #E8F5E9; padding: var(--spacing-sm); border-radius: var(--radius-md); border-right: 3px solid var(--primary-green);">
+          <p style="margin: 0; color: var(--text-dark);">J'ai bien noté : Maçonnerie mur extérieur, 50 m² à 85,00 € = 4 250,00 €. Cette ligne vous convient-elle ?</p>
+        </div>
+      </div>
+    </div>
+
+    <div style="text-align: center; padding: var(--spacing-md);">
+      <span class="text-muted small">6 messages supplémentaires...</span>
+    </div>
+  </div>
+</div>
+
+<!-- Actions -->
+<div class="form-actions" style="margin-top: var(--spacing-lg);">
+  <%= link_to conversations_path, class: "btn btn-secondary" do %>
+    <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+      <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
+    </svg>
+    <span>Retour aux conversations</span>
+  <% end %>
+  <button type="button" class="btn btn-secondary" onclick="alert('Fonction d\'export non implémentée dans cette démo')">
+    <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+      <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
+      <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/>
+    </svg>
+    <span>Exporter la conversation</span>
+  </button>
+  <button type="button" class="btn btn-danger" onclick="if(confirm('Êtes-vous sûr de vouloir abandonner cette conversation ?')) { alert('Fonction d\'abandon non implémentée dans cette démo'); }">
+    <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+      <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+      <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+    </svg>
+    <span>Abandonner la conversation</span>
+  </button>
+</div>

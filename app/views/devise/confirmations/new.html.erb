@@ -1,16 +1,48 @@
-<h2>Resend confirmation instructions</h2>
+<% content_for :title, "Confirmation du compte - Devis WhatsApp" %>
 
+<!-- Page Title -->
+<div style="text-align: center; margin-bottom: var(--spacing-lg);">
+  <h1 style="font-size: var(--font-size-2xl); font-weight: var(--font-weight-bold); color: var(--text-dark); margin-bottom: var(--spacing-xs);">
+    Confirmation du compte
+  </h1>
+  <p style="font-size: var(--font-size-sm); color: var(--text-gray);">
+    Renvoyer les instructions de confirmation
+  </p>
+</div>
+
+<!-- Confirmation Form -->
 <%= form_for(resource, as: resource_name, url: confirmation_path(resource_name), html: { method: :post }) do |f| %>
   <%= render "devise/shared/error_messages", resource: resource %>
 
-  <div class="field">
-    <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true, autocomplete: "email", value: (resource.pending_reconfirmation? ? resource.unconfirmed_email : resource.email) %>
+  <!-- Email Field -->
+  <div class="form-group">
+    <%= f.label :email, "Adresse e-mail", class: "form-label" %>
+    <%= f.email_field :email, autofocus: true, autocomplete: "email", 
+        class: "form-input", 
+        placeholder: "votre@email.com" %>
+    <span class="form-hint">
+      Nous vous renverrons un e-mail avec les instructions de confirmation
+    </span>
   </div>
 
-  <div class="actions">
-    <%= f.submit "Resend confirmation instructions" %>
+  <!-- Submit Button -->
+  <div class="form-group">
+    <%= f.submit "Renvoyer les instructions", class: "btn btn-primary", style: "width: 100%;" %>
   </div>
 <% end %>
 
-<%= render "devise/shared/links" %>
+<!-- Additional Links -->
+<div style="margin-top: var(--spacing-md); text-align: center;">
+  <div style="display: flex; flex-direction: column; gap: var(--spacing-xs);">
+    <p style="font-size: var(--font-size-sm); color: var(--text-gray);">
+      <%= link_to "← Retour à la connexion", new_session_path(resource_name), class: "text-link" %>
+    </p>
+    
+    <% if devise_mapping.registerable? %>
+      <p style="font-size: var(--font-size-sm); color: var(--text-gray);">
+        Pas encore de compte ? 
+        <%= link_to "Créer un compte", new_registration_path(resource_name), class: "text-link" %>
+      </p>
+    <% end %>
+  </div>
+</div>

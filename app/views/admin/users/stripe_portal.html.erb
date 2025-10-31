@@ -1,0 +1,218 @@
+<% content_for :title, "Stripe Portal - #{@user.first_name} #{@user.last_name}" %>
+
+<div class="admin-page-header">
+  <div class="header-with-actions">
+    <div>
+      <%= link_to "← Retour à l'utilisateur", admin_user_path(@user.id), class: "back-link" %>
+      <h1>Stripe Portal</h1>
+      <p class="text-muted"><%= @user.first_name %> <%=@user.last_name %> • <%= @user.company_name %></p>
+    </div>
+    <div class="header-actions">
+      <%= link_to admin_user_path(@user.id), class: "btn btn-outline" do %>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="16" height="16" style="display: inline-block; vertical-align: middle; margin-right: 4px;">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+        </svg>
+        <span>Retour</span>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<!-- Stripe Customer Information -->
+<div class="admin-card">
+  <div class="card-header">
+    <h2>Informations Stripe Customer</h2>
+    <a href="https://dashboard.stripe.com/customers/<%= @user.stripe_customer_id %>" target="_blank" class="btn btn-sm btn-outline">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="14" height="14" style="display: inline-block; vertical-align: middle; margin-right: 4px;">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
+      </svg>
+      <span>Ouvrir dans Stripe</span>
+    </a>
+  </div>
+  <div class="details-list">
+    <div class="detail-item">
+      <span class="detail-label">Customer ID</span>
+      <span class="detail-value"><code><%= @user.stripe_customer_id %></code></span>
+    </div>
+    <div class="detail-item">
+      <span class="detail-label">Email</span>
+      <span class="detail-value"><%= @user.email %></span>
+    </div>
+    <div class="detail-item">
+      <span class="detail-label">Nom complet</span>
+      <span class="detail-value"><%= @user.first_name %> <%= @user.last_name %></span>
+    </div>
+    <div class="detail-item">
+      <span class="detail-label">Entreprise</span>
+      <span class="detail-value"><%= @user.company_name %></span>
+    </div>
+  </div>
+</div>
+
+<!-- Subscription Details -->
+<div class="admin-card" style="margin-top: var(--spacing-xl);">
+  <div class="card-header">
+    <h2>Détails de l'abonnement</h2>
+    <a href="https://dashboard.stripe.com/subscriptions/<%= @user.stripe_subscription_id %>" target="_blank" class="btn btn-sm btn-outline">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="14" height="14" style="display: inline-block; vertical-align: middle; margin-right: 4px;">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
+      </svg>
+      <span>Ouvrir dans Stripe</span>
+    </a>
+  </div>
+  <div class="details-list">
+    <div class="detail-item">
+      <span class="detail-label">Subscription ID</span>
+      <span class="detail-value"><code><%= @user.stripe_subscription_id %></code></span>
+    </div>
+    <div class="detail-item">
+      <span class="detail-label">Statut</span>
+      <span class="detail-value">
+        <% if @user.subscription_status == 'active' %>
+          <span class="status-badge status-success">Actif</span>
+        <% elsif @user.subscription_status == 'trial' %>
+          <span class="status-badge status-warning">Essai</span>
+        <% elsif @user.subscription_status == 'cancelled' %>
+          <span class="status-badge status-danger">Annulé</span>
+        <% elsif @user.subscription_status == 'suspended' %>
+          <span class="status-badge status-danger">Suspendu</span>
+        <% else %>
+          <span class="status-badge"><%= @user.subscription_status %></span>
+        <% end %>
+      </span>
+    </div>
+    <div class="detail-item">
+      <span class="detail-label">Plan</span>
+      <span class="detail-value"><%= @user.subscription_plan %></span>
+    </div>
+    <div class="detail-item">
+      <span class="detail-label">Montant</span>
+      <span class="detail-value">59,00 € / mois</span>
+    </div>
+    <div class="detail-item">
+      <span class="detail-label">Date de début</span>
+      <span class="detail-value">15 mars 2025</span>
+    </div>
+    <div class="detail-item">
+      <span class="detail-label">Prochain paiement</span>
+      <span class="detail-value">15 juin 2025</span>
+    </div>
+    <div class="detail-item">
+      <span class="detail-label">Moyen de paiement</span>
+      <span class="detail-value">Visa •••• 4242 (exp. 12/2027)</span>
+    </div>
+  </div>
+</div>
+
+<!-- Payment History -->
+<div class="admin-card" style="margin-top: var(--spacing-xl);">
+  <div class="card-header">
+    <h2>Historique des paiements</h2>
+    <a href="https://dashboard.stripe.com/customers/<%= @user.stripe_customer_id %>/payments" target="_blank" class="btn btn-sm btn-outline">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="14" height="14" style="display: inline-block; vertical-align: middle; margin-right: 4px;">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
+      </svg>
+      <span>Voir tous les paiements</span>
+    </a>
+  </div>
+  <table class="admin-table">
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th>Montant</th>
+        <th>Statut</th>
+        <th>Facture</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>15 mai 2025</td>
+        <td>59,00 €</td>
+        <td><span class="status-badge status-success">Payé</span></td>
+        <td><code>in_1234567890</code></td>
+        <td>
+          <a href="#" class="btn btn-xs btn-outline" target="_blank">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="14" height="14" style="display: inline-block; vertical-align: middle;">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
+              </svg>
+            </a>
+          </td>
+      </tr>
+      <tr>
+        <td>15 avril 2025</td>
+        <td>59,00 €</td>
+        <td><span class="status-badge status-success">Payé</span></td>
+        <td><code>in_0987654321</code></td>
+        <td>
+          <a href="#" class="btn btn-xs btn-outline" target="_blank">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="14" height="14" style="display: inline-block; vertical-align: middle;">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
+              </svg>
+            </a>
+          </td>
+      </tr>
+      <tr>
+        <td>15 mars 2025</td>
+        <td>59,00 €</td>
+        <td><span class="status-badge status-success">Payé</span></td>
+        <td><code>in_1122334455</code></td>
+        <td>
+          <a href="#" class="btn btn-xs btn-outline" target="_blank">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="14" height="14" style="display: inline-block; vertical-align: middle;">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
+              </svg>
+            </a>
+          </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Actions -->
+<div class="admin-card" style="margin-top: var(--spacing-xl);">
+  <div class="card-header">
+    <h2>Actions de gestion</h2>
+  </div>
+  <div class="quick-actions-grid">
+    <%= link_to create_stripe_portal_admin_user_path(@user.id), method: :post, class: "btn btn-primary btn-block" do %>
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="16" height="16" style="display: inline-block; vertical-align: middle; margin-right: 4px;">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
+      </svg>
+      <span>Créer une session Stripe Portal</span>
+    <% end %>
+    <a href="https://dashboard.stripe.com/customers/<%= @user.stripe_customer_id %>" target="_blank" class="btn btn-outline btn-block">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="16" height="16" style="display: inline-block; vertical-align: middle; margin-right: 4px;">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
+      </svg>
+      <span>Ouvrir le profil client dans Stripe</span>
+    </a>
+    <a href="https://dashboard.stripe.com/subscriptions/<%= @user.stripe_subscription_id %>" target="_blank" class="btn btn-outline btn-block">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="16" height="16" style="display: inline-block; vertical-align: middle; margin-right: 4px;">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" />
+      </svg>
+      <span>Gérer l'abonnement dans Stripe</span>
+    </a>
+    <%= link_to admin_user_path(@user.id), class: "btn btn-outline btn-block" do %>
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="16" height="16" style="display: inline-block; vertical-align: middle; margin-right: 4px;">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+      </svg>
+      <span>Retour au profil utilisateur</span>
+    <% end %>
+  </div>
+</div>
+
+<!-- Information Note -->
+<div class="admin-card" style="margin-top: var(--spacing-xl); background-color: #f0f9ff; border-color: #0ea5e9;">
+  <div style="display: flex; gap: var(--spacing-md); align-items: start;">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="24" height="24" style="color: #0ea5e9; flex-shrink: 0; margin-top: 2px;">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z" />
+    </svg>
+    <div>
+      <h3 style="margin: 0 0 var(--spacing-sm) 0; color: #0369a1;">À propos du Stripe Portal</h3>
+      <p style="margin: 0; color: #075985; line-height: 1.6;">
+        Le Stripe Customer Portal permet aux clients de gérer leur abonnement de manière autonome. Ils peuvent mettre à jour leur moyen de paiement, consulter leur historique de facturation, télécharger des factures et annuler leur abonnement si nécessaire. En créant une session portal, vous générez un lien sécurisé temporaire que vous pouvez envoyer au client.
+      </p>
+    </div>
+  </div>
+</div>

@@ -1,43 +1,81 @@
-<h2>Edit <%= resource_name.to_s.humanize %></h2>
+<% content_for :title, "Modifier mon compte - Devis WhatsApp" %>
 
+<!-- Page Title -->
+<div style="text-align: center; margin-bottom: var(--spacing-xl);">
+  <h1 style="font-size: var(--font-size-3xl); font-weight: var(--font-weight-bold); color: var(--text-dark); margin-bottom: var(--spacing-xs);">
+    Modifier mon compte
+  </h1>
+  <p style="font-size: var(--font-size-base); color: var(--text-gray);">
+    Mettez à jour vos informations de compte
+  </p>
+</div>
+
+<!-- Edit Account Form -->
 <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
   <%= render "devise/shared/error_messages", resource: resource %>
 
-  <div class="field">
-    <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
+  <!-- Email Field -->
+  <div class="form-group">
+    <%= f.label :email, "Adresse e-mail", class: "form-label" %>
+    <%= f.email_field :email, autofocus: true, autocomplete: "email", 
+        class: "form-input" %>
   </div>
 
-  <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
-    <div>Currently waiting confirmation for: <%= resource.unconfirmed_email %></div>
-  <% end %>
-
-  <div class="field">
-    <%= f.label :password %> <i>(leave blank if you don't want to change it)</i><br />
-    <%= f.password_field :password, autocomplete: "new-password" %>
+  <!-- Password Field -->
+  <div class="form-group">
+    <%= f.label :password, "Nouveau mot de passe", class: "form-label" %>
     <% if @minimum_password_length %>
-      <br />
-      <em><%= @minimum_password_length %> characters minimum</em>
+      <span class="form-hint">
+        (<%= @minimum_password_length %> caractères minimum, laissez vide si vous ne souhaitez pas le changer)
+      </span>
     <% end %>
+    <%= f.password_field :password, autocomplete: "new-password", 
+        class: "form-input", 
+        placeholder: "Laisser vide pour ne pas changer" %>
   </div>
 
-  <div class="field">
-    <%= f.label :password_confirmation %><br />
-    <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
+  <!-- Password Confirmation Field -->
+  <div class="form-group">
+    <%= f.label :password_confirmation, "Confirmation du nouveau mot de passe", class: "form-label" %>
+    <%= f.password_field :password_confirmation, autocomplete: "new-password", 
+        class: "form-input", 
+        placeholder: "Confirmer le nouveau mot de passe" %>
   </div>
 
-  <div class="field">
-    <%= f.label :current_password %> <i>(we need your current password to confirm your changes)</i><br />
-    <%= f.password_field :current_password, autocomplete: "current-password" %>
+  <!-- Current Password Field (Required for changes) -->
+  <div class="form-group">
+    <%= f.label :current_password, "Mot de passe actuel", class: "form-label" %>
+    <%= f.password_field :current_password, autocomplete: "current-password", 
+        class: "form-input", 
+        placeholder: "Votre mot de passe actuel" %>
+    <span class="form-hint">
+      Nous avons besoin de votre mot de passe actuel pour confirmer vos modifications
+    </span>
   </div>
 
-  <div class="actions">
-    <%= f.submit "Update" %>
+  <!-- Submit Button -->
+  <div class="form-group">
+    <%= f.submit "Mettre à jour", class: "btn btn-primary", style: "width: 100%;" %>
   </div>
 <% end %>
 
-<h3>Cancel my account</h3>
+<!-- Delete Account Section -->
+<div style="margin-top: var(--spacing-xl); padding-top: var(--spacing-lg); border-top: 2px solid var(--border-light);">
+  <h3 style="font-size: var(--font-size-lg); font-weight: var(--font-weight-semibold); color: var(--text-dark); margin-bottom: var(--spacing-md);">
+    Supprimer mon compte
+  </h3>
+  <p style="font-size: var(--font-size-sm); color: var(--text-gray); margin-bottom: var(--spacing-md);">
+    Cette action est irréversible. Toutes vos données seront définitivement supprimées.
+  </p>
+  <%= button_to "Supprimer mon compte", registration_path(resource_name), 
+      data: { turbo_confirm: "Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est irréversible." }, 
+      method: :delete, 
+      class: "btn btn-danger" %>
+</div>
 
-<div>Unhappy? <%= button_to "Cancel my account", registration_path(resource_name), data: { confirm: "Are you sure?", turbo_confirm: "Are you sure?" }, method: :delete %></div>
-
-<%= link_to "Back", :back %>
+<!-- Back Link -->
+<div style="margin-top: var(--spacing-lg); text-align: center;">
+  <p style="font-size: var(--font-size-sm); color: var(--text-gray);">
+    <%= link_to "← Retour", :back, class: "text-link" %>
+  </p>
+</div>

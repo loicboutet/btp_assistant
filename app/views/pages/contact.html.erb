@@ -1,0 +1,115 @@
+<% content_for :title, "Contact - Devis WhatsApp" %>
+
+<!-- Page Header -->
+<div style="text-align: center; margin-bottom: var(--spacing-xl);">
+  <h1 style="font-size: var(--font-size-4xl); margin-bottom: var(--spacing-sm);">Contactez-nous</h1>
+  <p class="text-muted" style="font-size: var(--font-size-lg);">
+    Notre équipe est là pour vous aider
+  </p>
+</div>
+
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: var(--spacing-xl);">
+  <!-- Contact Form -->
+  <div class="card" style="grid-column: span 2;">
+    <h2 style="color: var(--primary-green); margin-bottom: var(--spacing-lg);">Envoyez-nous un message</h2>
+    
+    <form>
+      <div class="form-fields-grid">
+        <div class="form-group">
+          <label for="name" class="form-label">Nom complet *</label>
+          <input type="text" id="name" name="name" class="form-input" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="email" class="form-label">Email *</label>
+          <input type="email" id="email" name="email" class="form-input" required>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="phone" class="form-label">Téléphone</label>
+        <input type="tel" id="phone" name="phone" class="form-input">
+      </div>
+
+      <div class="form-group">
+        <label for="subject" class="form-label">Sujet *</label>
+        <select id="subject" name="subject" class="form-select" required>
+          <option value="">Sélectionnez un sujet</option>
+          <option value="support">Support technique</option>
+          <option value="billing">Facturation</option>
+          <option value="feature">Demande de fonctionnalité</option>
+          <option value="partnership">Partenariat</option>
+          <option value="other">Autre</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="message" class="form-label">Message *</label>
+        <textarea id="message" name="message" class="form-textarea" rows="6" required></textarea>
+      </div>
+
+      <button type="submit" class="btn btn-primary" style="width: 100%;">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" width="20" height="20">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5" />
+        </svg>
+        Envoyer le message
+      </button>
+    </form>
+  </div>
+
+  <!-- Contact Info -->
+  <div>
+    <div class="card" style="margin-bottom: var(--spacing-lg);">
+      <div style="font-size: var(--font-size-3xl); text-align: center; margin-bottom: var(--spacing-md);">📧</div>
+      <h3 style="font-size: var(--font-size-lg); margin-bottom: var(--spacing-sm); text-align: center;">Email</h3>
+      <p style="text-align: center; color: var(--text-gray); margin-bottom: var(--spacing-sm);">
+        <a href="mailto:contact@deviswhatsapp.fr" class="text-link">contact@deviswhatsapp.fr</a>
+      </p>
+      <p style="text-align: center; font-size: var(--font-size-sm); color: var(--text-gray);">
+        Réponse sous 24h
+      </p>
+    </div>
+
+    <div class="card" style="margin-bottom: var(--spacing-lg);">
+      <div style="font-size: var(--font-size-3xl); text-align: center; margin-bottom: var(--spacing-md);">💬</div>
+      <h3 style="font-size: var(--font-size-lg); margin-bottom: var(--spacing-sm); text-align: center;">Support WhatsApp</h3>
+      <p style="text-align: center; color: var(--text-gray); margin-bottom: var(--spacing-sm);">
+        <a href="https://wa.me/33123456789" class="text-link">+33 1 23 45 67 89</a>
+      </p>
+      <p style="text-align: center; font-size: var(--font-size-sm); color: var(--text-gray);">
+        Lun-Ven: 9h-18h
+      </p>
+    </div>
+
+    <div class="card" style="background: var(--bg-light);">
+      <div style="font-size: var(--font-size-3xl); text-align: center; margin-bottom: var(--spacing-md);">📍</div>
+      <h3 style="font-size: var(--font-size-lg); margin-bottom: var(--spacing-sm); text-align: center;">Adresse</h3>
+      <p style="text-align: center; color: var(--text-gray); line-height: 1.6;">
+        123 Rue de la République<br>
+        75001 Paris<br>
+        France
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- Business Hours -->
+<div class="card" style="margin-top: var(--spacing-xl); background: linear-gradient(135deg, var(--primary-green) 0%, var(--accent-euro) 100%); color: #FFFFFF;">
+  <h3 style="font-size: var(--font-size-xl); margin-bottom: var(--spacing-md); color: #FFFFFF; text-align: center;">
+    Horaires d'ouverture
+  </h3>
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--spacing-md); text-align: center;">
+    <div>
+      <div style="font-weight: var(--font-weight-semibold); margin-bottom: var(--spacing-xs);">Lundi - Vendredi</div>
+      <div style="opacity: 0.9;">9h00 - 18h00</div>
+    </div>
+    <div>
+      <div style="font-weight: var(--font-weight-semibold); margin-bottom: var(--spacing-xs);">Samedi</div>
+      <div style="opacity: 0.9;">10h00 - 16h00</div>
+    </div>
+    <div>
+      <div style="font-weight: var(--font-weight-semibold); margin-bottom: var(--spacing-xs);">Dimanche</div>
+      <div style="opacity: 0.9;">Fermé</div>
+    </div>
+  </div>
+</div>

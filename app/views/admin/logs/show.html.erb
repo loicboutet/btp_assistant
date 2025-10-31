@@ -1,0 +1,292 @@
+<% content_for :title, "Détails du log #1 - Admin" %>
+
+<div class="admin-page-header">
+  <div class="header-with-actions">
+    <div>
+      <%= link_to "← Retour aux logs", admin_logs_path, class: "back-link" %>
+      <h1>Détails du log système</h1>
+      <p class="text-muted">Log #1 • user.registered</p>
+    </div>
+    <div class="header-actions">
+      <%= link_to admin_logs_path, class: "btn btn-outline" do %>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="20" height="20">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 9.776c.112-.017.227-.026.344-.026h15.812c.117 0 .232.009.344.026m-16.5 0a2.25 2.25 0 00-1.883 2.542l.857 6a2.25 2.25 0 002.227 1.932H19.05a2.25 2.25 0 002.227-1.932l.857-6a2.25 2.25 0 00-1.883-2.542m-16.5 0V6A2.25 2.25 0 016 3.75h3.879a1.5 1.5 0 011.06.44l2.122 2.12a1.5 1.5 0 001.06.44H18A2.25 2.25 0 0120.25 9v.776" />
+        </svg>
+        <span>Tous les logs</span>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<!-- Log Overview -->
+<div class="admin-card">
+  <div class="card-header">
+    <h2>Informations générales</h2>
+    <span class="status-badge status-success">Success</span>
+  </div>
+  <div class="details-list">
+    <div class="detail-item">
+      <span class="detail-label">ID du log</span>
+      <span class="detail-value">#1</span>
+    </div>
+    <div class="detail-item">
+      <span class="detail-label">Type d'événement</span>
+      <span class="detail-value"><span class="badge badge-blue">User</span></span>
+    </div>
+    <div class="detail-item">
+      <span class="detail-label">Action</span>
+      <span class="detail-value">user.registered</span>
+    </div>
+    <div class="detail-item">
+      <span class="detail-label">Horodatage</span>
+      <span class="detail-value">30 mai 2025 à 14:23:45</span>
+    </div>
+    <div class="detail-item">
+      <span class="detail-label">Utilisateur concerné</span>
+      <span class="detail-value">
+        <div class="user-info-compact">
+          <div class="user-avatar-sm">MY</div>
+          <span>Mehmet Yılmaz</span>
+        </div>
+      </span>
+    </div>
+    <div class="detail-item">
+      <span class="detail-label">Description</span>
+      <span class="detail-value">Nouvel utilisateur inscrit via Stripe</span>
+    </div>
+    <div class="detail-item">
+      <span class="detail-label">Statut</span>
+      <span class="detail-value"><span class="status-badge status-success">Success</span></span>
+    </div>
+  </div>
+</div>
+
+<!-- Technical Details -->
+<div class="admin-content-grid" style="margin-top: var(--spacing-xl);">
+  <div class="admin-card">
+    <div class="card-header">
+      <h2>Détails techniques</h2>
+    </div>
+    <div class="details-list">
+      <div class="detail-item">
+        <span class="detail-label">Adresse IP</span>
+        <span class="detail-value">89.156.2.45</span>
+      </div>
+      <div class="detail-item">
+        <span class="detail-label">User Agent</span>
+        <span class="detail-value">Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36</span>
+      </div>
+      <div class="detail-item">
+        <span class="detail-label">Pays</span>
+        <span class="detail-value">🇹🇷 Turquie</span>
+      </div>
+      <div class="detail-item">
+        <span class="detail-label">Ville</span>
+        <span class="detail-value">Istanbul</span>
+      </div>
+      <div class="detail-item">
+        <span class="detail-label">Session ID</span>
+        <span class="detail-value">sess_abc123def456ghi789</span>
+      </div>
+      <div class="detail-item">
+        <span class="detail-label">Request ID</span>
+        <span class="detail-value">req_xyz789abc123def456</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="admin-card">
+    <div class="card-header">
+      <h2>Contexte métier</h2>
+    </div>
+    <div class="details-list">
+      <div class="detail-item">
+        <span class="detail-label">Source</span>
+        <span class="detail-value">Stripe Checkout</span>
+      </div>
+      <div class="detail-item">
+        <span class="detail-label">Stripe Customer ID</span>
+        <span class="detail-value">cus_NewUser123ABC</span>
+      </div>
+      <div class="detail-item">
+        <span class="detail-label">Plan souscrit</span>
+        <span class="detail-value">Mensuel - 59€/mois</span>
+      </div>
+      <div class="detail-item">
+        <span class="detail-label">Méthode de paiement</span>
+        <span class="detail-value">Carte •••• 4242</span>
+      </div>
+      <div class="detail-item">
+        <span class="detail-label">Email confirmé</span>
+        <span class="detail-value"><span class="status-badge status-success">Oui</span></span>
+      </div>
+      <div class="detail-item">
+        <span class="detail-label">Langue préférée</span>
+        <span class="detail-value">🇹🇷 Turc</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Request/Response Data -->
+<div class="admin-card" style="margin-top: var(--spacing-xl);">
+  <div class="card-header">
+    <h2>Données de la requête</h2>
+  </div>
+  <div style="background: var(--color-gray-50); border-radius: var(--border-radius); padding: var(--spacing-lg); font-family: 'Courier New', monospace; font-size: 14px; overflow-x: auto;">
+    <pre style="margin: 0; white-space: pre-wrap; word-wrap: break-word;">{
+  "event": "user.registered",
+  "timestamp": "2025-05-30T14:23:45Z",
+  "user": {
+    "id": 42,
+    "email": "mehmet.yilmaz@example.com",
+    "name": "Mehmet Yılmaz",
+    "phone": "+90 555 123 4567",
+    "language": "tr",
+    "company_name": "Yılmaz İnşaat"
+  },
+  "subscription": {
+    "stripe_customer_id": "cus_NewUser123ABC",
+    "stripe_subscription_id": "sub_987654321",
+    "plan": "monthly",
+    "amount": 59.00,
+    "currency": "EUR",
+    "status": "active",
+    "trial_end": null
+  },
+  "metadata": {
+    "source": "stripe_checkout",
+    "referrer": "https://example.com/pricing",
+    "utm_source": "google_ads",
+    "utm_campaign": "construction_software_2025"
+  }
+}</pre>
+  </div>
+</div>
+
+<!-- Response Data -->
+<div class="admin-card" style="margin-top: var(--spacing-xl);">
+  <div class="card-header">
+    <h2>Données de la réponse</h2>
+  </div>
+  <div style="background: var(--color-gray-50); border-radius: var(--border-radius); padding: var(--spacing-lg); font-family: 'Courier New', monospace; font-size: 14px; overflow-x: auto;">
+    <pre style="margin: 0; white-space: pre-wrap; word-wrap: break-word;">{
+  "status": "success",
+  "message": "User successfully registered",
+  "user_id": 42,
+  "actions_performed": [
+    "Created user account",
+    "Set up Stripe subscription",
+    "Sent welcome email",
+    "Created initial workspace",
+    "Set default preferences"
+  ],
+  "next_steps": [
+    "User should connect WhatsApp account",
+    "First invoice generation available"
+  ],
+  "processing_time_ms": 847
+}</pre>
+  </div>
+</div>
+
+<!-- Related Events -->
+<div class="admin-card" style="margin-top: var(--spacing-xl);">
+  <div class="card-header">
+    <h2>Événements associés</h2>
+    <span class="text-muted">5 événements liés dans les 24h</span>
+  </div>
+  <div class="activity-list">
+    <div class="activity-item">
+      <div class="activity-icon bg-green">💳</div>
+      <div class="activity-content">
+        <div class="activity-title">Paiement initial reçu</div>
+        <div class="activity-meta">stripe.payment_succeeded • 30 mai 2025, 14:23:42</div>
+      </div>
+      <%= link_to admin_log_path(2), class: "btn btn-xs btn-outline" do %>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="16" height="16">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+        </svg>
+        <span>Voir</span>
+      <% end %>
+    </div>
+    <div class="activity-item">
+      <div class="activity-icon bg-purple">📧</div>
+      <div class="activity-content">
+        <div class="activity-title">Email de bienvenue envoyé</div>
+        <div class="activity-meta">email.welcome_sent • 30 mai 2025, 14:23:48</div>
+      </div>
+      <%= link_to admin_log_path(3), class: "btn btn-xs btn-outline" do %>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="16" height="16">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+        </svg>
+        <span>Voir</span>
+      <% end %>
+    </div>
+    <div class="activity-item">
+      <div class="activity-icon bg-blue">📋</div>
+      <div class="activity-content">
+        <div class="activity-title">Espace de travail créé</div>
+        <div class="activity-meta">workspace.created • 30 mai 2025, 14:23:49</div>
+      </div>
+      <%= link_to admin_log_path(4), class: "btn btn-xs btn-outline" do %>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="16" height="16">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+        </svg>
+        <span>Voir</span>
+      <% end %>
+    </div>
+    <div class="activity-item">
+      <div class="activity-icon bg-blue">👤</div>
+      <div class="activity-content">
+        <div class="activity-title">Première connexion</div>
+        <div class="activity-meta">user.login • 30 mai 2025, 14:24:15</div>
+      </div>
+      <%= link_to admin_log_path(5), class: "btn btn-xs btn-outline" do %>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="16" height="16">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+        </svg>
+        <span>Voir</span>
+      <% end %>
+    </div>
+    <div class="activity-item">
+      <div class="activity-icon bg-green">💬</div>
+      <div class="activity-content">
+        <div class="activity-title">WhatsApp connecté</div>
+        <div class="activity-meta">whatsapp.connected • 30 mai 2025, 14:45:22</div>
+      </div>
+      <%= link_to admin_log_path(6), class: "btn btn-xs btn-outline" do %>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="16" height="16">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+        </svg>
+        <span>Voir</span>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<!-- Quick Actions -->
+<div class="admin-card" style="margin-top: var(--spacing-xl);">
+  <div class="card-header">
+    <h2>Actions rapides</h2>
+  </div>
+  <div class="quick-actions-grid">
+    <%= link_to admin_user_path(42), class: "btn btn-outline btn-block" do %>
+      👤 Voir le profil utilisateur
+    <% end %>
+    <%= link_to "#", class: "btn btn-outline btn-block" do %>
+      📋 Copier les données JSON
+    <% end %>
+    <%= link_to admin_logs_path(user_id: 42), class: "btn btn-outline btn-block" do %>
+      📝 Logs de cet utilisateur
+    <% end %>
+    <%= link_to "#", class: "btn btn-outline btn-block" do %>
+      📤 Exporter ce log
+    <% end %>
+  </div>
+</div>

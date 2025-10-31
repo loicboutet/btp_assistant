@@ -1,0 +1,260 @@
+<div class="admin-page-header">
+  <%= link_to root_path, class: "back-link" do %>
+    <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16" style="margin-right: 4px;">
+      <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
+    </svg>
+    Retour au tableau de bord
+  <% end %>
+  <div class="header-with-actions">
+    <div>
+      <h1>Connexion WhatsApp</h1>
+      <p class="text-muted">Connectez votre compte WhatsApp pour commencer à créer des devis et factures</p>
+    </div>
+  </div>
+</div>
+
+<!-- Connection Status -->
+<div class="admin-card" style="margin-bottom: var(--spacing-lg);">
+  <div class="card-header">
+    <h2>Statut de la Connexion</h2>
+  </div>
+  <div style="padding: var(--spacing-md);">
+    <div style="display: flex; align-items: center; gap: var(--spacing-md); padding: var(--spacing-md); background-color: #FEF3C7; border-radius: var(--radius-md); border-left: 4px solid #F59E0B;">
+      <svg width="24" height="24" fill="currentColor" viewBox="0 0 16 16" style="color: #F59E0B; flex-shrink: 0;">
+        <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+      </svg>
+      <div>
+        <strong style="color: #92400E; display: block; margin-bottom: 4px;">WhatsApp non connecté</strong>
+        <p class="text-muted small" style="margin: 0;">Vous devez connecter votre compte WhatsApp pour utiliser l'assistant vocal et créer des documents.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="admin-content-grid">
+  <!-- Instructions Card -->
+  <div class="admin-card">
+    <div class="card-header">
+      <h2>Comment connecter WhatsApp ?</h2>
+    </div>
+    <div style="padding: var(--spacing-md);">
+      <div style="display: flex; flex-direction: column; gap: var(--spacing-md);">
+        <div style="display: flex; gap: var(--spacing-md);">
+          <div style="width: 32px; height: 32px; border-radius: 50%; background-color: var(--primary-green); color: white; display: flex; align-items: center; justify-content: center; font-weight: 600; flex-shrink: 0;">1</div>
+          <div>
+            <h4 style="margin: 0 0 var(--spacing-xs) 0; color: var(--text-dark);">Cliquez sur "Générer le QR Code"</h4>
+            <p class="text-muted" style="margin: 0;">Un code QR sera généré pour la connexion à votre compte WhatsApp.</p>
+          </div>
+        </div>
+
+        <div style="display: flex; gap: var(--spacing-md);">
+          <div style="width: 32px; height: 32px; border-radius: 50%; background-color: var(--primary-green); color: white; display: flex; align-items: center; justify-content: center; font-weight: 600; flex-shrink: 0;">2</div>
+          <div>
+            <h4 style="margin: 0 0 var(--spacing-xs) 0; color: var(--text-dark);">Ouvrez WhatsApp sur votre téléphone</h4>
+            <p class="text-muted" style="margin: 0;">
+              • Sur Android : Appuyez sur <strong>⋮</strong> (menu) > <strong>Appareils connectés</strong> > <strong>Connecter un appareil</strong><br>
+              • Sur iPhone : Allez dans <strong>Réglages</strong> > <strong>Appareils connectés</strong> > <strong>Connecter un appareil</strong>
+            </p>
+          </div>
+        </div>
+
+        <div style="display: flex; gap: var(--spacing-md);">
+          <div style="width: 32px; height: 32px; border-radius: 50%; background-color: var(--primary-green); color: white; display: flex; align-items: center; justify-content: center; font-weight: 600; flex-shrink: 0;">3</div>
+          <div>
+            <h4 style="margin: 0 0 var(--spacing-xs) 0; color: var(--text-dark);">Scannez le QR Code</h4>
+            <p class="text-muted" style="margin: 0;">Pointez votre téléphone vers le QR code affiché ci-dessous pour établir la connexion.</p>
+          </div>
+        </div>
+
+        <div style="display: flex; gap: var(--spacing-md);">
+          <div style="width: 32px; height: 32px; border-radius: 50%; background-color: var(--primary-green); color: white; display: flex; align-items: center; justify-content: center; font-weight: 600; flex-shrink: 0;">4</div>
+          <div>
+            <h4 style="margin: 0 0 var(--spacing-xs) 0; color: var(--text-dark);">C'est terminé !</h4>
+            <p class="text-muted" style="margin: 0;">Une fois connecté, vous pourrez créer des devis et factures directement depuis WhatsApp.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Important Information -->
+  <div class="admin-card">
+    <div class="card-header">
+      <h2>Informations Importantes</h2>
+    </div>
+    <div style="padding: var(--spacing-md);">
+      <div style="display: flex; flex-direction: column; gap: var(--spacing-sm);">
+        <div style="display: flex; gap: var(--spacing-sm); align-items: flex-start;">
+          <svg width="20" height="20" fill="currentColor" viewBox="0 0 16 16" style="color: var(--primary-blue); flex-shrink: 0; margin-top: 2px;">
+            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+            <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
+          </svg>
+          <div>
+            <strong style="color: var(--text-dark); display: block; margin-bottom: 4px;">Numéro WhatsApp Business</strong>
+            <p class="text-muted small" style="margin: 0;">Il est recommandé d'utiliser un numéro WhatsApp Business pour des fonctionnalités professionnelles optimales.</p>
+          </div>
+        </div>
+
+        <div style="display: flex; gap: var(--spacing-sm); align-items: flex-start;">
+          <svg width="20" height="20" fill="currentColor" viewBox="0 0 16 16" style="color: var(--primary-blue); flex-shrink: 0; margin-top: 2px;">
+            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+            <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
+          </svg>
+          <div>
+            <strong style="color: var(--text-dark); display: block; margin-bottom: 4px;">Un compte = Un numéro</strong>
+            <p class="text-muted small" style="margin: 0;">Chaque compte BTP Assistant est lié à un seul numéro WhatsApp et un SIRET.</p>
+          </div>
+        </div>
+
+        <div style="display: flex; gap: var(--spacing-sm); align-items: flex-start;">
+          <svg width="20" height="20" fill="currentColor" viewBox="0 0 16 16" style="color: var(--primary-blue); flex-shrink: 0; margin-top: 2px;">
+            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+            <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
+          </svg>
+          <div>
+            <strong style="color: var(--text-dark); display: block; margin-bottom: 4px;">Sécurité et confidentialité</strong>
+            <p class="text-muted small" style="margin: 0;">Vos conversations WhatsApp restent privées et chiffrées. L'application accède uniquement aux messages nécessaires pour créer vos documents.</p>
+          </div>
+        </div>
+
+        <div style="display: flex; gap: var(--spacing-sm); align-items: flex-start;">
+          <svg width="20" height="20" fill="currentColor" viewBox="0 0 16 16" style="color: var(--primary-blue); flex-shrink: 0; margin-top: 2px;">
+            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+            <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
+          </svg>
+          <div>
+            <strong style="color: var(--text-dark); display: block; margin-bottom: 4px;">Support bilingue</strong>
+            <p class="text-muted small" style="margin: 0;">L'assistant comprend et répond en français et en turc. La langue est détectée automatiquement.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- QR Code Section -->
+<div class="admin-card" style="margin-top: var(--spacing-lg);">
+  <div class="card-header">
+    <h2>Scanner le QR Code</h2>
+  </div>
+  <div style="padding: var(--spacing-lg); text-align: center;">
+    <!-- QR Code Placeholder -->
+    <div id="qr-code-container" style="display: none;">
+      <div style="display: inline-block; padding: var(--spacing-lg); background-color: white; border-radius: var(--radius-lg); box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);">
+        <!-- Placeholder QR Code -->
+        <div style="width: 300px; height: 300px; background: linear-gradient(45deg, #f0f0f0 25%, transparent 25%, transparent 75%, #f0f0f0 75%, #f0f0f0), linear-gradient(45deg, #f0f0f0 25%, transparent 25%, transparent 75%, #f0f0f0 75%, #f0f0f0); background-size: 20px 20px; background-position: 0 0, 10px 10px; border: 2px solid var(--border-color); border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center;">
+          <div style="text-align: center; padding: var(--spacing-md);">
+            <svg width="64" height="64" fill="currentColor" viewBox="0 0 16 16" style="color: var(--text-muted); margin-bottom: var(--spacing-sm);">
+              <path d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.933 7.933 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.898 7.898 0 0 0 13.6 2.326zM7.994 14.521a6.573 6.573 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.557 6.557 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592zm3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.729.729 0 0 0-.529.247c-.182.198-.691.677-.691 1.654 0 .977.71 1.916.81 2.049.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232z"/>
+            </svg>
+            <p style="color: var(--text-muted); margin: 0;">Le QR Code apparaîtra ici</p>
+          </div>
+        </div>
+      </div>
+      <p class="text-muted" style="margin-top: var(--spacing-md);">
+        <strong>Attention :</strong> Le QR code expire dans <span id="countdown" style="color: var(--danger-color); font-weight: 600;">2:00</span>
+      </p>
+    </div>
+
+    <!-- Not Generated State -->
+    <div id="not-generated-state">
+      <div style="padding: var(--spacing-xl);">
+        <svg width="96" height="96" fill="currentColor" viewBox="0 0 16 16" style="color: var(--text-muted); margin-bottom: var(--spacing-md);">
+          <path d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.933 7.933 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.898 7.898 0 0 0 13.6 2.326zM7.994 14.521a6.573 6.573 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.557 6.557 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592zm3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.729.729 0 0 0-.529.247c-.182.198-.691.677-.691 1.654 0 .977.71 1.916.81 2.049.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232z"/>
+        </svg>
+        <h3 style="color: var(--text-dark); margin-bottom: var(--spacing-sm);">Prêt à connecter WhatsApp</h3>
+        <p class="text-muted" style="margin-bottom: var(--spacing-lg); max-width: 500px; margin-left: auto; margin-right: auto;">
+          Générez un QR code pour connecter votre compte WhatsApp Business et commencer à créer des devis et factures vocalement.
+        </p>
+        <button type="button" class="btn btn-primary btn-lg" onclick="generateQRCode()">
+          <svg width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+            <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+          </svg>
+          <span>Générer le QR Code</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Account Info -->
+<div class="admin-card" style="margin-top: var(--spacing-lg);">
+  <div class="card-header">
+    <h2>Votre Compte</h2>
+  </div>
+  <div class="details-list">
+    <div class="detail-item">
+      <span class="detail-label">Entreprise</span>
+      <span class="detail-value">Yilmaz Construction</span>
+    </div>
+    <div class="detail-item">
+      <span class="detail-label">SIRET</span>
+      <span class="detail-value">123 456 789 00012</span>
+    </div>
+    <div class="detail-item">
+      <span class="detail-label">Téléphone enregistré</span>
+      <span class="detail-value">+33 6 12 34 56 78</span>
+    </div>
+    <div class="detail-item">
+      <span class="detail-label">Langue préférée</span>
+      <span class="detail-value">
+        <span class="badge badge-gray">🇫🇷 Français</span>
+      </span>
+    </div>
+  </div>
+</div>
+
+<!-- Help Section -->
+<div class="admin-card" style="margin-top: var(--spacing-lg);">
+  <div class="card-header">
+    <h2>Besoin d'aide ?</h2>
+  </div>
+  <div style="padding: var(--spacing-md);">
+    <p class="text-muted" style="margin-bottom: var(--spacing-md);">
+      Si vous rencontrez des difficultés pour connecter votre compte WhatsApp, consultez notre guide d'aide ou contactez notre support.
+    </p>
+    <div style="display: flex; gap: var(--spacing-sm); flex-wrap: wrap;">
+      <%= link_to "#", class: "btn btn-secondary btn-sm" do %>
+        <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+          <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+          <path d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286zm1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94z"/>
+        </svg>
+        <span>Guide d'aide</span>
+      <% end %>
+      <%= link_to "#", class: "btn btn-secondary btn-sm" do %>
+        <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+          <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4Zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1H2Zm13 2.383-4.708 2.825L15 11.105V5.383Zm-.034 6.876-5.64-3.471L8 9.583l-1.326-.795-5.64 3.47A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.741ZM1 11.105l4.708-2.897L1 5.383v5.722Z"/>
+        </svg>
+        <span>Contacter le support</span>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<script>
+function generateQRCode() {
+  document.getElementById('not-generated-state').style.display = 'none';
+  document.getElementById('qr-code-container').style.display = 'block';
+  
+  // Start countdown
+  let timeLeft = 120; // 2 minutes
+  const countdownEl = document.getElementById('countdown');
+  
+  const timer = setInterval(() => {
+    timeLeft--;
+    const minutes = Math.floor(timeLeft / 60);
+    const seconds = timeLeft % 60;
+    countdownEl.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+    
+    if (timeLeft <= 0) {
+      clearInterval(timer);
+      alert('Le QR code a expiré. Veuillez en générer un nouveau.');
+      document.getElementById('qr-code-container').style.display = 'none';
+      document.getElementById('not-generated-state').style.display = 'block';
+    }
+  }, 1000);
+  
+  // In a real implementation, this would make an API call to Unipile
+  console.log('QR Code generation requested - would call Unipile API here');
+}
+</script>
