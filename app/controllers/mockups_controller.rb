@@ -3,20 +3,28 @@ class MockupsController < ApplicationController
   layout :resolve_layout
   
   def index
-    # Main index page that will list all mockup journeys
+    # Main index page that lists all mockup journeys
   end
   
-  # User journey pages
+  # User journey pages (Bot-First Architecture)
   def user_dashboard
-    # User dashboard mockup
+    # Simple dashboard with 4 big cards
+  end
+  
+  def user_quotes_list
+    # Quotes list with search and filters
   end
   
   def user_profile
-    # User profile mockup
+    # User profile with magic link management
+  end
+  
+  def signup_success
+    # Success page after payment with WhatsApp button
   end
   
   def user_settings
-    # User settings mockup
+    # User settings mockup (legacy - may not be needed)
   end
   
   # Admin journey pages
@@ -38,7 +46,7 @@ class MockupsController < ApplicationController
   def resolve_layout
     if action_name == 'index'
       'application'
-    elsif action_name.start_with?('user_')
+    elsif action_name.start_with?('user_') || action_name == 'signup_success'
       'mockup_user'
     elsif action_name.start_with?('admin_')
       'mockup_admin'

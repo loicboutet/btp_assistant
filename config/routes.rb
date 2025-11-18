@@ -146,7 +146,9 @@ Rails.application.routes.draw do
     get 'mockups/admin_users', to: 'mockups#admin_users'
     get 'mockups/admin_analytics', to: 'mockups#admin_analytics'
     get 'mockups/user_dashboard', to: 'mockups#user_dashboard'
+    get 'mockups/user_quotes_list', to: 'mockups#user_quotes_list'
     get 'mockups/user_profile', to: 'mockups#user_profile'
+    get 'mockups/signup_success', to: 'mockups#signup_success'
     get 'mockups/user_settings', to: 'mockups#user_settings'
   end
 end
