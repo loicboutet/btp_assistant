@@ -1,115 +1,146 @@
-# Data Model
+# Data Model - Bot-First Architecture
 
 ## Overview
 
-This document describes all the objects (models) of the application and their relationships, with proper integration with Unipile's WhatsApp messaging API.
+This document describes all the objects (models) of the application and their relationships. The application is **bot-first**: users are automatically created when they message the WhatsApp bot and access the web via secure magic links.
+
+## Core Principles
+
+1. **No passwords** - Users authenticate via magic links sent on WhatsApp
+2. **Phone number as identity** - Unique identifier for each user
+3. **Auto-creation** - Users created automatically on first WhatsApp message
+4. **WhatsApp-first** - Web interface is secondary (view-only mostly)
+
+---
 
 ## Core Models
 
 ### User (Artisan/Entrepreneur)
 
-The main user of the application - the construction entrepreneur.
+The main user of the application - automatically created from WhatsApp interaction.
 
 **Attributes:**
 - `id` (primary key)
-- `email` (string, unique, required)
-- `first_name` (string, required)
-- `last_name` (string, required)
-- `whatsapp_phone` (string, unique, required) - Format: +33600000000
-- `company_name` (string, required)
-- `siret` (string, unique, required)
-- `address` (text, required)
+- `phone_number` (string, unique, required) - E.164 format: +33612345678
+- `company_name` (string, optional) - Collected via bot
+- `siret` (string, optional) - Collected via bot
+- `address` (text, optional) - Collected via bot
 - `vat_number` (string, optional)
-- `preferred_language` (enum: 'fr', 'tr', required)
-- `whatsapp_connected` (boolean, default: false)
-- `unipile_account_id` (string, optional) - Unipile Account ID from Unipile API
-- `unipile_connection_params` (json, optional) - Stores Unipile connection metadata (phone_number, etc.)
-- `account_status` (enum: 'active', 'suspended', 'pending', default: 'pending')
-- `stripe_customer_id` (string, optional)
+- `preferred_language` (enum: 'fr', 'tr', required, default: 'fr')
+- `stripe_customer_id` (string, optional, indexed)
+- `subscription_status` (enum: 'trialing', 'active', 'past_due', 'canceled', default: 'trialing')
+- `onboarding_completed` (boolean, default: false)
+- `first_message_at` (datetime, required)
+- `last_activity_at` (datetime, required)
 - `timestamps` (created_at, updated_at)
 
+**Magic Link Authentication:**
+- `magic_link_token_digest` (string, unique, indexed) - Bcrypt hashed token
+- `magic_link_expires_at` (datetime)
+- `magic_link_last_used_at` (datetime)
+- `magic_link_sent` (boolean, default: false)
+- `last_login_ip` (string, optional)
+- `last_login_at` (datetime, optional)
+
+**Unipile Integration:**
+- `unipile_chat_id` (string, indexed) - Unipile's chat ID
+- `unipile_attendee_id` (string, indexed) - Unipile's attendee ID
+
 **Relationships:**
-- has_many :subscriptions
+- has_one :subscription
+- has_many :subscription_invoices
 - has_many :clients
 - has_many :quotes
 - has_many :invoices
-- has_many :conversations
-- has_many :subscription_invoices
-- has_many :whatsapp_chats
-
-**Unipile Integration:**
-- `unipile_account_id` maps to Unipile's Account object (type: WHATSAPP)
-- Connection established via QR code authentication
-- One account = One WhatsApp number = One SIRET
-
----
-
-### WhatsappChat
-
-Represents a WhatsApp chat/conversation from Unipile. Maps to Unipile's Chat object.
-
-**Attributes:**
-- `id` (primary key)
-- `user_id` (foreign key, required)
-- `unipile_chat_id` (string, unique, required) - Unipile's chat ID
-- `unipile_provider_id` (string, required) - Unipile's provider chat ID
-- `attendee_provider_id` (string, required) - WhatsApp attendee ID (phone number format)
-- `attendee_name` (string, optional) - Contact name from WhatsApp
-- `chat_type` (integer, required) - 0: individual, 1: group, 2: broadcast
-- `last_message_at` (datetime, optional)
-- `unread_count` (integer, default: 0)
-- `archived` (boolean, default: false)
-- `muted_until` (datetime, optional)
-- `timestamps` (created_at, updated_at)
-
-**Relationships:**
-- belongs_to :user
 - has_many :whatsapp_messages
-- has_one :conversation (optional) - Links to active conversation if exists
+- has_many :conversations
 
-**Unipile Integration:**
-- Synced from Unipile's `GET /api/v1/chats` endpoint
-- Updated via Unipile webhook: `message_received`, `message_sent`
-- `attendee_provider_id` format: `33600000000@s.whatsapp.net` (Unipile format)
+**Key Methods:**
+```ruby
+def generate_magic_link!
+  # Generate secure token, hash it, store digest
+  # Returns unhashed token (send via WhatsApp)
+end
+
+def magic_link_url
+  # Returns: https://app.com/u/ABC123XYZ456...
+end
+
+def valid_magic_link?(token)
+  # Validates token against digest and expiration
+end
+
+def display_name
+  company_name || phone_number
+end
+
+def active_subscription?
+  subscription_status.in?(['trialing', 'active'])
+end
+```
 
 ---
 
 ### WhatsappMessage
 
-Represents individual WhatsApp messages from Unipile. Maps to Unipile's Message object.
+Individual WhatsApp messages exchanged with the bot.
 
 **Attributes:**
 - `id` (primary key)
-- `whatsapp_chat_id` (foreign key, required)
 - `user_id` (foreign key, required)
-- `conversation_id` (foreign key, optional) - Links to conversation if part of workflow
-- `unipile_message_id` (string, unique, required) - Unipile's message ID
-- `unipile_provider_id` (string, required) - Provider's message ID
+- `conversation_id` (foreign key, optional) - If part of a workflow
+- `unipile_message_id` (string, unique, required)
+- `unipile_chat_id` (string, required)
 - `direction` (enum: 'inbound', 'outbound', required)
 - `message_type` (enum: 'text', 'audio', 'image', 'document', 'video', required)
-- `text_content` (text, optional) - Text content or transcription
-- `sender_id` (string, required) - Unipile sender_id
-- `sender_name` (string, optional)
-- `attachments` (json, optional) - Array of attachment metadata from Unipile
-- `audio_transcription` (text, optional) - Whisper API transcription result
-- `detected_language` (string, optional) - Language detected by Whisper
-- `quote_message_id` (string, optional) - If replying to another message (Unipile quote_id)
+- `content` (text, optional) - Text content or transcription
+- `sender_phone` (string, required) - Phone number of sender
+- `attachments` (json, optional) - Unipile attachment metadata
+- `audio_transcription` (text, optional) - Whisper API result
+- `detected_language` (string, optional) - 'fr' or 'tr'
+- `processed` (boolean, default: false)
 - `sent_at` (datetime, required)
-- `delivered_at` (datetime, optional)
-- `read_at` (datetime, optional)
-- `processed` (boolean, default: false) - If processed by AI/workflow
 - `timestamps` (created_at, updated_at)
 
 **Relationships:**
-- belongs_to :whatsapp_chat
 - belongs_to :user
 - belongs_to :conversation (optional)
 
-**Unipile Integration:**
-- Created from webhook payload: `message_received` event
-- Sent via `POST /api/v1/chats/{chat_id}/messages`
-- Audio attachments downloaded via `GET /api/v1/messages/{message_id}/attachments/{attachment_id}`
-- `attachments` structure follows Unipile's attachment schema
+**Indexes:**
+- `user_id, sent_at DESC`
+- `unipile_message_id` (unique)
+- `unipile_chat_id`
+
+---
+
+### Conversation
+
+Tracks conversation workflows (quote creation, invoice creation, etc.).
+
+**Attributes:**
+- `id` (primary key)
+- `user_id` (foreign key, required)
+- `conversation_type` (enum: 'quote_creation', 'invoice_creation', 'client_creation', 'onboarding', 'general', required)
+- `status` (enum: 'active', 'completed', 'abandoned', 'error', default: 'active')
+- `current_step` (string, optional) - Workflow state machine step
+- `context_data` (json, optional) - Collected data during workflow
+- `language` (enum: 'fr', 'tr', required)
+- `started_at` (datetime, required)
+- `completed_at` (datetime, optional)
+- `last_interaction_at` (datetime, required)
+- `timestamps` (created_at, updated_at)
+
+**Relationships:**
+- belongs_to :user
+- has_many :whatsapp_messages
+- belongs_to :quote (optional) - If created a quote
+- belongs_to :invoice (optional) - If created an invoice
+- belongs_to :client (optional) - If created a client
+
+**Business Logic:**
+- One active conversation per user at a time
+- Abandoned if no interaction for 30 minutes
+- Context data stores partial info during multi-step flows
 
 ---
 
@@ -120,48 +151,45 @@ The artisan's customers for whom quotes and invoices are created.
 **Attributes:**
 - `id` (primary key)
 - `user_id` (foreign key, required)
-- `whatsapp_chat_id` (foreign key, optional) - Link to WhatsApp chat if client contacted via WhatsApp
 - `name` (string, required)
 - `address` (text, required)
 - `siret` (string, optional) - If professional client
 - `contact_phone` (string, optional)
 - `contact_email` (string, optional)
-- `created_via` (enum: 'whatsapp', 'web', 'admin', default: 'whatsapp')
+- `created_via` (enum: 'whatsapp', 'admin', default: 'whatsapp')
 - `timestamps` (created_at, updated_at)
 
 **Relationships:**
 - belongs_to :user
-- belongs_to :whatsapp_chat (optional)
 - has_many :quotes
 - has_many :invoices
 
-**Business Logic:**
-- Can be created via WhatsApp conversation (guided workflow)
-- Linked to WhatsApp chat for context
-- One client can have multiple WhatsApp chats (different phone numbers)
+**Indexes:**
+- `user_id`
+- `user_id, name`
 
 ---
 
 ### Quote (Devis)
 
-Commercial quotes created by artisans for their clients.
+Commercial quotes created via WhatsApp.
 
 **Attributes:**
 - `id` (primary key)
 - `user_id` (foreign key, required)
 - `client_id` (foreign key, required)
-- `conversation_id` (foreign key, optional) - Link to conversation that created this quote
-- `quote_number` (string, unique, required) - Auto-generated: DEVIS-YYYY-NNNN
+- `conversation_id` (foreign key, optional)
+- `quote_number` (string, unique, required) - Format: DEVIS-YYYY-NNNN
 - `issue_date` (date, required)
 - `validity_date` (date, optional)
-- `status` (enum: 'draft', 'sent', 'accepted', 'rejected', default: 'draft')
+- `status` (enum: 'draft', 'sent', 'accepted', 'rejected', default: 'sent')
 - `subtotal_amount` (decimal, required)
 - `vat_rate` (decimal, default: 20.0)
 - `vat_amount` (decimal, required)
 - `total_amount` (decimal, required)
 - `notes` (text, optional)
-- `pdf_url` (string, optional) - Path to generated PDF
-- `sent_via_whatsapp_at` (datetime, optional) - When PDF was sent via WhatsApp
+- `pdf_path` (string, required) - Active Storage path
+- `sent_via_whatsapp_at` (datetime, required)
 - `timestamps` (created_at, updated_at)
 
 **Relationships:**
@@ -170,17 +198,18 @@ Commercial quotes created by artisans for their clients.
 - belongs_to :conversation (optional)
 - has_many :quote_items (dependent: :destroy)
 - has_many :invoices
+- has_one_attached :pdf_file
 
-**Business Logic:**
-- Created via WhatsApp conversational workflow
-- PDF generated and sent directly on WhatsApp
-- Auto-generates quote number per user per year
+**Indexes:**
+- `user_id, issue_date DESC`
+- `quote_number` (unique)
+- `user_id, status`
 
 ---
 
-### QuoteItem (Line Item for Quote)
+### QuoteItem
 
-Individual service lines within a quote.
+Line items within a quote.
 
 **Attributes:**
 - `id` (primary key)
@@ -189,7 +218,7 @@ Individual service lines within a quote.
 - `quantity` (decimal, required)
 - `unit_price` (decimal, required)
 - `total_price` (decimal, required) - Calculated: quantity * unit_price
-- `position` (integer, default: 0) - For ordering items
+- `position` (integer, default: 0)
 - `timestamps` (created_at, updated_at)
 
 **Relationships:**
@@ -199,25 +228,26 @@ Individual service lines within a quote.
 
 ### Invoice (Facture)
 
-Invoices created by artisans for their clients.
+Invoices created via WhatsApp.
 
 **Attributes:**
 - `id` (primary key)
 - `user_id` (foreign key, required)
 - `client_id` (foreign key, required)
-- `quote_id` (foreign key, optional) - Link to quote if invoice is based on one
-- `conversation_id` (foreign key, optional) - Link to conversation that created this invoice
-- `invoice_number` (string, unique, required) - Auto-generated: FACT-YYYY-NNNN
+- `quote_id` (foreign key, optional) - Link to quote if based on one
+- `conversation_id` (foreign key, optional)
+- `invoice_number` (string, unique, required) - Format: FACT-YYYY-NNNN
 - `issue_date` (date, required)
 - `due_date` (date, optional)
-- `status` (enum: 'draft', 'sent', 'paid', 'overdue', default: 'draft')
+- `status` (enum: 'draft', 'sent', 'paid', 'overdue', default: 'sent')
 - `subtotal_amount` (decimal, required)
 - `vat_rate` (decimal, default: 20.0)
 - `vat_amount` (decimal, required)
 - `total_amount` (decimal, required)
 - `notes` (text, optional)
-- `pdf_url` (string, optional) - Path to generated PDF
-- `sent_via_whatsapp_at` (datetime, optional) - When PDF was sent via WhatsApp
+- `pdf_path` (string, required)
+- `sent_via_whatsapp_at` (datetime, required)
+- `paid_at` (datetime, optional)
 - `timestamps` (created_at, updated_at)
 
 **Relationships:**
@@ -226,17 +256,18 @@ Invoices created by artisans for their clients.
 - belongs_to :quote (optional)
 - belongs_to :conversation (optional)
 - has_many :invoice_items (dependent: :destroy)
+- has_one_attached :pdf_file
 
-**Business Logic:**
-- Can be linked to an existing quote or created independently
-- Created via WhatsApp conversational workflow
-- PDF generated and sent directly on WhatsApp
+**Indexes:**
+- `user_id, issue_date DESC`
+- `invoice_number` (unique)
+- `user_id, status`
 
 ---
 
-### InvoiceItem (Line Item for Invoice)
+### InvoiceItem
 
-Individual service lines within an invoice.
+Line items within an invoice.
 
 **Attributes:**
 - `id` (primary key)
@@ -244,8 +275,8 @@ Individual service lines within an invoice.
 - `description` (text, required)
 - `quantity` (decimal, required)
 - `unit_price` (decimal, required)
-- `total_price` (decimal, required) - Calculated: quantity * unit_price
-- `position` (integer, default: 0) - For ordering items
+- `total_price` (decimal, required)
+- `position` (integer, default: 0)
 - `timestamps` (created_at, updated_at)
 
 **Relationships:**
@@ -255,13 +286,14 @@ Individual service lines within an invoice.
 
 ### Subscription
 
-User's monthly subscription to the service.
+User's subscription to the service.
 
 **Attributes:**
 - `id` (primary key)
 - `user_id` (foreign key, required)
 - `stripe_subscription_id` (string, unique, required)
-- `status` (enum: 'active', 'past_due', 'canceled', 'trialing', required)
+- `status` (enum: 'trialing', 'active', 'past_due', 'canceled', required)
+- `trial_ends_at` (datetime, optional)
 - `current_period_start` (datetime, required)
 - `current_period_end` (datetime, required)
 - `cancel_at_period_end` (boolean, default: false)
@@ -275,7 +307,7 @@ User's monthly subscription to the service.
 
 ### SubscriptionInvoice
 
-Monthly subscription invoices automatically generated.
+Monthly subscription invoices from Stripe.
 
 **Attributes:**
 - `id` (primary key)
@@ -290,7 +322,7 @@ Monthly subscription invoices automatically generated.
 - `issue_date` (date, required)
 - `due_date` (date, optional)
 - `paid_at` (datetime, optional)
-- `pdf_url` (string, optional)
+- `stripe_invoice_url` (string, optional) - Stripe hosted invoice
 - `timestamps` (created_at, updated_at)
 
 **Relationships:**
@@ -299,82 +331,50 @@ Monthly subscription invoices automatically generated.
 
 ---
 
-### Conversation
-
-Tracks WhatsApp conversation workflows for document creation. Represents a state machine for guided conversational flows.
-
-**Attributes:**
-- `id` (primary key)
-- `user_id` (foreign key, required)
-- `whatsapp_chat_id` (foreign key, required) - Link to WhatsApp chat
-- `conversation_type` (enum: 'quote_creation', 'invoice_creation', 'client_creation', 'general', required)
-- `status` (enum: 'active', 'completed', 'abandoned', 'error', default: 'active')
-- `current_step` (string, optional) - Current step in the workflow state machine
-- `context_data` (json, optional) - Stores workflow state and collected data
-- `language` (enum: 'fr', 'tr', required) - Detected language for this conversation
-- `started_at` (datetime, required)
-- `completed_at` (datetime, optional)
-- `last_interaction_at` (datetime, required) - For abandoned conversation detection
-- `timestamps` (created_at, updated_at)
-
-**Relationships:**
-- belongs_to :user
-- belongs_to :whatsapp_chat
-- has_many :whatsapp_messages
-- belongs_to :quote (optional) - If conversation created a quote
-- belongs_to :invoice (optional) - If conversation created an invoice
-- belongs_to :client (optional) - If conversation created a client
-
-**Business Logic:**
-- One active conversation per chat at a time
-- Workflow state machine tracks progress through document creation
-- Context data stores partial information during multi-step flows
-- Abandoned if no interaction for 30 minutes
-
----
-
 ### SystemLog
 
-Audit trail and system logs for admin monitoring.
+Audit trail for admin monitoring.
 
 **Attributes:**
 - `id` (primary key)
-- `user_id` (foreign key, optional) - Null for system-wide events
+- `user_id` (foreign key, optional)
 - `log_type` (enum: 'info', 'warning', 'error', 'audit', required)
-- `event` (string, required) - Event name (e.g., 'whatsapp.message_received', 'pdf.generated')
+- `event` (string, required) - Event name (e.g., 'user.created', 'magic_link.used')
 - `description` (text, optional)
-- `metadata` (json, optional) - Additional context (Unipile IDs, error details, etc.)
+- `metadata` (json, optional) - Additional context
 - `ip_address` (string, optional)
 - `timestamps` (created_at, updated_at)
 
 **Relationships:**
 - belongs_to :user (optional)
 
+**Indexes:**
+- `user_id, created_at DESC`
+- `event, created_at DESC`
+- `log_type`
+
 ---
 
 ## Relationship Diagram
 
 ```
-User (Artisan)
-├── unipile_account_id → Unipile Account (WHATSAPP)
+User (Created from WhatsApp)
 │
-├── has_many :whatsapp_chats
-│   └── WhatsappChat (Unipile Chat object)
-│       ├── has_many :whatsapp_messages
-│       │   └── WhatsappMessage (Unipile Message object)
-│       │       └── belongs_to :conversation (optional)
-│       │
-│       └── has_one :conversation (active)
+├── Phone Number (+33612345678) → PRIMARY IDENTIFIER
+├── Magic Link Token (hashed) → WEB ACCESS
+├── Unipile Chat ID → WHATSAPP CONNECTION
+│
+├── has_many :whatsapp_messages
+│   └── WhatsappMessage
+│       └── belongs_to :conversation (optional)
 │
 ├── has_many :conversations
 │   └── Conversation (Workflow State Machine)
-│       ├── belongs_to :whatsapp_chat
 │       ├── has_many :whatsapp_messages
 │       └── can create: Quote, Invoice, or Client
 │
 ├── has_many :clients
 │   └── Client
-│       ├── belongs_to :whatsapp_chat (optional)
 │       ├── has_many :quotes
 │       └── has_many :invoices
 │
@@ -392,7 +392,7 @@ User (Artisan)
 │       ├── belongs_to :conversation (optional)
 │       └── has_many :invoice_items
 │
-├── has_many :subscriptions
+├── has_one :subscription
 │   └── Subscription
 │       └── has_many :subscription_invoices
 │           └── SubscriptionInvoice
@@ -401,321 +401,789 @@ User (Artisan)
     └── SystemLog
 ```
 
-## Unipile Integration Details
+---
 
-### WhatsApp Account Connection Flow
+## User Lifecycle
 
-1. **Initial Connection**
-   - `POST /api/v1/accounts` with `provider: 'WHATSAPP'`
-   - Returns QR code for scanning
-   - User scans QR with their WhatsApp
-   - Unipile returns `account_id` → stored as `User.unipile_account_id`
+### State Transitions
 
-2. **Account Metadata**
-   - Connection params stored in `User.unipile_connection_params`:
-     ```json
-     {
-       "im": {
-         "phone_number": "+33600000000"
-       }
-     }
-     ```
-
-### Webhook Integration
-
-Configure webhook in Unipile for real-time message reception:
-
-**Webhook URL:** `https://your-app.com/webhooks/unipile/messages`
-
-**Webhook Payload Structure:**
-```json
-{
-  "account_id": "unipile_account_id",
-  "account_type": "WHATSAPP",
-  "event": "message_received",
-  "chat_id": "R8J-xM9WX7eoHLp6gSVtWQ",
-  "message_id": "ykmhfXlRW0W_cqReJYrfBw",
-  "message": "Hello World !",
-  "sender": {
-    "attendee_id": "C8zaRZTlVcmfnke_Vai4Gg",
-    "attendee_name": "John Doe",
-    "attendee_provider_id": "33600000000@s.whatsapp.net"
-  },
-  "timestamp": "2023-09-24T13:49:07.965Z",
-  "attachments": [
-    {
-      "id": "attachment_id",
-      "type": "audio",
-      "mimetype": "audio/ogg",
-      "url": "att://base64_encoded_attachment_ref"
-    }
-  ]
-}
+```
+1. NEW (First WhatsApp Message)
+   ├─ phone_number: captured
+   ├─ subscription_status: 'trialing'
+   ├─ onboarding_completed: false
+   └─ first_message_at: now
+   
+2. ONBOARDING (Bot Collects Info)
+   ├─ company_name: collected
+   ├─ siret: collected
+   ├─ address: collected
+   └─ preferred_language: detected/confirmed
+   
+3. ONBOARDED (Ready to Use)
+   ├─ onboarding_completed: true
+   ├─ magic_link generated
+   ├─ magic_link sent via WhatsApp
+   └─ Can create quotes/invoices
+   
+4. SUBSCRIBED (Paid)
+   ├─ stripe_customer_id: set
+   ├─ subscription created
+   └─ subscription_status: 'active'
+   
+5. SUSPENDED (Payment Failed)
+   ├─ subscription_status: 'past_due' or 'canceled'
+   └─ Cannot create new documents
 ```
 
-### Message Handling Flow
+---
 
-1. **Receiving Messages**
-   - Webhook receives `message_received` event
-   - Create/update `WhatsappChat` from `chat_id`
-   - Create `WhatsappMessage` from payload
-   - Detect if part of active `Conversation`
-   - Process through AI/workflow if needed
+## Magic Link Security Model
 
-2. **Sending Messages**
-   - Use `POST /api/v1/chats/{chat_id}/messages`
-   - Parameters:
-     ```json
-     {
-       "text": "Response text",
-       "attachments": ["file_binary"],
-       "typing_duration": "2000"
-     }
-     ```
+### Token Generation
 
-3. **Audio Message Processing**
-   - Download audio: `GET /api/v1/messages/{message_id}/attachments/{attachment_id}`
-   - Transcribe with Whisper API
-   - Store transcription in `WhatsappMessage.audio_transcription`
-   - Detect language and process with GPT-4
+```ruby
+# When user completes onboarding
+token = SecureRandom.urlsafe_base64(32) # 256 bits entropy
+# Example: "ABCdef123XYZ789-_ABCdef123XYZ789-_ABCdef"
 
-### Unipile Data Mapping
+# Hash it before storage
+digest = BCrypt::Password.create(token)
 
-| Our Model | Unipile Field | Type | Notes |
-|-----------|--------------|------|-------|
-| `User.unipile_account_id` | `account.id` | string | Account ID from Unipile |
-| `WhatsappChat.unipile_chat_id` | `chat.id` | string | Unipile's internal chat ID |
-| `WhatsappChat.unipile_provider_id` | `chat.provider_id` | string | WhatsApp's chat ID |
-| `WhatsappChat.attendee_provider_id` | `chat.attendee_provider_id` | string | Format: `33600000000@s.whatsapp.net` |
-| `WhatsappMessage.unipile_message_id` | `message.id` | string | Unipile's message ID |
-| `WhatsappMessage.sender_id` | `sender.attendee_id` | string | Unipile attendee ID |
-| `WhatsappMessage.attachments` | `message.attachments` | json | Array of attachment objects |
+# Store only digest
+user.update!(
+  magic_link_token_digest: digest,
+  magic_link_expires_at: 90.days.from_now
+)
 
-## Key Business Rules
+# Return token to send via WhatsApp (NEVER stored unhashed)
+return token
+```
 
-### Document Numbering
-- Quotes: Format `DEVIS-YYYY-NNNN` (e.g., DEVIS-2024-0001)
-- Invoices: Format `FACT-YYYY-NNNN` (e.g., FACT-2024-0001)
-- Subscription Invoices: Format `ABO-YYYY-NNNN` (e.g., ABO-2024-0001)
-- Numbers are sequential per user per year
+### URL Structure
 
-### VAT Calculation
-- Default VAT rate: 20%
-- Can be configured per user
-- Calculation: `vat_amount = subtotal_amount * (vat_rate / 100)`
-- Total: `total_amount = subtotal_amount + vat_amount`
+```
+https://app.deviswhatsapp.com/u/ABCdef123XYZ789-_ABCdef123XYZ789-_ABCdef
+                            │  │
+                            │  └─ Token (32 bytes, URL-safe base64)
+                            └─ Magic link endpoint
+```
 
-### Account Status Flow
-1. **pending**: After registration, before payment confirmation
-2. **active**: After successful payment and WhatsApp connection, can use all features
-3. **suspended**: After failed payment or admin action
+### Token Validation Flow
 
-### Subscription Status
-- **trialing**: During trial period (if implemented)
-- **active**: Subscription is active and paid
-- **past_due**: Payment failed, grace period
-- **canceled**: User canceled subscription
+```ruby
+# GET /u/:token
+# app/controllers/magic_links_controller.rb
 
-### Conversation Workflow States
+def show
+  token = params[:token]
+  
+  # Find user by matching token digest
+  user = User.find_each.find do |u|
+    u.valid_magic_link?(token)
+  end
+  
+  if user.nil?
+    # Token not found or invalid
+    redirect_to root_path, alert: "Lien invalide"
+    log_security_event('magic_link.invalid', token: token[0..10])
+    return
+  end
+  
+  if user.magic_link_expires_at < Time.current
+    # Expired
+    redirect_to root_path, alert: "Lien expiré. Demandez un nouveau lien sur WhatsApp."
+    log_security_event('magic_link.expired', user_id: user.id)
+    return
+  end
+  
+  # Valid! Create session
+  session[:user_id] = user.id
+  user.use_magic_link! # Update last_used_at and IP
+  
+  redirect_to dashboard_path, notice: "Bienvenue #{user.display_name} !"
+end
+```
 
-Each conversation type implements a state machine pattern:
+### Security Enhancements
 
-**Quote Creation Workflow:**
-1. `initiated` - User triggers quote creation
-2. `select_or_create_client` - Ask for client or create new
-3. `confirm_client` - Confirm client selection
-4. `add_line_items` - Collect service lines (loop)
-5. `confirm_line_item` - Confirm each line item
-6. `review_items` - Show all items for review
-7. `calculate_totals` - Calculate VAT and totals
-8. `review_total` - Present final amounts for approval
-9. `generate_pdf` - Generate PDF document
-10. `send_pdf` - Send PDF via WhatsApp
-11. `completed` - Mark as completed
+**Optimized Token Lookup:**
+```ruby
+# Instead of finding each user and checking bcrypt (slow)
+# Use a secondary index on first 16 chars of token
 
-**Invoice Creation Workflow:**
-1. `initiated` - User triggers invoice creation
-2. `link_to_quote_or_independent` - Ask if based on quote
-3. `select_quote` - If yes, select existing quote
-4. `select_or_create_client` - Ask for client or create new
-5. `confirm_client` - Confirm client selection
-6. `add_line_items` - Collect service lines (loop)
-7. `confirm_line_item` - Confirm each line item
-8. `review_items` - Show all items for review
-9. `calculate_totals` - Calculate VAT and totals
-10. `review_total` - Present final amounts for approval
-11. `generate_pdf` - Generate PDF document
-12. `send_pdf` - Send PDF via WhatsApp
-13. `completed` - Mark as completed
+# Migration
+add_column :users, :magic_link_token_prefix, :string, limit: 16
+add_index :users, :magic_link_token_prefix
 
-**Client Creation Workflow:**
-1. `initiated` - User triggers client creation
-2. `collect_name` - Ask for client name
-3. `confirm_name` - Confirm name
-4. `collect_address` - Ask for address
-5. `confirm_address` - Confirm address
-6. `collect_siret` - Ask if professional (SIRET)
-7. `confirm_siret` - Confirm SIRET if provided
-8. `collect_contacts` - Ask for phone/email
-9. `confirm_contacts` - Confirm contact info
-10. `review_client` - Show all client info
-11. `save_client` - Save to database
-12. `completed` - Mark as completed
+# On generation
+token = SecureRandom.urlsafe_base64(32)
+user.magic_link_token_prefix = token[0..15]
+user.magic_link_token_digest = BCrypt::Password.create(token)
 
-### Conversation Context Data Structure
+# On validation
+candidates = User.where(magic_link_token_prefix: token[0..15])
+user = candidates.find { |u| u.valid_magic_link?(token) }
+```
 
-The `context_data` JSON field stores workflow state:
+**Rate Limiting:**
+```ruby
+# config/initializers/rack_attack.rb
+Rack::Attack.throttle('magic_link/ip', limit: 10, period: 1.hour) do |req|
+  req.ip if req.path.start_with?('/u/')
+end
 
-```json
+Rack::Attack.throttle('magic_link/token', limit: 5, period: 10.minutes) do |req|
+  req.params['token'] if req.path.start_with?('/u/')
+end
+```
+
+**IP Validation (Optional):**
+```ruby
+# Track country from first login
+user.update!(expected_country: ip_to_country(request.remote_ip))
+
+# On subsequent logins, alert if different country
+if ip_to_country(request.remote_ip) != user.expected_country
+  notify_admin_suspicious_login(user, request.remote_ip)
+end
+```
+
+---
+
+## Unipile Integration
+
+### Webhook: New Message → Auto-Create User
+
+```ruby
+# app/controllers/webhooks/unipile_controller.rb
+
+def messages
+  payload = webhook_payload
+  
+  # Extract phone number
+  sender_id = payload.dig('sender', 'attendee_provider_id')
+  # Example: "33612345678@s.whatsapp.net"
+  phone_number = normalize_phone(sender_id)
+  # Result: "+33612345678"
+  
+  # Find or create user
+  user = User.find_or_create_by!(phone_number: phone_number) do |u|
+    u.unipile_chat_id = payload['chat_id']
+    u.unipile_attendee_id = payload.dig('sender', 'attendee_id')
+    u.first_message_at = Time.current
+    u.last_activity_at = Time.current
+    u.preferred_language = detect_language_from_phone(phone_number)
+  end
+  
+  # Store message
+  message = user.whatsapp_messages.create!(
+    unipile_message_id: payload['message_id'],
+    unipile_chat_id: payload['chat_id'],
+    direction: 'inbound',
+    content: payload['message'],
+    message_type: detect_message_type(payload),
+    sender_phone: phone_number,
+    attachments: payload['attachments'],
+    sent_at: payload['timestamp']
+  )
+  
+  # Process message
+  WhatsappBot::MessageProcessor.call(user, message)
+  
+  head :ok
+end
+
+private
+
+def normalize_phone(whatsapp_id)
+  # "33612345678@s.whatsapp.net" → "+33612345678"
+  number = whatsapp_id.split('@').first
+  "+#{number}"
+end
+
+def detect_language_from_phone(phone)
+  case phone[0..2]
+  when '+33' then 'fr'
+  when '+90' then 'tr'
+  else 'fr'
+  end
+end
+```
+
+### One Business Number for All Users
+
+**Architecture:**
+- ONE WhatsApp business number (e.g., +33 6 12 00 00 00)
+- Connected via Unipile (admin does this once)
+- All users message this same number
+- Bot identifies user by sender phone number
+- No per-user WhatsApp connection needed
+
+**Benefits:**
+- ✅ Simpler setup
+- ✅ No QR code needed
+- ✅ Users just message a number
+- ✅ One Unipile account to manage
+
+---
+
+## Document Numbering
+
+### Auto-increment per User per Year
+
+```ruby
+# app/models/quote.rb
+
+before_validation :generate_quote_number, on: :create
+
+def generate_quote_number
+  return if quote_number.present?
+  
+  year = issue_date.year
+  last_number = user.quotes
+                    .where("issue_date >= ? AND issue_date < ?", 
+                           Date.new(year, 1, 1), 
+                           Date.new(year + 1, 1, 1))
+                    .maximum(:quote_number)
+  
+  if last_number
+    # Extract number: "DEVIS-2024-0042" → 42
+    current_num = last_number.split('-').last.to_i
+    next_num = current_num + 1
+  else
+    next_num = 1
+  end
+  
+  self.quote_number = "DEVIS-#{year}-#{next_num.to_s.rjust(4, '0')}"
+end
+```
+
+**Formats:**
+- Quotes: `DEVIS-2025-0001`, `DEVIS-2025-0002`, etc.
+- Invoices: `FACT-2025-0001`, `FACT-2025-0002`, etc.
+- Subscription Invoices: `ABO-2025-0001`, `ABO-2025-0002`, etc.
+
+---
+
+## Conversation Workflow States
+
+### Quote Creation Workflow
+
+```ruby
+# context_data structure during workflow
 {
-  "client": {
-    "id": 123,
-    "name": "Entreprise Dubois",
-    "confirmed": true
-  },
-  "items": [
-    {
-      "description": "Maçonnerie mur extérieur",
-      "quantity": 50.0,
-      "unit_price": 85.0,
-      "confirmed": true
-    }
-  ],
-  "totals": {
+  "workflow": "quote_creation",
+  "steps_completed": ["client_selected", "item_1_added", "item_2_added"],
+  "current_step": "review_total",
+  "data": {
+    "client_id": 123,
+    "client_name": "Entreprise Dubois",
+    "items": [
+      {
+        "description": "Maçonnerie mur extérieur",
+        "quantity": 50.0,
+        "unit_price": 85.0,
+        "total": 4250.0
+      }
+    ],
     "subtotal": 4250.0,
     "vat_rate": 20.0,
     "vat_amount": 850.0,
     "total": 5100.0
   },
-  "last_gpt_response": "J'ai bien noté...",
-  "retry_count": 0
+  "retry_count": 0,
+  "last_bot_message": "Total HT: 4250€..."
 }
 ```
 
-## Indexes
+**States:**
+1. `initiated` → User triggers creation
+2. `client_selection` → Select or create client
+3. `client_confirmed` → Client locked
+4. `collecting_items` → Add line items (loop)
+5. `items_confirmed` → All items added
+6. `reviewing_total` → Show totals, ask confirmation
+7. `generating_pdf` → Create PDF
+8. `sending_pdf` → Send via WhatsApp
+9. `completed` → Done!
 
-### Performance Indexes
-- `users`: `email`, `siret`, `whatsapp_phone`, `stripe_customer_id`, `unipile_account_id`
-- `whatsapp_chats`: `user_id`, `unipile_chat_id`, `unipile_provider_id`, `attendee_provider_id`
-- `whatsapp_messages`: `whatsapp_chat_id`, `user_id`, `unipile_message_id`, `conversation_id`, `direction`, `sent_at`
-- `clients`: `user_id`, `whatsapp_chat_id`, `siret`
-- `quotes`: `user_id`, `client_id`, `conversation_id`, `quote_number`, `status`, `issue_date`
-- `invoices`: `user_id`, `client_id`, `quote_id`, `conversation_id`, `invoice_number`, `status`, `issue_date`
-- `subscriptions`: `user_id`, `stripe_subscription_id`, `status`
-- `conversations`: `user_id`, `whatsapp_chat_id`, `status`, `conversation_type`, `last_interaction_at`
+### Onboarding Workflow
 
-### Composite Indexes
-- `whatsapp_messages`: `(whatsapp_chat_id, sent_at DESC)` - For chat history
-- `conversations`: `(whatsapp_chat_id, status)` - For finding active conversations
-- `quotes`: `(user_id, issue_date DESC)` - For user's recent quotes
-- `invoices`: `(user_id, issue_date DESC)` - For user's recent invoices
+```ruby
+# First-time user workflow
+{
+  "workflow": "onboarding",
+  "current_step": "collect_siret",
+  "data": {
+    "company_name": "Maçonnerie Dubois",
+    "siret": null,
+    "address": null,
+    "vat_number": null
+  }
+}
+```
+
+**States:**
+1. `welcome` → Greet new user
+2. `collect_company_name` → Ask company name
+3. `collect_siret` → Ask SIRET
+4. `collect_address` → Ask address
+5. `collect_vat` → Ask VAT (optional)
+6. `confirm_info` → Show summary, confirm
+7. `completed` → Mark onboarding_completed, send magic link
+
+---
+
+## Indexes & Performance
+
+### Critical Indexes
+
+```ruby
+# User lookups
+add_index :users, :phone_number, unique: true
+add_index :users, :magic_link_token_prefix # Fast magic link lookup
+add_index :users, :stripe_customer_id
+add_index :users, :unipile_chat_id
+add_index :users, :subscription_status
+
+# Message queries
+add_index :whatsapp_messages, [:user_id, :sent_at]
+add_index :whatsapp_messages, :unipile_message_id, unique: true
+add_index :whatsapp_messages, :unipile_chat_id
+
+# Document queries
+add_index :quotes, [:user_id, :issue_date]
+add_index :quotes, :quote_number, unique: true
+add_index :invoices, [:user_id, :issue_date]
+add_index :invoices, :invoice_number, unique: true
+
+# Conversation lookups
+add_index :conversations, [:user_id, :status]
+add_index :conversations, :last_interaction_at
+```
+
+### Query Optimization
+
+```ruby
+# Dashboard - Recent activity
+user.quotes.includes(:client, :quote_items)
+     .order(issue_date: :desc)
+     .limit(10)
+
+# Admin - User list with stats
+User.left_joins(:quotes, :invoices)
+    .select('users.*, 
+             COUNT(DISTINCT quotes.id) as quotes_count,
+             COUNT(DISTINCT invoices.id) as invoices_count')
+    .group('users.id')
+    .order(last_activity_at: :desc)
+```
+
+---
 
 ## External Service Integrations
 
-### Stripe
-- `User.stripe_customer_id` → Stripe Customer ID
-- `Subscription.stripe_subscription_id` → Stripe Subscription ID
-- `SubscriptionInvoice.stripe_invoice_id` → Stripe Invoice ID
-- Webhook: Handle `invoice.payment_succeeded`, `invoice.payment_failed`
+### Unipile (WhatsApp Bot)
 
-### Unipile (WhatsApp)
-- **Base URL:** `https://{YOUR_DSN}/api/v1/`
-- **Authentication:** `X-API-KEY` header
-- **Connection:** `User.unipile_account_id` → Unipile Account object
-- **Chat Sync:** `WhatsappChat.unipile_chat_id` → Unipile Chat object
-- **Message Sync:** `WhatsappMessage.unipile_message_id` → Unipile Message object
-- **Webhook:** Real-time message reception at `/webhooks/unipile/messages`
+**Connection:**
+- Admin manually connects business WhatsApp account
+- Store Unipile account ID in environment variable
+- Webhook URL: `https://app.com/webhooks/unipile/messages`
 
-### OpenAI
-- **Whisper API:** Audio transcription
-  - Input: Audio file from Unipile attachment
-  - Output: Transcription text + detected language
-  - Stored in: `WhatsappMessage.audio_transcription`, `detected_language`
-  
-- **GPT-4 API:** Conversational AI
-  - Input: User message + conversation context
-  - Output: Response text + extracted structured data
-  - System prompt includes: language, workflow state, context data
-  - Streaming responses for better UX
+**Mapping:**
+- `User.phone_number` ← Extracted from `sender.attendee_provider_id`
+- `User.unipile_chat_id` ← `payload.chat_id`
+- `User.unipile_attendee_id` ← `sender.attendee_id`
 
-## Storage
+### Stripe (Payments)
 
-### File Storage (Active Storage)
-- **Quote PDFs:** `storage/quotes/:user_id/:year/:quote_number.pdf`
-- **Invoice PDFs:** `storage/invoices/:user_id/:year/:invoice_number.pdf`
-- **Subscription Invoice PDFs:** `storage/subscription_invoices/:user_id/:year/:invoice_number.pdf`
-- **Audio files:** `storage/audio/:user_id/:conversation_id/:message_id.ogg` (temporary)
-- **Attachment cache:** `storage/whatsapp_attachments/:user_id/:message_id/:attachment_id` (temporary)
+**Connection:**
+- `User.stripe_customer_id` ← Stripe Customer ID
+- `Subscription.stripe_subscription_id` ← Stripe Subscription ID
+- Webhook URL: `https://app.com/webhooks/stripe`
 
-### File Upload to WhatsApp
-When sending PDFs via WhatsApp:
-1. Generate PDF and store locally
-2. Send via Unipile: `POST /api/v1/chats/{chat_id}/messages` with `attachments` as binary
-3. Update record with `sent_via_whatsapp_at` timestamp
-4. Max file size: 15MB (Unipile limit)
+**Flow:**
+1. User completes onboarding via WhatsApp
+2. Bot sends Stripe Checkout link via WhatsApp
+3. User pays → Webhook activates subscription
+4. No web registration form needed
 
-## Data Retention
+### OpenAI (AI Processing)
 
-- **WhatsApp Messages:** Keep for 1 year (configurable per legal requirements)
-- **WhatsApp Chats:** Keep indefinitely (for client history)
-- **Conversations:** Keep indefinitely (for audit trail)
-- **Quotes/Invoices:** Keep for 10 years (legal requirement in France)
-- **System Logs:** Keep for 1 year
-- **Audio files:** Delete after transcription (or keep for 30 days max)
-- **Attachment cache:** Delete after 7 days
+**Whisper API:**
+- Audio messages → Transcription
+- Language detection (fr/tr)
 
-## Sync Strategy
+**GPT-4 API:**
+- Message understanding
+- Conversation flow management
+- Structured data extraction
 
-### Initial Sync (Account Setup)
-1. User connects WhatsApp via QR code
-2. Sync last 100 chats: `GET /api/v1/chats?limit=100`
-3. For each chat, sync last 50 messages: `GET /api/v1/chats/{chat_id}/messages?limit=50`
-4. Mark user as `whatsapp_connected: true`
-
-### Real-time Sync (Webhook)
-1. Receive webhook event: `message_received`, `message_sent`
-2. Upsert `WhatsappChat` from payload
-3. Create `WhatsappMessage` from payload
-4. Process message through AI workflow if needed
-5. Send response via Unipile API
-
-### Periodic Sync (Fallback)
-- Run every 5 minutes for users with `whatsapp_connected: true`
-- Fetch messages since last sync: `GET /api/v1/chats?after={last_sync_time}`
-- Handle messages missed by webhook (network issues, etc.)
-
-## Error Handling
-
-### Unipile API Errors
-- **401 Unauthorized:** WhatsApp account disconnected → Set `whatsapp_connected: false`, notify user
-- **errors/disconnected_account:** Reconnection required → Trigger QR code flow
-- **errors/multiple_sessions:** Another session detected → Log warning, continue
-- **504 Gateway Timeout:** Retry with exponential backoff
-
-### Conversation Errors
-- **Timeout (30min no response):** Mark conversation as `abandoned`
-- **Invalid input (3 retries):** Offer to restart workflow or contact support
-- **GPT-4 API error:** Fallback to predefined responses, log error
-- **PDF generation failure:** Retry once, then mark as error and notify admin
+---
 
 ## Security Considerations
 
+### Magic Link Best Practices
+
+✅ **Implemented:**
+- 256-bit entropy tokens
+- Bcrypt hashing (cost: 12)
+- 90-day expiration
+- Rate limiting (10/hour per IP)
+- HTTPS only
+- HttpOnly session cookies
+- IP tracking
+- Usage timestamps
+
+🔜 **Optional Enhancements:**
+- Email notification on web login (if email collected)
+- WhatsApp notification on web login ("Someone accessed your account")
+- Geolocation alerts (different country)
+- Single-use mode (invalidate after first use)
+- Device fingerprinting
+
 ### Data Protection
-- **Unipile API Key:** Store in encrypted environment variables
-- **Stripe API Key:** Store in encrypted environment variables
-- **OpenAI API Key:** Store in encrypted environment variables
-- **User WhatsApp Data:** Encrypted at rest in database
-- **PDF Files:** Secure storage with signed URLs (24h expiry)
-- **Audio Files:** Delete after transcription, never persist long-term
 
-### Access Control
-- Users can only access their own WhatsApp chats/messages
-- Admin dashboard: Separate authentication, audit logs
-- Webhook endpoints: Verify Unipile signature/token
-- API rate limiting: Per user, per endpoint
+**Stored in Database:**
+- Phone number (encrypted at rest)
+- Magic link digest (bcrypt)
+- Stripe IDs
+- Company info
 
-### GDPR Compliance
-- User data export: Include all WhatsApp messages, conversations, documents
-- User data deletion: Cascade delete with Unipile account disconnection
-- Data retention policies: Configurable per legal requirements
-- Audit trail: All data access logged in SystemLog
+**Never Stored:**
+- Passwords (don't exist)
+- Raw magic link tokens (only sent once)
+- Credit card info (Stripe handles)
+
+**Encryption at Rest:**
+```ruby
+# config/credentials.yml.enc
+active_record_encryption:
+  primary_key: ...
+  deterministic_key: ...
+  key_derivation_salt: ...
+
+# app/models/user.rb
+encrypts :phone_number, deterministic: true
+encrypts :vat_number
+```
+
+---
+
+## Admin Visibility
+
+### User Identification in Admin
+
+**Admin can see:**
+- ✅ Phone number (primary identifier)
+- ✅ Company name
+- ✅ SIRET
+- ✅ First message date
+- ✅ Last activity
+- ✅ Subscription status
+- ✅ Magic link expiration
+- ✅ Number of documents created
+- ✅ Login history (IPs, timestamps)
+
+**Admin can do:**
+- Regenerate magic link (sends new link via WhatsApp)
+- Suspend account
+- Activate account
+- View all messages/conversations
+- Access user's Stripe dashboard
+- View system logs for this user
+
+**Admin cannot:**
+- Login as user (no password)
+- View magic link token (only digest stored)
+- Bypass magic link security
+
+---
+
+## Data Retention & GDPR
+
+### User Deletion
+
+```ruby
+# app/models/user.rb
+
+def destroy_with_gdpr_compliance
+  # Keep financial records (legal requirement: 10 years)
+  quotes.update_all(user_id: nil, gdpr_anonymized: true)
+  invoices.update_all(user_id: nil, gdpr_anonymized: true)
+  subscription_invoices.update_all(user_id: nil, gdpr_anonymized: true)
+  
+  # Delete personal data
+  whatsapp_messages.destroy_all
+  conversations.destroy_all
+  clients.destroy_all
+  
+  # Anonymize user record
+  update!(
+    phone_number: "DELETED_#{id}",
+    company_name: "DELETED",
+    address: nil,
+    vat_number: nil,
+    magic_link_token_digest: nil,
+    stripe_customer_id: nil
+  )
+end
+```
+
+### Retention Policies
+
+- **WhatsApp Messages:** 1 year (then auto-delete)
+- **Conversations:** 1 year (then auto-delete)
+- **Quotes/Invoices:** 10 years (legal requirement)
+- **Subscription Invoices:** 10 years (legal requirement)
+- **System Logs:** 1 year
+- **Audio Files:** Delete after transcription
+- **Magic Links:** 90 days (then expire)
+
+---
+
+## Migration Path
+
+### From Current State to Bot-First
+
+```ruby
+# db/migrate/20250115_migrate_to_bot_first.rb
+
+class MigrateToBotFirst < ActiveRecord::Migration[7.1]
+  def up
+    # If users already exist with emails
+    if column_exists?(:users, :email)
+      # Keep existing users, add phone requirement
+      add_column :users, :phone_number, :string
+      add_index :users, :phone_number, unique: true
+      
+      # Make email optional
+      change_column_null :users, :email, true
+      
+      # Add magic link fields
+      add_column :users, :magic_link_token_digest, :string
+      add_column :users, :magic_link_token_prefix, :string, limit: 16
+      add_column :users, :magic_link_expires_at, :datetime
+      add_column :users, :magic_link_last_used_at, :datetime
+      add_column :users, :magic_link_sent, :boolean, default: false
+      add_index :users, :magic_link_token_prefix
+      
+      # Activity tracking
+      add_column :users, :first_message_at, :datetime
+      add_column :users, :last_activity_at, :datetime
+      add_column :users, :last_login_ip, :string
+      add_column :users, :last_login_at, :datetime
+      add_column :users, :onboarding_completed, :boolean, default: true
+      
+      # Unipile
+      add_column :users, :unipile_chat_id, :string
+      add_column :users, :unipile_attendee_id, :string
+      add_index :users, :unipile_chat_id
+      add_index :users, :unipile_attendee_id
+      
+      # Subscription
+      add_column :users, :subscription_status, :string, default: 'active'
+      add_index :users, :subscription_status
+    else
+      # Fresh install - create table properly
+      create_table :users do |t|
+        # Identity
+        t.string :phone_number, null: false, index: { unique: true }
+        
+        # Magic Link
+        t.string :magic_link_token_digest
+        t.string :magic_link_token_prefix, limit: 16, index: true
+        t.datetime :magic_link_expires_at
+        t.datetime :magic_link_last_used_at
+        t.boolean :magic_link_sent, default: false
+        
+        # Company Info
+        t.string :company_name
+        t.string :siret, index: true
+        t.text :address
+        t.string :vat_number
+        
+        # Settings
+        t.string :preferred_language, default: 'fr'
+        
+        # Stripe
+        t.string :stripe_customer_id, index: true
+        t.string :subscription_status, default: 'trialing', index: true
+        
+        # Unipile
+        t.string :unipile_chat_id, index: true
+        t.string :unipile_attendee_id, index: true
+        
+        # Activity
+        t.boolean :onboarding_completed, default: false
+        t.datetime :first_message_at
+        t.datetime :last_activity_at
+        t.datetime :last_login_ip
+        t.datetime :last_login_at
+        
+        t.timestamps
+      end
+    end
+  end
+  
+  def down
+    # Revert if needed
+  end
+end
+```
+
+---
+
+## Testing Strategy
+
+### Magic Link Security Tests
+
+```ruby
+# spec/models/user_spec.rb
+
+describe User do
+  describe '#generate_magic_link!' do
+    it 'creates a cryptographically secure token' do
+      user = create(:user)
+      token = user.generate_magic_link!
+      
+      expect(token).to be_present
+      expect(token.length).to be >= 40 # URL-safe base64
+      expect(user.magic_link_token_digest).to be_present
+      expect(user.magic_link_expires_at).to be > Time.current
+    end
+    
+    it 'never stores token in plain text' do
+      user = create(:user)
+      token = user.generate_magic_link!
+      
+      user.reload
+      
+      # Token should not be findable in database
+      expect(user.attributes.values.join).not_to include(token)
+    end
+  end
+  
+  describe '#valid_magic_link?' do
+    it 'validates correct token' do
+      user = create(:user)
+      token = user.generate_magic_link!
+      
+      expect(user.valid_magic_link?(token)).to be true
+    end
+    
+    it 'rejects incorrect token' do
+      user = create(:user)
+      user.generate_magic_link!
+      
+      expect(user.valid_magic_link?('wrong-token')).to be false
+    end
+    
+    it 'rejects expired token' do
+      user = create(:user)
+      token = user.generate_magic_link!
+      
+      travel_to 91.days.from_now do
+        expect(user.valid_magic_link?(token)).to be false
+      end
+    end
+  end
+end
+```
+
+### User Auto-Creation Tests
+
+```ruby
+# spec/services/whatsapp_bot/user_creator_spec.rb
+
+describe WhatsappBot::UserCreator do
+  it 'creates user from phone number' do
+    expect {
+      described_class.call(
+        phone_number: '+33612345678',
+        unipile_chat_id: 'chat_123',
+        unipile_attendee_id: 'att_456'
+      )
+    }.to change(User, :count).by(1)
+    
+    user = User.last
+    expect(user.phone_number).to eq('+33612345678')
+    expect(user.subscription_status).to eq('trialing')
+    expect(user.first_message_at).to be_present
+  end
+  
+  it 'does not duplicate existing user' do
+    existing = create(:user, phone_number: '+33612345678')
+    
+    expect {
+      described_class.call(
+        phone_number: '+33612345678',
+        unipile_chat_id: 'chat_789',
+        unipile_attendee_id: 'att_012'
+      )
+    }.not_to change(User, :count)
+    
+    existing.reload
+    expect(existing.unipile_chat_id).to eq('chat_789') # Updated
+  end
+end
+```
+
+---
+
+## Performance Considerations
+
+### Database Queries
+
+**Slow (Avoid):**
+```ruby
+# Finding user by magic link - checking ALL users
+User.all.find { |u| u.valid_magic_link?(token) }
+# O(n) where n = number of users
+```
+
+**Fast (Use):**
+```ruby
+# Using prefix index
+candidates = User.where(magic_link_token_prefix: token[0..15])
+user = candidates.find { |u| u.valid_magic_link?(token) }
+# O(1) database lookup + O(m) bcrypt checks where m = ~1-2 users
+```
+
+### Caching Strategy
+
+```ruby
+# Cache user session data
+Rails.cache.fetch("user_session_#{user.id}", expires_in: 1.hour) do
+  {
+    id: user.id,
+    phone: user.phone_number,
+    company: user.company_name,
+    subscription_active: user.active_subscription?
+  }
+end
+
+# Cache document counts for dashboard
+Rails.cache.fetch("user_stats_#{user.id}", expires_in: 5.minutes) do
+  {
+    quotes_count: user.quotes.count,
+    invoices_count: user.invoices.count,
+    clients_count: user.clients.count
+  }
+end
+```
+
+---
+
+## Conclusion
+
+Cette architecture **bot-first avec magic links** offre:
+
+✅ **Simplicité extrême** - Pas de mots de passe, pas d'inscription web
+✅ **Sécurité robuste** - Tokens cryptographiques, expiration, rate limiting
+✅ **UX parfaite** - L'utilisateur ne fait rien, tout est automatique
+✅ **Admin-friendly** - Visibilité complète par numéro de téléphone
+✅ **Scalable** - Architecture propre et performante
+
+C'est l'approche idéale pour une application WhatsApp-first.

@@ -1,157 +1,112 @@
-# Application Routes
+# Application Routes - Bot-First Architecture
 
 ## Overview
 
-This document outlines all the routes in the application. The core functionality is accessed via **WhatsApp** (conversational interface). Web routes are minimal and focused on registration, dashboard, and administration.
+This application is **primarily a WhatsApp bot**. Users interact via WhatsApp and access the web through **magic links** (no passwords). The web interface is minimal and read-only.
 
-## Architecture Note
+## Architecture Principles
 
-- **Primary Interface:** WhatsApp (via Unipile webhooks)
-- **Secondary Interface:** Web (dashboard and admin only)
-- **Authentication:** Devise for web, Unipile account_id for WhatsApp
-- **Subscription Management:** Stripe Customer Portal (no custom subscription routes needed)
-- **Route Language:** English (Rails convention)
+- **No registration form** - Users auto-created on first WhatsApp message
+- **No passwords** - Authentication via secure magic links sent on WhatsApp
+- **WhatsApp is primary** - Web is secondary (viewing/downloading only)
+- **Ultra-minimal routes** - Only essential endpoints
 
 ---
 
-## Public Routes (Unauthenticated)
+## Public Routes (No Authentication)
 
-### Landing & Registration Journey
+### Magic Link Entry Point
 
-**User Journey:** Discovery → Registration → Payment → Success
+**User Journey:** Receives Link on WhatsApp → Clicks → Auto-Logged In → Dashboard
 
 | Method | Path | Description | Journey Step |
 |--------|------|-------------|--------------|
-| GET | `/` | Landing page with product info and CTA | 1. Discovery |
-| GET | `/sign_up` | Registration form (name, email, phone, company, SIRET, VAT, language) | 2. Sign Up |
-| POST | `/sign_up` | Process registration and redirect to Stripe Checkout | 3. Submit |
-| GET | `/sign_up/success` | Payment success page with WhatsApp connection instructions | 4. Success |
+| GET | `/u/:token` | Magic link authentication endpoint | Auto-Login |
+| GET | `/` | Landing page (info/SEO only) | Discovery |
 | GET | `/legal` | Legal notices | Reference |
 | GET | `/terms` | Terms and conditions | Reference |
 | GET | `/privacy` | Privacy policy | Reference |
 
-**Note:** Stripe Checkout handles the payment page (no custom route needed).
+**Magic Link Flow:**
+```
+1. User clicks: https://app.com/u/ABC123XYZ456...
+2. System validates token
+3. Creates session automatically
+4. Redirects to /dashboard
+5. User is logged in (no password needed)
+```
 
 ---
 
-## Authenticated Routes (Artisan/User)
+## Authenticated Routes (After Magic Link)
 
-### Authentication Journey
-
-**User Journey:** Login → Dashboard / Password Reset → Email → Reset
-
-| Method | Path | Description | Journey Step |
-|--------|------|-------------|--------------|
-| GET | `/login` | Sign in page | 1. Login Page |
-| POST | `/login` | Process sign in | 2. Submit Login |
-| DELETE | `/logout` | Sign out | Exit |
-| GET | `/password/forgot` | Forgot password form | 1. Forgot |
-| POST | `/password/forgot` | Send password reset email | 2. Request Reset |
-| GET | `/password/reset` | Reset password form (from email link) | 3. Reset Form |
-| PATCH | `/password/reset` | Update password | 4. Save New Password |
+**Note:** User accesses these routes AFTER clicking magic link from WhatsApp. No password required.
 
 ### Dashboard Journey
 
-**User Journey:** Login → Dashboard → Profile
+**User Journey:** Click Magic Link → Dashboard Home
 
 | Method | Path | Description | Journey Step |
 |--------|------|-------------|--------------|
-| GET | `/dashboard` | Main dashboard with stats and recent activity | 1. Home |
-| GET | `/profile` | User profile view and edit | 2. Profile View |
-| PATCH | `/profile` | Update user profile | 3. Update Profile |
-
-### WhatsApp Connection Journey
-
-**User Journey:** Dashboard → Connect WhatsApp → Scan QR → Connected
-
-| Method | Path | Description | Journey Step |
-|--------|------|-------------|--------------|
-| GET | `/whatsapp/connect` | WhatsApp connection page with QR code | 1. Connection Page |
-| POST | `/whatsapp/connect` | Request QR code from Unipile | 2. Generate QR |
-| GET | `/whatsapp/status` | Check connection status (AJAX polling) | 3. Verify Connection |
-| DELETE | `/whatsapp/disconnect` | Disconnect WhatsApp account | Disconnect |
-
-### Client Management Journey
-
-**User Journey:** Dashboard → Clients List → View Client / Create → Save → View Details
-
-| Method | Path | Description | Journey Step |
-|--------|------|-------------|--------------|
-| GET | `/clients` | List all clients with search and filters | 1. Clients List |
-| GET | `/clients/:id` | View client details with quotes/invoices history | 2. Client Details |
-| GET | `/clients/new` | Create client form (web interface) | 1. New Client Form |
-| POST | `/clients` | Save new client (web interface) | 2. Save Client |
-| GET | `/clients/:id/edit` | Edit client form | 1. Edit Form |
-| PATCH | `/clients/:id` | Update client | 2. Save Changes |
-| DELETE | `/clients/:id` | Delete client (soft delete) | Delete |
-
-**Note:** Clients are primarily created via WhatsApp conversation.
+| GET | `/dashboard` | Simple home with 4 cards: Quotes, Invoices, Clients, Profile | Home |
+| DELETE | `/logout` | Clear session (rarely used) | Logout |
 
 ### Quote Management Journey
 
-**User Journey:** Dashboard → Quotes List → View Quote → Download/Resend PDF
+**User Journey:** Dashboard → Quotes → View Details → Download/Resend PDF
 
 | Method | Path | Description | Journey Step |
 |--------|------|-------------|--------------|
-| GET | `/quotes` | List all quotes with filters (status, date, client) | 1. Quotes List |
-| GET | `/quotes/:id` | View quote details with items and PDF | 2. Quote Details |
-| GET | `/quotes/:id/pdf` | Download quote PDF | 3. Download |
-| GET | `/quotes/:id/preview` | Preview quote before sending | 3. Preview |
-| POST | `/quotes/:id/send_whatsapp` | Resend quote PDF via WhatsApp | 4. Resend |
+| GET | `/quotes` | Simple list with basic search (client, month filters) | 1. List |
+| GET | `/quotes/:id` | View quote details and PDF preview | 2. View Details |
+| GET | `/quotes/:id/pdf` | Download PDF file | 3. Download |
+| POST | `/quotes/:id/send_whatsapp` | Resend PDF via WhatsApp | 4. Resend |
 
-**Note:** Quotes are primarily created via WhatsApp conversation. Web interface is read-only + resend capability.
+**Note:** Quotes are **created via WhatsApp only**. Web is read-only + resend.
 
 ### Invoice Management Journey
 
-**User Journey:** Dashboard → Invoices List → View Invoice → Manage Status / Download/Resend PDF
+**User Journey:** Dashboard → Invoices → View Details → Manage Status
 
 | Method | Path | Description | Journey Step |
 |--------|------|-------------|--------------|
-| GET | `/invoices` | List all invoices with filters (status, date, client) | 1. Invoices List |
-| GET | `/invoices/:id` | View invoice details with items and PDF | 2. Invoice Details |
-| GET | `/invoices/:id/pdf` | Download invoice PDF | 3. Download |
-| GET | `/invoices/:id/preview` | Preview invoice before sending | 3. Preview |
-| POST | `/invoices/:id/send_whatsapp` | Resend invoice PDF via WhatsApp | 4. Resend |
-| PATCH | `/invoices/:id/status` | Update invoice status (paid, overdue) | 5. Update Status |
+| GET | `/invoices` | Simple list with basic search (client, month filters) | 1. List |
+| GET | `/invoices/:id` | View invoice details and PDF preview | 2. View Details |
+| GET | `/invoices/:id/pdf` | Download PDF file | 3. Download |
+| POST | `/invoices/:id/send_whatsapp` | Resend PDF via WhatsApp | 4. Resend |
+| PATCH | `/invoices/:id/status` | Mark as paid/unpaid | 5. Update Status |
 
-**Note:** Invoices are primarily created via WhatsApp conversation. Web interface is read-only + status management.
+**Note:** Invoices are **created via WhatsApp only**. Web allows status updates.
 
-### Subscription Management Journey (Stripe Customer Portal)
+### Client Management Journey
 
-**User Journey:** Dashboard → Click "Manage Subscription" → Stripe Portal (external)
+**User Journey:** Dashboard → Clients → View Client Details
 
 | Method | Path | Description | Journey Step |
 |--------|------|-------------|--------------|
-| POST | `/subscription/portal` | Create Stripe Customer Portal session and redirect | 1. Open Portal |
+| GET | `/clients` | Simple list with search | 1. List |
+| GET | `/clients/:id` | View client with quotes/invoices history | 2. View Details |
 
-**What Stripe Customer Portal Handles:**
-- ✅ View subscription details and status
-- ✅ View and download all subscription invoices
-- ✅ Update payment method
-- ✅ Cancel subscription (at period end)
-- ✅ Reactivate canceled subscription
-- ✅ Update billing information
-- ✅ View payment history
-
-**Return URL:** After managing subscription in Stripe Portal, user returns to `/dashboard`
-
-**Benefits:**
-- Zero custom UI to maintain
-- PCI compliance handled by Stripe
-- Automatic updates when Stripe adds features
-- Localized in user's language
-- Mobile-responsive by default
+**Note:** Clients are **created via WhatsApp only**. Web is view-only.
 
 ### Conversation History Journey
 
-**User Journey:** Dashboard → Conversations → View Conversation Messages
+**User Journey:** Dashboard → Conversations → View Messages
 
 | Method | Path | Description | Journey Step |
 |--------|------|-------------|--------------|
-| GET | `/conversations` | List WhatsApp conversation history | 1. History List |
-| GET | `/conversations/:id` | View conversation details with messages | 2. Conversation Details |
+| GET | `/conversations` | WhatsApp conversation history (read-only) | 1. History |
+| GET | `/conversations/:id` | View conversation messages | 2. View Details |
 
-**Note:** Read-only. Conversations happen on WhatsApp in real-time.
+### Profile & Subscription Journey
+
+**User Journey:** Dashboard → Profile / Manage Subscription via Stripe
+
+| Method | Path | Description | Journey Step |
+|--------|------|-------------|--------------|
+| GET | `/profile` | View profile info + request new magic link | Profile View |
+| POST | `/profile/magic_link` | Request new magic link via WhatsApp | Regenerate Link |
+| POST | `/subscription/portal` | Redirect to Stripe Customer Portal | Stripe Portal |
 
 ---
 
@@ -159,126 +114,104 @@ This document outlines all the routes in the application. The core functionality
 
 **Namespace:** `/admin`
 
-**Authentication:** Admin-only access (role-based)
+**Authentication:** Admin password (traditional auth for admins only)
 
 ### Admin Dashboard Journey
 
-**User Journey:** Admin Login → Admin Dashboard → Analytics
+**User Journey:** Admin Login → Dashboard → Manage Users
 
 | Method | Path | Description | Journey Step |
 |--------|------|-------------|--------------|
-| GET | `/admin` | Admin dashboard with global stats and metrics | 1. Admin Home |
-| GET | `/admin/metrics` | Detailed metrics and analytics | 2. Analytics |
+| GET | `/admin` | Admin dashboard with stats | 1. Admin Home |
+| GET | `/admin/metrics` | System metrics and analytics | 2. Analytics |
 
 ### User Management Journey
 
-**User Journey:** Admin → Users List → View User → Manage Account / View Logs
+**User Journey:** Admin → Users List → View User by Phone → Manage
 
 | Method | Path | Description | Journey Step |
 |--------|------|-------------|--------------|
-| GET | `/admin/users` | List all users with search and filters | 1. Users List |
-| GET | `/admin/users/:id` | View user details and activity | 2. User Details |
-| GET | `/admin/users/:id/edit` | Edit user form | 3. Edit Form |
-| PATCH | `/admin/users/:id` | Update user | 4. Save Changes |
-| POST | `/admin/users/:id/suspend` | Suspend user account | Action: Suspend |
-| POST | `/admin/users/:id/activate` | Activate suspended account | Action: Activate |
-| POST | `/admin/users/:id/reset_whatsapp` | Force WhatsApp reconnection | Action: Reset WhatsApp |
+| GET | `/admin/users` | List all users (search by phone, company, SIRET) | 1. Users List |
+| GET | `/admin/users/:id` | View user details (phone, activity, magic link status) | 2. User Details |
+| GET | `/admin/users/:id/edit` | Edit user info | 3. Edit Form |
+| PATCH | `/admin/users/:id` | Update user | 4. Save |
+| POST | `/admin/users/:id/suspend` | Suspend account | Action: Suspend |
+| POST | `/admin/users/:id/activate` | Activate account | Action: Activate |
+| POST | `/admin/users/:id/regenerate_magic_link` | Generate new magic link and send via WhatsApp | Action: New Link |
 | GET | `/admin/users/:id/logs` | View user activity logs | View Logs |
-| POST | `/admin/users/:id/stripe_portal` | Create Stripe Portal session for user (admin access) | Stripe Portal |
+| POST | `/admin/users/:id/stripe_portal` | Open Stripe portal for this user | Stripe Access |
+
+**Key Admin Feature:** Search users by phone number (primary identifier)
 
 ### Subscription Management Journey
 
-**User Journey:** Admin → Subscriptions List → View Subscription Details
+**User Journey:** Admin → Subscriptions → View in Stripe
 
 | Method | Path | Description | Journey Step |
 |--------|------|-------------|--------------|
-| GET | `/admin/subscriptions` | List all subscriptions with filters (status, Stripe ID) | 1. Subscriptions List |
-| GET | `/admin/subscriptions/:id` | View subscription details (links to Stripe Dashboard) | 2. Subscription Details |
-| GET | `/admin/subscriptions/overdue` | List overdue subscriptions | View Overdue |
-
-**Note:** Admin manages subscriptions in Stripe Dashboard (no manual suspend/reactivate routes). Webhooks handle all status updates automatically.
+| GET | `/admin/subscriptions` | List all subscriptions with filters | 1. List |
+| GET | `/admin/subscriptions/:id` | View details (links to Stripe) | 2. View |
+| GET | `/admin/subscriptions/overdue` | Overdue subscriptions | View Overdue |
 
 ### System Monitoring Journey
 
-**User Journey:** Admin → Logs → View Details / Webhooks → Replay Failed
+**User Journey:** Admin → Logs/Webhooks → Debug Issues
 
 | Method | Path | Description | Journey Step |
 |--------|------|-------------|--------------|
-| GET | `/admin/logs` | System logs with filters (type, date, user) | 1. Logs List |
-| GET | `/admin/logs/:id` | View detailed log entry | 2. Log Details |
-| GET | `/admin/webhooks` | Webhook activity log (Unipile, Stripe) | 1. Webhooks Log |
+| GET | `/admin/logs` | System logs (filter by user phone, event) | 1. Logs |
+| GET | `/admin/logs/:id` | Detailed log entry | 2. Details |
+| GET | `/admin/webhooks` | Webhook activity (Unipile, Stripe) | 1. Webhooks |
 | POST | `/admin/webhooks/:id/replay` | Replay failed webhook | Action: Replay |
 
-### Settings Management Journey
+### Settings Journey
 
-**User Journey:** Admin → Settings → Configure Services / Test Connections
+**User Journey:** Admin → Settings → Configure APIs
 
 | Method | Path | Description | Journey Step |
 |--------|------|-------------|--------------|
-| GET | `/admin/settings` | Global application settings | 1. Settings Home |
-| PATCH | `/admin/settings` | Update settings | 2. Save Settings |
-| GET | `/admin/settings/unipile` | Unipile configuration and status | View Unipile Config |
-| POST | `/admin/settings/unipile/test` | Test Unipile connection | Test Connection |
-| GET | `/admin/settings/stripe` | Stripe configuration | View Stripe Config |
-| GET | `/admin/settings/openai` | OpenAI configuration | View OpenAI Config |
+| GET | `/admin/settings` | Application settings | 1. Settings |
+| PATCH | `/admin/settings` | Update settings | 2. Save |
+| GET | `/admin/settings/unipile` | Unipile config (API key, webhook) | Unipile |
+| POST | `/admin/settings/unipile/test` | Test Unipile connection | Test |
+| GET | `/admin/settings/stripe` | Stripe config | Stripe |
+| GET | `/admin/settings/openai` | OpenAI config | OpenAI |
 
 ---
 
 ## Webhook Routes (API)
 
-**Authentication:** Signature verification or API token
+### Unipile Webhooks
 
-### Unipile Webhooks (Real-time Message Processing)
+**Journey:** WhatsApp Message → Webhook → Auto-Create User → Process → Respond
 
-**Journey:** Unipile Event → Our Webhook → Process Message → AI Response → Send Reply
+| Method | Path | Description | Processing |
+|--------|------|-------------|------------|
+| POST | `/webhooks/unipile/messages` | Receive WhatsApp messages + auto-create users | Main webhook |
+| POST | `/webhooks/unipile/accounts` | Account status updates | Status sync |
 
-| Method | Path | Description | Journey Step |
-|--------|------|-------------|--------------|
-| POST | `/webhooks/unipile/messages` | Receive WhatsApp message events from Unipile | 1. Receive Message |
-| POST | `/webhooks/unipile/accounts` | Receive account status updates (connected, disconnected) | Account Updates |
+**Key Processing:**
+1. Extract phone number from `sender.attendee_provider_id`
+2. Find or create User by phone number
+3. Store WhatsappMessage
+4. Detect conversation context
+5. Process via AI/workflow
+6. Send response via Unipile
 
-**Payload:** See Unipile webhook documentation
+### Stripe Webhooks
 
-**Processing:**
-- Upsert WhatsappChat and WhatsappMessage
-- Detect conversation context
-- Process through AI workflow
-- Send response via Unipile API
+**Journey:** Payment Event → Webhook → Update Subscription → Notify User
 
-### Stripe Webhooks (Payment Processing)
-
-**Journey:** Stripe Event → Our Webhook → Update Account Status → Notify User
-
-| Method | Path | Description | Journey Step |
-|--------|------|-------------|--------------|
-| POST | `/webhooks/stripe` | Handle Stripe events (payment success/failure) | Process Payment Event |
+| Method | Path | Description | Processing |
+|--------|------|-------------|------------|
+| POST | `/webhooks/stripe` | Handle all Stripe events | Payment processing |
 
 **Events Handled:**
-- `checkout.session.completed` → Activate account after first payment
-- `invoice.payment_succeeded` → Maintain active status
-- `invoice.payment_failed` → Suspend account, send notification
-- `customer.subscription.created` → Create subscription record
-- `customer.subscription.updated` → Update subscription status
-- `customer.subscription.deleted` → Mark subscription as canceled
-- `invoice.finalized` → Store subscription invoice details
-
----
-
-## API Routes (Internal/Future)
-
-**Namespace:** `/api/v1`
-
-**Authentication:** API token (for future integrations)
-
-**Note:** These routes are for future use, not in initial MVP.
-
-### Status & Health Checks
-
-| Method | Path | Description | Journey Step |
-|--------|------|-------------|--------------|
-| GET | `/api/v1/status` | Application health check | Health Check |
-| GET | `/api/v1/whatsapp/status` | WhatsApp connection status for current user | WhatsApp Status |
-| GET | `/api/v1/messages/new` | Poll for new messages (if webhooks fail) | Polling Fallback |
+- `checkout.session.completed` → Activate subscription
+- `invoice.payment_succeeded` → Keep active
+- `invoice.payment_failed` → Suspend + WhatsApp notification
+- `customer.subscription.updated` → Sync status
+- `customer.subscription.deleted` → Mark canceled
 
 ---
 
@@ -286,365 +219,550 @@ This document outlines all the routes in the application. The core functionality
 
 | Category | Route Count | Interface | Primary Journey |
 |----------|-------------|-----------|-----------------|
-| **Public (Registration)** | 7 | Web | Discovery → Payment → Success |
-| **Authentication** | 7 | Web | Login → Dashboard |
-| **User Dashboard** | 3 | Web | Home → Profile |
-| **WhatsApp Connection** | 4 | Web | Connect → Scan QR → Verify |
-| **Clients** | 7 | Web | List → View → Manage |
-| **Quotes** | 5 | Web | List → View → Download/Resend |
-| **Invoices** | 6 | Web | List → View → Manage Status |
-| **Subscription** | 1 | Stripe Portal | Managed by Stripe |
+| **Public** | 5 | Web | Magic Link Entry |
+| **User Dashboard** | 2 | Web | View Data |
+| **Quotes** | 4 | Web | List → View → Download |
+| **Invoices** | 5 | Web | List → View → Manage |
+| **Clients** | 2 | Web | List → View |
 | **Conversations** | 2 | Web | View History |
-| **Admin - Dashboard** | 2 | Web | Admin Home → Analytics |
-| **Admin - Users** | 9 | Web | List → View → Manage |
-| **Admin - Subscriptions** | 3 | Web | List → View (in Stripe) |
-| **Admin - Monitoring** | 4 | Web | Logs → Webhooks |
-| **Admin - Settings** | 6 | Web | Configure → Test |
-| **Webhooks** | 3 | API | Receive → Process → Respond |
-| **API (Future)** | 3 | API | Health Checks |
-| **TOTAL** | **72 routes** | | |
+| **Profile** | 2 | Web | View → Request Link |
+| **Subscription** | 1 | Stripe Portal | External |
+| **Admin** | 21 | Web | Full Management |
+| **Webhooks** | 3 | API | Auto-processing |
+| **TOTAL** | **47 routes** | | |
 
-**Routes Eliminated:** 6 subscription management routes replaced by 1 Stripe Portal redirect
-
----
-
-## WhatsApp Commands (Conversational Interface)
-
-**Primary user interface via WhatsApp messages**
-
-These are not HTTP routes but conversational triggers:
-
-### Document Creation Journey
-
-**Journey:** Send Command → AI Guides Through Steps → Confirm → PDF Generated → PDF Sent
-
-| Command (FR) | Command (TR) | Action | Journey |
-|--------------|--------------|--------|---------|
-| "créer un devis" / "nouveau devis" | "teklif oluştur" / "yeni teklif" | Start quote creation workflow | Create Quote |
-| "créer une facture" / "nouvelle facture" | "fatura oluştur" / "yeni fatura" | Start invoice creation workflow | Create Invoice |
-| "créer un client" / "nouveau client" | "müşteri oluştur" / "yeni müşteri" | Start client creation workflow | Create Client |
-
-### Information Query Journey
-
-**Journey:** Send Command → Receive Formatted List → Ask for Details → View Item
-
-| Command (FR) | Command (TR) | Action | Journey |
-|--------------|--------------|--------|---------|
-| "mes clients" / "liste clients" | "müşterilerim" / "müşteri listesi" | Show client list | View Clients |
-| "mes devis" / "liste devis" | "tekliflerim" / "teklif listesi" | Show recent quotes | View Quotes |
-| "mes factures" / "liste factures" | "faturalarım" / "fatura listesi" | Show recent invoices | View Invoices |
-| "aide" / "help" / "?" | "yardım" | Show help menu | Get Help |
-
-### Workflow Control Journey
-
-**Journey:** Issue Command → Workflow Responds → Return to Previous State
-
-| Command (FR) | Command (TR) | Action | Journey |
-|--------------|--------------|--------|---------|
-| "annuler" / "stop" | "iptal" / "dur" | Cancel current workflow | Cancel |
-| "recommencer" / "restart" | "yeniden başla" | Restart current workflow | Restart |
-| "précédent" / "retour" | "geri" / "önceki" | Go back to previous step | Go Back |
-
-**Language Support:** All commands work in French and Turkish based on user's preferred language setting.
+**Comparison:**
+- Original plan: 72 routes
+- Bot-first: **47 routes** (35% reduction!)
 
 ---
 
-## User Journey Flows (End-to-End)
+## WhatsApp Commands (Primary Interface)
 
-### 1. New User Onboarding Journey
+Users primarily interact via WhatsApp. These commands trigger bot workflows:
+
+### Core Commands
+
+| Command (FR) | Command (TR) | Action | Journey |
+|--------------|--------------|--------|---------|
+| (any message from new number) | - | Auto-create user + start onboarding | First Contact |
+| "créer un devis" | "teklif oluştur" | Start quote creation | Create Quote |
+| "créer une facture" | "fatura oluştur" | Start invoice creation | Create Invoice |
+| "nouveau client" | "yeni müşteri" | Start client creation | Create Client |
+| "mes devis" | "tekliflerim" | List recent quotes | View Quotes |
+| "mes factures" | "faturalarım" | List recent invoices | View Invoices |
+| "mes clients" | "müşterilerim" | List clients | View Clients |
+| "lien" / "web" / "accès" | "bağlantı" / "web" | Get/regenerate magic link | Get Web Access |
+| "aide" / "help" | "yardım" | Show help menu | Help |
+| "annuler" | "iptal" | Cancel current workflow | Cancel |
+
+---
+
+## Complete User Journeys
+
+### Journey 1: New User (First Contact)
 
 ```
-Landing (/) 
-  → Registration (/sign_up) 
+1. User sends WhatsApp: "Bonjour"
+   → To: +33 6 12 00 00 00 (business number)
+
+2. Webhook receives message
+   → POST /webhooks/unipile/messages
+   → Extract phone: +33612345678
+   → User auto-created in database
+   
+3. Bot responds:
+   → "Bienvenue ! 👋
+      
+      Je suis votre assistant pour créer devis et factures.
+      
+      Pour commencer, quel est le nom de votre entreprise ?"
+
+4. User: "Maçonnerie Dubois"
+
+5. Bot: "Parfait ! Et votre numéro SIRET ?"
+
+6. User: "12345678901234"
+
+7. Bot: "Merci ! Quel est votre adresse ?"
+
+8. User: "15 rue de la Paix, 75001 Paris"
+
+9. Bot: "✅ Votre compte est créé !
+   
+   📱 Accédez à votre espace web:
+   https://app.com/u/ABC123XYZ456...
+   
+   Ce lien est personnel et sécurisé (valide 90 jours).
+   
+   Vous pouvez maintenant:
+   • 'créer un devis'
+   • 'créer une facture'  
+   • 'aide' pour plus de commandes"
+   
+10. User clicks link → Logged in automatically → Dashboard
+
+DONE. User is ready.
+```
+
+**Time to value: < 2 minutes**
+
+### Journey 2: Create Quote (Main Use Case)
+
+```
+WhatsApp Conversation:
+
+User: "créer un devis"
+
+Bot: "Pour quel client ?
+     
+     Tapez le nom ou 'nouveau' pour créer un nouveau client."
+
+User: "Entreprise Dubois"
+
+Bot: "✅ Client trouvé: Entreprise Dubois
+     
+     Première prestation ?"
+
+User: "Maçonnerie mur extérieur, 50m², 85€/m²"
+
+Bot: "✅ Ajouté:
+     Maçonnerie mur extérieur
+     50 m² × 85,00 € = 4 250,00 €
+     
+     Autre prestation ? (ou 'non' pour terminer)"
+
+User: "non"
+
+Bot: "📊 Récapitulatif:
+     
+     Sous-total HT: 4 250,00 €
+     TVA (20%): 850,00 €
+     ─────────────────
+     Total TTC: 5 100,00 €
+     
+     Valider ce devis ?"
+
+User: "oui"
+
+Bot: "⏳ Génération du PDF..."
+     [Sends PDF file]
+     "✅ Devis DEVIS-2025-0001 créé et envoyé !
+     
+     📱 Consultez-le aussi sur votre espace web:
+     https://app.com/u/ABC123.../quotes"
+
+DONE. Quote created and delivered.
+```
+
+**Time: < 1 minute**
+
+### Journey 3: Access Web Interface
+
+```
+Scenario A: User wants to download old quote
+
+WhatsApp:
+User: "lien"
+
+Bot: "🔗 Votre espace web:
+     https://app.com/u/ABC123XYZ456...
+     
+     (Valide jusqu'au 15/04/2025)"
+
+User clicks link
+  → GET /u/ABC123XYZ456...
+  → Validated → Session created
+  → Redirected to /dashboard
+  
+User clicks "Mes devis"
+  → GET /quotes
+  → Sees all quotes
+  → Clicks on quote
+  → GET /quotes/42
+  → Views details
+  → Clicks "Download PDF"
+  → GET /quotes/42/pdf
+  → PDF downloaded
+
+User closes browser. Done.
+
+────────────────────────
+
+Scenario B: User bookmarked magic link
+
+User opens bookmark
+  → GET /u/ABC123XYZ456... (same link, still valid)
+  → Auto-logged in
+  → /dashboard
+  
+Navigates as needed, then closes.
+No login form. No password. Simple.
+```
+
+### Journey 4: Payment (Subscription)
+
+```
+After 7 days trial:
+
+Bot (automated message):
+  "⏰ Votre période d'essai se termine dans 2 jours.
+   
+   Pour continuer à utiliser le service, abonnez-vous:
+   https://checkout.stripe.com/...
+   
+   Prix: 29€/mois
+   Annulation à tout moment."
+
+User clicks Stripe link
   → Stripe Checkout (external)
-  → Success (/sign_up/success)
-  → Login (/login)
-  → Dashboard (/dashboard)
-  → WhatsApp Connection (/whatsapp/connect)
-  → Scan QR Code
-  → Connected! (Poll /whatsapp/status)
-  → Start creating documents via WhatsApp
-```
-
-### 2. Create Quote via WhatsApp Journey
-
-```
-WhatsApp: "créer un devis"
-  → AI: "Pour quel client?"
-  → User: "Entreprise Dubois"
-  → AI: "Client trouvé. Première prestation?"
-  → User: "Maçonnerie mur extérieur, 50m², 85€/m²"
-  → AI: "Confirmé. Autre prestation?"
-  → User: "non"
-  → AI: "Total HT: 4250€, TVA: 850€, TTC: 5100€. Valider?"
-  → User: "oui"
-  → AI: Generates PDF
-  → AI: Sends PDF on WhatsApp
-  → User can view on web (/quotes) later
-```
-
-### 3. View and Resend Quote Journey
-
-```
-Dashboard (/dashboard)
-  → Quotes List (/quotes)
-  → Select Quote (/quotes/:id)
-  → View Details + PDF
-  → Click "Resend via WhatsApp"
-  → POST /quotes/:id/send_whatsapp
-  → Success message
-  → PDF sent to client on WhatsApp
-```
-
-### 4. Manage Subscription Journey (Stripe Portal)
-
-```
-Dashboard (/dashboard)
-  → Click "Manage Subscription" button
-  → POST /subscription/portal
-  → Create Stripe Customer Portal session
-  → Redirect to Stripe Portal (external)
-  → User manages subscription (update payment, view invoices, cancel)
-  → Returns to /dashboard
-  → Webhooks update local subscription data
-```
-
-### 5. Admin User Management Journey
-
-```
-Admin Login (/login)
-  → Admin Dashboard (/admin)
-  → Users List (/admin/users)
-  → Search User
-  → View User (/admin/users/:id)
-  → Check Activity Logs (/admin/users/:id/logs)
-  → Suspend Account (POST /admin/users/:id/suspend)
-  → User notified via email
-```
-
-### 6. Payment Failure Recovery Journey
-
-```
-Stripe webhook: invoice.payment_failed
+  → Enters payment details
+  → Confirms
+  
+Stripe webhook:
   → POST /webhooks/stripe
-  → Update subscription status to 'past_due'
-  → Email sent to user with Stripe Portal link
-  → User clicks link in email
-  → Stripe Portal opens (external)
-  → User updates payment method
-  → Stripe retries payment
-  → Stripe webhook: invoice.payment_succeeded
-  → POST /webhooks/stripe
-  → Account reactivated automatically
+  → Event: checkout.session.completed
+  → Update user.subscription_status = 'active'
+  
+Bot confirms:
+  "✅ Abonnement activé ! Merci 🎉
+   
+   Gérez votre abonnement ici:
+   https://app.com/u/ABC123.../subscription/portal"
 ```
 
 ---
 
-## Stripe Integration Details
+## Admin Routes
 
-### Stripe Checkout (Registration)
+**Authentication:** Traditional password for admins (Devise or similar)
 
-**Flow:**
-1. User submits registration form → `POST /sign_up`
-2. Create Stripe Checkout Session with:
-   - Price ID (monthly subscription)
-   - Customer email
-   - Success URL: `/sign_up/success`
-   - Cancel URL: `/sign_up`
-3. Redirect user to Stripe Checkout (external)
-4. User completes payment
-5. Stripe webhook: `checkout.session.completed`
-6. Activate user account
-7. User returns to `/sign_up/success`
+### Admin Dashboard
 
-**Stripe Checkout Session Parameters:**
+| Method | Path | Description | Journey Step |
+|--------|------|-------------|--------------|
+| GET | `/admin` | Dashboard with user count, recent activity | 1. Home |
+| GET | `/admin/metrics` | Detailed analytics | 2. Metrics |
+
+### User Management
+
+**User Journey:** Admin → Search by Phone → View User → Manage
+
+| Method | Path | Description | Journey Step |
+|--------|------|-------------|--------------|
+| GET | `/admin/users` | List users (search: phone, company, SIRET) | 1. List Users |
+| GET | `/admin/users/:id` | View user (phone, magic link, activity, docs) | 2. User Details |
+| GET | `/admin/users/:id/edit` | Edit user info | 3. Edit |
+| PATCH | `/admin/users/:id` | Update user | 4. Save |
+| POST | `/admin/users/:id/suspend` | Suspend account | Action: Suspend |
+| POST | `/admin/users/:id/activate` | Activate account | Action: Activate |
+| POST | `/admin/users/:id/regenerate_magic_link` | Generate new link + send via WhatsApp | Action: New Link |
+| GET | `/admin/users/:id/logs` | Activity logs for this user | View Logs |
+| POST | `/admin/users/:id/stripe_portal` | Access user's Stripe portal | Stripe Access |
+
+**Admin Can See:**
+- ✅ Phone number (primary ID)
+- ✅ Company name, SIRET
+- ✅ Magic link expiration date
+- ✅ Last login (IP, timestamp)
+- ✅ First message date
+- ✅ Document counts
+- ✅ Subscription status
+
+**Admin Can Do:**
+- ✅ Regenerate magic link (sends via WhatsApp)
+- ✅ Suspend/activate account
+- ✅ View all conversations/messages
+- ✅ Access user's Stripe dashboard
+
+### Subscriptions, Logs, Settings
+
+| Method | Path | Description | Journey Step |
+|--------|------|-------------|--------------|
+| GET | `/admin/subscriptions` | All subscriptions | List |
+| GET | `/admin/subscriptions/:id` | Subscription details | View |
+| GET | `/admin/subscriptions/overdue` | Overdue payments | Overdue |
+| GET | `/admin/logs` | System logs | Logs List |
+| GET | `/admin/logs/:id` | Log details | Log Details |
+| GET | `/admin/webhooks` | Webhook history | Webhooks |
+| POST | `/admin/webhooks/:id/replay` | Replay webhook | Replay |
+| GET | `/admin/settings` | App settings | Settings |
+| PATCH | `/admin/settings` | Update settings | Save |
+
+---
+
+## Webhook Routes (API)
+
+### Unipile Webhooks
+
+| Method | Path | Description | Processing |
+|--------|------|-------------|------------|
+| POST | `/webhooks/unipile/messages` | Receive messages + auto-create users | Main Webhook |
+| POST | `/webhooks/unipile/accounts` | Account status updates | Account Sync |
+
+**Authentication:** Signature verification (X-Unipile-Signature header)
+
+**Payload Processing:**
 ```ruby
-Stripe::Checkout::Session.create(
-  mode: 'subscription',
-  line_items: [{
-    price: ENV['STRIPE_PRICE_ID'],
-    quantity: 1
-  }],
-  customer_email: user.email,
-  client_reference_id: user.id,
-  success_url: "#{root_url}sign_up/success?session_id={CHECKOUT_SESSION_ID}",
-  cancel_url: "#{root_url}sign_up",
-  metadata: {
-    user_id: user.id
-  }
-)
+{
+  "sender": {
+    "attendee_provider_id": "33612345678@s.whatsapp.net"  # Extract phone
+  },
+  "chat_id": "R8J-xM9WX7...",  # Store in user
+  "message": "créer un devis",  # Process
+  "message_id": "ykmhfXlRW0...",  # Store
+  "timestamp": "2025-01-15T14:30:00Z"
+}
 ```
 
-### Stripe Customer Portal (Subscription Management)
+### Stripe Webhooks
 
-**Flow:**
-1. User clicks "Manage Subscription" → `POST /subscription/portal`
-2. Create Stripe Customer Portal Session:
-   ```ruby
-   Stripe::BillingPortal::Session.create(
-     customer: current_user.stripe_customer_id,
-     return_url: dashboard_url
-   )
-   ```
-3. Redirect to Stripe Portal URL
-4. User manages subscription (Stripe handles everything)
-5. User clicks "Return to app" → back to `/dashboard`
-6. Changes synced via webhooks
+| Method | Path | Description | Processing |
+|--------|------|-------------|------------|
+| POST | `/webhooks/stripe` | Handle payment events | Subscription Updates |
 
-**What Users Can Do in Portal:**
-- View subscription details
-- Update payment method
-- Cancel subscription
-- Reactivate subscription
-- View invoice history
-- Download invoices
-- Update billing address
+**Authentication:** Stripe signature verification
 
-### Stripe Webhook Events
-
-**Critical Events:**
-```ruby
-case event.type
-when 'checkout.session.completed'
-  # First payment successful → activate account
-when 'invoice.payment_succeeded'
-  # Recurring payment successful → ensure active status
-when 'invoice.payment_failed'
-  # Payment failed → suspend account, email user
-when 'customer.subscription.updated'
-  # Subscription changed → update status (canceled, active, etc.)
-when 'customer.subscription.deleted'
-  # Subscription ended → mark as canceled
-when 'invoice.finalized'
-  # Invoice created → store for records
-end
-```
+**Key Events:**
+- `checkout.session.completed` → Activate subscription
+- `invoice.payment_failed` → Suspend + notify via WhatsApp
+- `customer.subscription.deleted` → Cancel subscription
 
 ---
 
 ## Route Naming Conventions
 
-### Path Structure
-- **English paths** for all routes (Rails convention)
-- Use underscores for multi-word paths: `/sign_up`, `/send_whatsapp`, `/reset_whatsapp`
-- Resource names in **singular** for show: `/quotes/:id`
-- Resource names in **plural** for index: `/quotes`
-- Journey-aware grouping: Related actions use same base path
+### Patterns Used
 
-### Controller Actions
-- `index` → List resources (Journey: 1. List)
-- `show` → Display single resource (Journey: 2. View Details)
-- `new` → Show creation form (Journey: 1. New Form)
-- `create` → Process creation (Journey: 2. Save)
-- `edit` → Show edit form (Journey: 1. Edit Form)
-- `update` → Process update (Journey: 2. Save Changes)
-- `destroy` → Delete resource (Journey: Delete)
+✅ **RESTful resources:**
+- `/quotes` (index)
+- `/quotes/:id` (show)
+- `/quotes/:id/pdf` (member action)
 
-### Custom Actions
-- Use **POST** for state changes: `POST /quotes/:id/send_whatsapp`
-- Use descriptive names in **English**: `send_whatsapp`, `suspend`, `activate`, `replay`
-- Use underscores for multi-word actions: `send_whatsapp`, `reset_whatsapp`, `stripe_portal`
-- RESTful where possible, custom actions when needed
+✅ **Underscores for multi-word:**
+- `/send_whatsapp` (not `/send-whatsapp`)
+- `/magic_link` (not `/magic-link`)
+- `/regenerate_magic_link` (not `/regenerateMagicLink`)
 
----
+✅ **English throughout:**
+- `/dashboard` (not `/tableau-de-bord`)
+- `/profile` (not `/profil`)
+- `/quotes` (not `/devis`)
 
-## Security & Access Control
-
-### Authentication Levels
-
-1. **Public:** Landing, registration, legal pages
-2. **Authenticated User:** Dashboard, clients, quotes, invoices, Stripe Portal
-3. **Admin:** Full admin namespace + Stripe Dashboard access
-4. **API (Webhooks):** Signature verification for Unipile/Stripe
-
-### Authorization Rules
-
-- Users can only access **their own** data (clients, quotes, invoices, conversations)
-- Admins can access **all** data with audit logging
-- WhatsApp messages linked to user via `unipile_account_id`
-- Webhook endpoints verify sender authenticity (Stripe signature, Unipile token)
-- Stripe Portal sessions are scoped to user's Stripe customer ID
-
-### Rate Limiting
-
-- **Public routes:** 100 requests/hour per IP (registration journey)
-- **Authenticated routes:** 1000 requests/hour per user (dashboard journey)
-- **Webhook routes:** No limit (trusted sources with signature verification)
-- **API routes:** 5000 requests/hour per token (future)
+✅ **Simple, descriptive:**
+- `/u/:token` (short, clean magic link URL)
+- `/subscription/portal` (clear purpose)
 
 ---
 
-## Error Pages
+## Security Implementation
 
-| Code | Path | Description | User Journey Action |
-|------|------|-------------|---------------------|
-| 404 | `/404` | Page not found | Redirect to dashboard or show helpful links |
-| 500 | `/500` | Internal server error | Show error with support contact |
-| 403 | `/403` | Access forbidden | Redirect to login or show permission error |
-| 422 | `/422` | Unprocessable entity | Show form errors inline |
+### Magic Link Protection
+
+**Rate Limiting:**
+```ruby
+# config/initializers/rack_attack.rb
+
+# Limit magic link attempts per IP
+Rack::Attack.throttle('magic_link/ip', limit: 10, period: 1.hour) do |req|
+  req.ip if req.path.start_with?('/u/')
+end
+
+# Limit magic link attempts per token
+Rack::Attack.throttle('magic_link/token', limit: 5, period: 10.minutes) do |req|
+  req.params['token'] if req.path.start_with?('/u/')
+end
+
+# Limit WhatsApp webhook (prevent spam)
+Rack::Attack.throttle('webhook/unipile', limit: 1000, period: 1.minute) do |req|
+  'unipile' if req.path == '/webhooks/unipile/messages'
+end
+```
+
+**Session Security:**
+```ruby
+# config/initializers/session_store.rb
+
+Rails.application.config.session_store :cookie_store,
+  key: '_btp_assistant_session',
+  secure: Rails.env.production?,  # HTTPS only
+  httponly: true,  # No JavaScript access
+  same_site: :lax,  # CSRF protection
+  expire_after: 30.days
+```
+
+**HTTPS Enforcement:**
+```ruby
+# config/environments/production.rb
+
+config.force_ssl = true
+config.ssl_options = {
+  hsts: { subdomains: true, preload: true, expires: 1.year }
+}
+```
 
 ---
 
-## Redirects & Journey Shortcuts
+## Error Handling
 
-| From | To | Condition | Journey Context |
-|------|----|-----------|-----------------
-| `/` | `/` (landing) | Unauthenticated | Start journey |
-| `/` | `/dashboard` | Authenticated | Continue journey |
-| `/admin` | `/admin/dashboard` | Admin | Admin home |
-| `/quotes/new` | N/A | Always | Redirect to WhatsApp with instructions |
-| `/invoices/new` | N/A | Always | Redirect to WhatsApp with instructions |
-| `/subscription` | `/subscription/portal` | Always | Direct to Stripe Portal (auto-redirect) |
+### Magic Link Errors
+
+| Scenario | Response | User Action |
+|----------|----------|-------------|
+| Invalid token | Redirect to `/` with error | Contact bot: "lien" |
+| Expired token | Redirect to `/` with message | Contact bot: "lien" |
+| Rate limit exceeded | 429 error page | Wait 1 hour |
+| No active subscription | Redirect to payment | Pay via Stripe link |
+
+### Webhook Errors
+
+| Scenario | Response | Admin Action |
+|----------|----------|--------------|
+| Invalid signature | 401 Unauthorized | Check API keys |
+| Missing data | 422 + log error | Review logs |
+| Processing error | 200 (ack) + background retry | Monitor retries |
+
+---
+
+## Performance Optimizations
+
+### Database Queries
+
+**Magic Link Lookup:**
+```ruby
+# Fast lookup using prefix index
+candidates = User.where(magic_link_token_prefix: token[0..15])
+user = candidates.find { |u| u.valid_magic_link?(token) }
+
+# vs slow (avoid)
+User.all.find { |u| u.valid_magic_link?(token) }
+```
+
+**Dashboard Queries:**
+```ruby
+# Preload associations
+@quotes = current_user.quotes
+                      .includes(:client, :quote_items)
+                      .order(issue_date: :desc)
+                      .limit(20)
+```
+
+### Caching
+
+```ruby
+# Cache user stats
+@stats = Rails.cache.fetch("user_stats_#{current_user.id}", expires_in: 5.minutes) do
+  {
+    quotes_count: current_user.quotes.count,
+    invoices_count: current_user.invoices.count,
+    clients_count: current_user.clients.count,
+    total_revenue: current_user.invoices.sum(:total_amount)
+  }
+end
+```
 
 ---
 
 ## Development Routes
 
-**Only in development/staging environment**
+**Only in development/test:**
 
-| Method | Path | Description | Journey |
-|--------|------|-------------|---------|
-| GET | `/dev/emails` | Email preview (LetterOpener) | Debug emails |
-| GET | `/dev/sidekiq` | Sidekiq web UI for job monitoring | Debug jobs |
-| GET | `/dev/webhooks` | Webhook testing tool | Test webhooks |
-| GET | `/dev/stripe` | Stripe event simulator | Test Stripe webhooks |
+| Method | Path | Description |
+|--------|------|-------------|
+| GET | `/dev/emails` | Letter Opener (preview emails) |
+| GET | `/dev/sidekiq` | Sidekiq Web UI (background jobs) |
+| POST | `/dev/webhooks/unipile` | Test Unipile webhook |
+| POST | `/dev/webhooks/stripe` | Test Stripe webhook |
+| POST | `/dev/magic_link/:user_id` | Generate test magic link |
 
 ---
 
-## Notes
+## Deployment Checklist
 
-### Why So Few Routes?
+### Environment Variables
 
-1. **WhatsApp-First Architecture:** Most interactions happen via WhatsApp conversational interface
-2. **Read-Only Web Dashboard:** Users primarily **view** data on web, **create** via WhatsApp
-3. **Stripe Customer Portal:** No need for 6+ subscription management routes
-4. **Journey-Focused Design:** Each route serves a specific step in a user journey
-5. **Admin Efficiency:** Admin routes are utilitarian, not customer-facing
-6. **Webhooks Handle Complexity:** Real-time message processing happens server-side via webhooks
+```bash
+# Unipile
+UNIPILE_DSN=https://api1.unipile.com:13111
+UNIPILE_API_KEY=your_api_key
+UNIPILE_ACCOUNT_ID=your_whatsapp_account_id
+UNIPILE_WEBHOOK_SECRET=webhook_secret_for_signature
 
-### Benefits of Stripe Customer Portal
+# Stripe
+STRIPE_PUBLISHABLE_KEY=pk_live_...
+STRIPE_SECRET_KEY=sk_live_...
+STRIPE_WEBHOOK_SECRET=whsec_...
+STRIPE_PRICE_ID=price_monthly_subscription
 
-1. **Zero maintenance:** Stripe updates features automatically
-2. **PCI compliance:** No sensitive payment data touches our servers
-3. **Localization:** Automatic translation to user's language
-4. **Mobile-optimized:** Responsive design out of the box
-5. **Security:** Stripe handles all payment security
-6. **Invoice management:** Built-in invoice viewing and downloading
-7. **Legal compliance:** Stripe handles SCA, 3D Secure, etc.
+# OpenAI
+OPENAI_API_KEY=sk-...
 
-### Journey-First Design Principles
+# App
+SECRET_KEY_BASE=...
+MAGIC_LINK_SECRET=... # For additional HMAC if needed
+APP_DOMAIN=app.deviswhatsapp.com
+```
 
-- **Clear Entry Points:** Each major feature has a clear starting route
-- **Logical Progression:** Routes follow natural user mental models
-- **Exit Strategies:** Every journey has a way back (breadcrumbs, cancel buttons)
-- **Mobile-First:** WhatsApp journeys are mobile-native, web is desktop-optimized
-- **State Management:** Journeys maintain context across multiple steps
-- **External Services:** Leverage Stripe Portal for complex subscription management
+### Webhook Setup
 
-### Future Considerations
+**Unipile:**
+```bash
+curl -X POST https://apiX.unipile.com:XXXX/api/v1/webhooks \
+  -H "X-API-KEY: $UNIPILE_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "source": "chats",
+    "request_url": "https://app.deviswhatsapp.com/webhooks/unipile/messages",
+    "name": "WhatsApp Messages"
+  }'
+```
 
-- Mobile app routes (if native app is built later)
-- Advanced analytics routes for power users
-- Export/import routes for accounting integration
-- API routes for third-party integrations (accounting software, CRM)
-- Stripe Connect (if enabling payments to artisans' accounts)
+**Stripe:**
+```
+Dashboard → Webhooks → Add endpoint
+URL: https://app.deviswhatsapp.com/webhooks/stripe
+Events: checkout.session.completed, invoice.*, customer.subscription.*
+```
+
+---
+
+## Summary
+
+### Key Differences from Traditional Apps
+
+| Traditional App | This App (Bot-First) |
+|----------------|---------------------|
+| Registration form | Auto-created from WhatsApp |
+| Email + Password | Phone number + Magic link |
+| Email verification | WhatsApp verification (implicit) |
+| Password reset flow | Request new link via bot |
+| Login page | Just click link |
+| Complex onboarding | Conversational onboarding |
+| Web-first | WhatsApp-first |
+
+### Benefits
+
+✅ **User Experience:**
+- Zero friction signup
+- No passwords to remember
+- Instant access via WhatsApp
+- Web when needed (via link)
+
+✅ **Security:**
+- No password breaches
+- Cryptographic tokens
+- WhatsApp as natural 2FA
+- Automatic expiration
+
+✅ **Development:**
+- 47 routes (vs 72)
+- No Devise complexity
+- No email confirmation
+- Simpler codebase
+
+✅ **Maintenance:**
+- Less support tickets (no password issues)
+- Easier user management (by phone)
+- Clear audit trail
+
+**This is the perfect architecture for a WhatsApp-first artisan tool.** 🚀
