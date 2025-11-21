@@ -1,0 +1,68 @@
+<% content_for :title, "Modifier le client - Mairie de Colombes" %>
+
+<div class="admin-page-header">
+  <div class="header-with-actions">
+    <div>
+      <%= link_to "← Retour au client", client_admin_user_path(params[:id], client_id: params[:client_id]), class: "back-link" %>
+      <h1>Modifier le client</h1>
+      <p class="text-muted">Mairie de Colombes</p>
+    </div>
+  </div>
+</div>
+
+<div class="admin-card">
+  <form class="settings-form">
+    <div class="form-fields-grid">
+      <div class="form-group">
+        <label class="form-label">Nom du client *</label>
+        <input type="text" class="form-input" value="Mairie de Colombes" placeholder="Nom complet">
+        <small class="form-hint">Nom de la personne ou de l'entreprise</small>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Type de client</label>
+        <select class="form-select">
+          <option selected>Professionnel</option>
+          <option>Particulier</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">SIRET</label>
+        <input type="text" class="form-input" value="213 920 065 00018" placeholder="XXX XXX XXX XXXXX">
+        <small class="form-hint">Uniquement pour les professionnels</small>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Email</label>
+        <input type="email" class="form-input" value="contact@mairie-colombes.fr" placeholder="email@example.com">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Téléphone</label>
+        <input type="tel" class="form-input" value="01 47 60 80 80" placeholder="+33 X XX XX XX XX">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Adresse</label>
+        <textarea class="form-textarea" placeholder="Adresse complète">Place de la République
+92700 Colombes</textarea>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Notes</label>
+      <textarea class="form-textarea" placeholder="Notes internes sur ce client" rows="4">Client régulier. Toujours payer dans les délais. Préfère les paiements par virement.</textarea>
+    </div>
+
+    <div class="form-actions">
+      <%= link_to "Annuler", client_admin_user_path(params[:id], client_id: params[:client_id]), class: "btn btn-outline" %>
+      <button type="submit" class="btn btn-primary">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="20" height="20">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+        </svg>
+        <span>Enregistrer les modifications</span>
+      </button>
+    </div>
+  </form>
+</div>

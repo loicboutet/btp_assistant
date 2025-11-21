@@ -1,0 +1,113 @@
+<% content_for :title, "#{@invoice.number} - Facture" %>
+
+<!-- Header -->
+<div class="header">
+  <div class="company-info">
+    <div class="company-name"><%= @company.name %></div>
+    <div class="company-details">
+      <%= @company.address %><br>
+      SIRET : <%= @company.siret %><br>
+      TVA : <%= @company.tva %><br>
+      Tél : <%= @company.phone %><br>
+      Email : <%= @company.email %>
+    </div>
+  </div>
+  
+  <div class="document-info">
+    <div class="document-title">FACTURE</div>
+    <div class="document-number"><%= @invoice.number %></div>
+    <div class="document-date">Date : <%= l(@invoice.created_at, format: :long) %></div>
+    <div class="document-date">Échéance : <%= l(@invoice.due_date, format: :long) %></div>
+  </div>
+</div>
+
+<!-- Parties -->
+<div class="parties">
+  <div class="party-box">
+    <div class="party-label">Entreprise</div>
+    <div class="party-name"><%= @company.name %></div>
+    <div class="party-details">
+      <%= @company.address %><br>
+      SIRET : <%= @company.siret %><br>
+      <%= @company.phone %>
+    </div>
+  </div>
+  
+  <div class="party-box">
+    <div class="party-label">Client</div>
+    <div class="party-name"><%= @invoice.client.name %></div>
+    <div class="party-details">
+      <%= @invoice.client.address %><br>
+      <% if @invoice.client.siret.present? %>
+        SIRET : <%= @invoice.client.siret %><br>
+      <% end %>
+      <%= @invoice.client.phone %><br>
+      <%= @invoice.client.email %>
+    </div>
+  </div>
+</div>
+
+<!-- Items Table -->
+<table class="items-table">
+  <thead>
+    <tr>
+      <th style="width: 50%;">Description</th>
+      <th style="width: 15%; text-align: center;">Quantité</th>
+      <th style="width: 15%; text-align: right;">Prix unitaire</th>
+      <th style="width: 20%; text-align: right;">Total HT</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @invoice.items.each do |item| %>
+      <tr>
+        <td class="item-description"><%= item.description %></td>
+        <td class="item-quantity" style="text-align: center;"><%= item.quantity %></td>
+        <td style="text-align: right;"><%= number_to_currency(item.unit_price, unit: '', precision: 2) %> €</td>
+        <td style="text-align: right; font-weight: 600;"><%= number_to_currency(item.total, unit: '', precision: 2) %> €</td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<!-- Totals -->
+<div class="totals">
+  <div class="totals-row subtotal">
+    <span>Total HT</span>
+    <span><%= number_to_currency(@invoice.subtotal, unit: '', precision: 2) %> €</span>
+  </div>
+  <div class="totals-row vat">
+    <span>TVA (<%= @invoice.tax_rate %>%)</span>
+    <span><%= number_to_currency(@invoice.tax_amount, unit: '', precision: 2) %> €</span>
+  </div>
+  <div class="totals-row total">
+    <span>Total TTC</span>
+    <span><%= number_to_currency(@invoice.total, unit: '', precision: 2) %> €</span>
+  </div>
+</div>
+
+<!-- Payment Details -->
+<div class="notes" style="background: #dbeafe; border-left: 4px solid #3b82f6;">
+  <div class="notes-title" style="color: #1e3a8a;">💳 Modalités de paiement</div>
+  <div class="notes-content" style="color: #1e40af;">
+    <strong>Méthode : </strong><%= @invoice.payment_method %><br>
+    <% if @invoice.bank_details.present? %>
+      <br><%= @invoice.bank_details %>
+    <% end %>
+  </div>
+</div>
+
+<!-- Legal Notes -->
+<% if @invoice.notes.present? %>
+  <div class="notes">
+    <div class="notes-title">⚠️ Conditions de paiement et mentions légales</div>
+    <div class="notes-content"><%= @invoice.notes %></div>
+  </div>
+<% end %>
+
+<!-- Footer -->
+<div class="footer">
+  En cas de retard de paiement, seront exigibles une indemnité calculée sur la base de 3 fois le taux d'intérêt légal,<br>
+  ainsi qu'une indemnité forfaitaire de 40 euros pour frais de recouvrement (articles L441-6 et D441-5 du Code de commerce).<br>
+  <br>
+  <%= @company.name %> - SIRET : <%= @company.siret %> - TVA : <%= @company.tva %>
+</div>

@@ -1,22 +1,9 @@
-<%# Pagination partial - Kaminari-style
-  Usage: <%= render 'shared/pagination', collection: @users %>
-
-
-<% if collection.respond_to?(:current_page) %>
-  <nav class="pagination" role="navigation" aria-label="Pagination">
-    <%= link_to_unless collection.first_page?, "Précédent", url_for(page: collection.prev_page), class: "btn btn-outline #{'disabled' if collection.first_page?}", disabled: collection.first_page? %>
-    
+<% if collection.respond_to?(:total_pages) && collection.total_pages > 1 %>
+  <div class="pagination">
+    <%= link_to_previous_page collection, '← Précédent', class: 'btn btn-outline' %>
     <span class="pagination-info">
       Page <%= collection.current_page %> sur <%= collection.total_pages %>
     </span>
-    
-    <%= link_to_unless collection.last_page?, "Suivant", url_for(page: collection.next_page), class: "btn btn-outline #{'disabled' if collection.last_page?}", disabled: collection.last_page? %>
-  </nav>
-<% else %>
-  <%# Fallback for non-paginated collections %>
-  <div class="pagination">
-    <button class="btn btn-outline" disabled>Précédent</button>
-    <span class="pagination-info">Page 1 sur 1</span>
-    <button class="btn btn-outline" disabled>Suivant</button>
+    <%= link_to_next_page collection, 'Suivant →', class: 'btn btn-outline' %>
   </div>
 <% end %>

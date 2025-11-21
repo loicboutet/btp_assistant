@@ -1,0 +1,211 @@
+<% content_for :title, "Clients - Jean Dupont" %>
+
+<div class="admin-page-header">
+  <div class="header-with-actions">
+    <div>
+      <%= link_to "← Retour à l'utilisateur", admin_user_path(params[:id]), class: "back-link" %>
+      <h1>Clients de Jean Dupont</h1>
+      <p class="text-muted">Dupont Maçonnerie • 12 clients</p>
+    </div>
+    <div class="header-actions">
+      <button class="btn btn-primary">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="16" height="16">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+        </svg>
+        <span>Nouveau client</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Stats -->
+<div class="stats-grid">
+  <div class="stat-card">
+    <div class="stat-icon bg-blue">👥</div>
+    <div class="stat-content">
+      <div class="stat-value">12</div>
+      <div class="stat-label">Total clients</div>
+      <div class="stat-change positive">+2 ce mois</div>
+    </div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon bg-green">🏢</div>
+    <div class="stat-content">
+      <div class="stat-value">8</div>
+      <div class="stat-label">Professionnels</div>
+      <div class="stat-detail">Avec SIRET</div>
+    </div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon bg-purple">👤</div>
+    <div class="stat-content">
+      <div class="stat-value">4</div>
+      <div class="stat-label">Particuliers</div>
+      <div class="stat-detail">Sans SIRET</div>
+    </div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon bg-orange">📄</div>
+    <div class="stat-content">
+      <div class="stat-value">87</div>
+      <div class="stat-label">Documents totaux</div>
+      <div class="stat-detail">Tous clients confondus</div>
+    </div>
+  </div>
+</div>
+
+<!-- Clients Table -->
+<div class="admin-card">
+  <div class="table-responsive" data-controller="table-scroll">
+    <table class="admin-table">
+      <thead>
+        <tr>
+          <th>Client</th>
+          <th>Type</th>
+          <th>Contact</th>
+          <th>Adresse</th>
+          <th>Documents</th>
+          <th>Dernier document</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td data-label="Client">
+            <div class="user-info">
+              <div class="user-avatar">MC</div>
+              <div>
+                <div class="user-name">Mairie de Colombes</div>
+                <div class="user-email">SIRET: 213 920 065 00018</div>
+              </div>
+            </div>
+          </td>
+          <td data-label="Type"><span class="badge badge-blue">🏢 Professionnel</span></td>
+          <td data-label="Contact">
+            <div>contact@mairie-colombes.fr</div>
+            <div class="text-muted small">01 47 60 80 80</div>
+          </td>
+          <td data-label="Adresse">
+            <div class="text-muted small">Place de la République</div>
+            <div class="text-muted small">92700 Colombes</div>
+          </td>
+          <td data-label="Documents">
+            <div>23 docs</div>
+            <div class="text-muted small">12 devis, 11 factures</div>
+          </td>
+          <td data-label="Dernier document">
+            <div>Il y a 3 jours</div>
+            <div class="text-muted small">Facture #F-2025-0234</div>
+          </td>
+          <td data-label="Actions">
+            <div class="action-buttons">
+              <%= link_to client_admin_user_path(params[:id], client_id: 1), class: "btn btn-xs btn-outline" do %>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="14" height="14">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+                <span>Voir</span>
+              <% end %>
+              <%= link_to edit_client_admin_user_path(params[:id], client_id: 1), class: "btn btn-xs btn-outline" do %>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="14" height="14">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
+                </svg>
+                <span>Modifier</span>
+              <% end %>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td data-label="Client">
+            <div class="user-info">
+              <div class="user-avatar">SL</div>
+              <div>
+                <div class="user-name">Sophie Lambert</div>
+                <div class="user-email">Particulier</div>
+              </div>
+            </div>
+          </td>
+          <td data-label="Type"><span class="badge badge-green">👤 Particulier</span></td>
+          <td data-label="Contact">
+            <div>sophie.lambert@gmail.com</div>
+            <div class="text-muted small">06 12 34 56 78</div>
+          </td>
+          <td data-label="Adresse">
+            <div class="text-muted small">45 Rue de la Paix</div>
+            <div class="text-muted small">75002 Paris</div>
+          </td>
+          <td data-label="Documents">
+            <div>8 docs</div>
+            <div class="text-muted small">5 devis, 3 factures</div>
+          </td>
+          <td data-label="Dernier document">
+            <div>Il y a 1 semaine</div>
+            <div class="text-muted small">Devis #D-2025-0456</div>
+          </td>
+          <td data-label="Actions">
+            <div class="action-buttons">
+              <%= link_to client_admin_user_path(params[:id], client_id: 2), class: "btn btn-xs btn-outline" do %>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="14" height="14">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+                <span>Voir</span>
+              <% end %>
+              <%= link_to edit_client_admin_user_path(params[:id], client_id: 2), class: "btn btn-xs btn-outline" do %>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="14" height="14">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
+                </svg>
+                <span>Modifier</span>
+              <% end %>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td data-label="Client">
+            <div class="user-info">
+              <div class="user-avatar">AB</div>
+              <div>
+                <div class="user-name">ABC Construction</div>
+                <div class="user-email">SIRET: 523 456 789 00021</div>
+              </div>
+            </div>
+          </td>
+          <td data-label="Type"><span class="badge badge-blue">🏢 Professionnel</span></td>
+          <td data-label="Contact">
+            <div>contact@abc-construction.fr</div>
+            <div class="text-muted small">01 45 67 89 01</div>
+          </td>
+          <td data-label="Adresse">
+            <div class="text-muted small">12 Avenue des Champs</div>
+            <div class="text-muted small">75008 Paris</div>
+          </td>
+          <td data-label="Documents">
+            <div>34 docs</div>
+            <div class="text-muted small">15 devis, 19 factures</div>
+          </td>
+          <td data-label="Dernier document">
+            <div>Hier</div>
+            <div class="text-muted small">Facture #F-2025-0245</div>
+          </td>
+          <td data-label="Actions">
+            <div class="action-buttons">
+              <%= link_to client_admin_user_path(params[:id], client_id: 3), class: "btn btn-xs btn-outline" do %>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="14" height="14">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+                <span>Voir</span>
+              <% end %>
+              <%= link_to edit_client_admin_user_path(params[:id], client_id: 3), class: "btn btn-xs btn-outline" do %>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="14" height="14">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
+                </svg>
+                <span>Modifier</span>
+              <% end %>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

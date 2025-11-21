@@ -40,146 +40,148 @@
 
 <!-- Subscriptions Table -->
 <div class="admin-card">
-  <table class="admin-table">
-    <thead>
-      <tr>
-        <th>Utilisateur</th>
-        <th>Plan</th>
-        <th>Statut</th>
-        <th>Stripe IDs</th>
-        <th>Date début</th>
-        <th>Prochain paiement</th>
-        <th>MRR</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>
-          <div class="user-info">
-            <div class="user-avatar">JD</div>
-            <div>
-              <div class="user-name">Jean Dupont</div>
-              <div class="user-email">jean.dupont@example.fr</div>
+  <div class="table-responsive" data-controller="table-scroll">
+    <table class="admin-table">
+      <thead>
+        <tr>
+          <th>Utilisateur</th>
+          <th>Plan</th>
+          <th>Statut</th>
+          <th>Stripe IDs</th>
+          <th>Date début</th>
+          <th>Prochain paiement</th>
+          <th>MRR</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td data-label="Utilisateur">
+            <div class="user-info">
+              <div class="user-avatar">JD</div>
+              <div>
+                <div class="user-name">Jean Dupont</div>
+                <div class="user-email">jean.dupont@example.fr</div>
+              </div>
             </div>
-          </div>
-        </td>
-        <td>Mensuel</td>
-        <td><span class="status-badge status-success">Actif</span></td>
-        <td>
-          <div class="text-muted small">cus_AbCdEfGh</div>
-          <div class="text-muted small">sub_12345678</div>
-        </td>
-        <td>15 mars 2025</td>
-        <td>15 juin 2025</td>
-        <td class="font-weight-bold">59€</td>
-        <td>
-          <div class="action-buttons">
-            <%= link_to admin_subscription_path(1), class: "btn btn-xs btn-outline" do %>
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" width="16" height="16">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
-                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-              </svg>
-              Voir
-            <% end %>
-          </div>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <div class="user-info">
-            <div class="user-avatar">MM</div>
-            <div>
-              <div class="user-name">Marie Martin</div>
-              <div class="user-email">marie.martin@example.fr</div>
+          </td>
+          <td data-label="Plan">Mensuel</td>
+          <td data-label="Statut"><span class="status-badge status-success">Actif</span></td>
+          <td data-label="Stripe IDs">
+            <div class="text-muted small">cus_AbCdEfGh</div>
+            <div class="text-muted small">sub_12345678</div>
+          </td>
+          <td data-label="Date début">15 mars 2025</td>
+          <td data-label="Prochain paiement">15 juin 2025</td>
+          <td data-label="MRR" class="font-weight-bold">59€</td>
+          <td data-label="Actions">
+            <div class="action-buttons">
+              <%= link_to admin_subscription_path(1), class: "btn btn-xs btn-outline" do %>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" width="16" height="16">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+                Voir
+              <% end %>
             </div>
-          </div>
-        </td>
-        <td>Mensuel</td>
-        <td><span class="status-badge status-success">Actif</span></td>
-        <td>
-          <div class="text-muted small">cus_IjKlMnOp</div>
-          <div class="text-muted small">sub_23456789</div>
-        </td>
-        <td>12 déc 2024</td>
-        <td>12 juin 2025</td>
-        <td class="font-weight-bold">59€</td>
-        <td>
-          <div class="action-buttons">
-            <%= link_to admin_subscription_path(2), class: "btn btn-xs btn-outline" do %>
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" width="16" height="16">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
-                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-              </svg>
-              Voir
-            <% end %>
-          </div>
-        </td>
-      </tr>
-      <tr class="row-warning">
-        <td>
-          <div class="user-info">
-            <div class="user-avatar">AÖ</div>
-            <div>
-              <div class="user-name">Ali Öztürk</div>
-              <div class="user-email">ali.ozturk@example.com</div>
+          </td>
+        </tr>
+        <tr>
+          <td data-label="Utilisateur">
+            <div class="user-info">
+              <div class="user-avatar">MM</div>
+              <div>
+                <div class="user-name">Marie Martin</div>
+                <div class="user-email">marie.martin@example.fr</div>
+              </div>
             </div>
-          </div>
-        </td>
-        <td>Mensuel</td>
-        <td><span class="status-badge status-warning">Paiement échoué</span></td>
-        <td>
-          <div class="text-muted small">cus_QrStUvWx</div>
-          <div class="text-muted small">sub_34567890</div>
-        </td>
-        <td>8 fév 2025</td>
-        <td class="warning-text">Échoué - 2j restants</td>
-        <td class="font-weight-bold">59€</td>
-        <td>
-          <div class="action-buttons">
-            <%= link_to admin_subscription_path(3), class: "btn btn-xs btn-outline" do %>
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" width="16" height="16">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
-                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-              </svg>
-              Voir
-            <% end %>
-          </div>
-        </td>
-      </tr>
-      <tr class="row-danger">
-        <td>
-          <div class="user-info">
-            <div class="user-avatar">SB</div>
-            <div>
-              <div class="user-name">Sophie Bernard</div>
-              <div class="user-email">sophie.bernard@example.fr</div>
+          </td>
+          <td data-label="Plan">Mensuel</td>
+          <td data-label="Statut"><span class="status-badge status-success">Actif</span></td>
+          <td data-label="Stripe IDs">
+            <div class="text-muted small">cus_IjKlMnOp</div>
+            <div class="text-muted small">sub_23456789</div>
+          </td>
+          <td data-label="Date début">12 déc 2024</td>
+          <td data-label="Prochain paiement">12 juin 2025</td>
+          <td data-label="MRR" class="font-weight-bold">59€</td>
+          <td data-label="Actions">
+            <div class="action-buttons">
+              <%= link_to admin_subscription_path(2), class: "btn btn-xs btn-outline" do %>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" width="16" height="16">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+                Voir
+              <% end %>
             </div>
-          </div>
-        </td>
-        <td>Mensuel</td>
-        <td><span class="status-badge status-danger">Suspendu</span></td>
-        <td>
-          <div class="text-muted small">cus_YzAbCdEf</div>
-          <div class="text-muted small">sub_45678901</div>
-        </td>
-        <td>1 nov 2024</td>
-        <td class="danger-text">Impayé 15 jours</td>
-        <td class="font-weight-bold">59€</td>
-        <td>
-          <div class="action-buttons">
-            <%= link_to admin_subscription_path(4), class: "btn btn-xs btn-outline" do %>
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" width="16" height="16">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
-                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-              </svg>
-              Voir
-            <% end %>
-          </div>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+          </td>
+        </tr>
+        <tr class="row-warning">
+          <td data-label="Utilisateur">
+            <div class="user-info">
+              <div class="user-avatar">AÖ</div>
+              <div>
+                <div class="user-name">Ali Öztürk</div>
+                <div class="user-email">ali.ozturk@example.com</div>
+              </div>
+            </div>
+          </td>
+          <td data-label="Plan">Mensuel</td>
+          <td data-label="Statut"><span class="status-badge status-warning">Paiement échoué</span></td>
+          <td data-label="Stripe IDs">
+            <div class="text-muted small">cus_QrStUvWx</div>
+            <div class="text-muted small">sub_34567890</div>
+          </td>
+          <td data-label="Date début">8 fév 2025</td>
+          <td data-label="Prochain paiement" class="warning-text">Échoué - 2j restants</td>
+          <td data-label="MRR" class="font-weight-bold">59€</td>
+          <td data-label="Actions">
+            <div class="action-buttons">
+              <%= link_to admin_subscription_path(3), class: "btn btn-xs btn-outline" do %>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" width="16" height="16">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+                Voir
+              <% end %>
+            </div>
+          </td>
+        </tr>
+        <tr class="row-danger">
+          <td data-label="Utilisateur">
+            <div class="user-info">
+              <div class="user-avatar">SB</div>
+              <div>
+                <div class="user-name">Sophie Bernard</div>
+                <div class="user-email">sophie.bernard@example.fr</div>
+              </div>
+            </div>
+          </td>
+          <td data-label="Plan">Mensuel</td>
+          <td data-label="Statut"><span class="status-badge status-danger">Suspendu</span></td>
+          <td data-label="Stripe IDs">
+            <div class="text-muted small">cus_YzAbCdEf</div>
+            <div class="text-muted small">sub_45678901</div>
+          </td>
+          <td data-label="Date début">1 nov 2024</td>
+          <td data-label="Prochain paiement" class="danger-text">Impayé 15 jours</td>
+          <td data-label="MRR" class="font-weight-bold">59€</td>
+          <td data-label="Actions">
+            <div class="action-buttons">
+              <%= link_to admin_subscription_path(4), class: "btn btn-xs btn-outline" do %>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" width="16" height="16">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+                Voir
+              <% end %>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>
 
 <!-- Summary Stats -->

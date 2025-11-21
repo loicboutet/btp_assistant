@@ -1,0 +1,140 @@
+<% content_for :title, "Devis #D-2025-0456" %>
+
+<div class="admin-page-header">
+  <div class="header-with-actions">
+    <div>
+      <%= link_to "← Retour aux devis", quotes_admin_user_path(params[:id]), class: "back-link" %>
+      <h1>Devis #D-2025-0456</h1>
+      <p class="text-muted">Mairie de Colombes • Émis le 27 mai 2025</p>
+    </div>
+    <div class="header-actions">
+      <button class="btn btn-outline">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="16" height="16">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
+        </svg>
+        <span>Télécharger PDF</span>
+      </button>
+      <button class="btn btn-primary">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="16" height="16">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25zM6.75 12h.008v.008H6.75V12zm0 3h.008v.008H6.75V15zm0 3h.008v.008H6.75V18z" />
+        </svg>
+        <span>Convertir en facture</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Quote Info -->
+<div class="admin-content-grid">
+  <div class="admin-card">
+    <div class="card-header">
+      <h2>Informations du devis</h2>
+    </div>
+    <div class="details-list">
+      <div class="detail-item">
+        <span class="detail-label">Numéro</span>
+        <span class="detail-value">D-2025-0456</span>
+      </div>
+      <div class="detail-item">
+        <span class="detail-label">Date d'émission</span>
+        <span class="detail-value">27 mai 2025</span>
+      </div>
+      <div class="detail-item">
+        <span class="detail-label">Validité</span>
+        <span class="detail-value">30 jours (expire le 26 juin)</span>
+      </div>
+      <div class="detail-item">
+        <span class="detail-label">Statut</span>
+        <span class="detail-value"><span class="status-badge status-warning">En attente</span></span>
+      </div>
+      <div class="detail-item">
+        <span class="detail-label">Créé via</span>
+        <span class="detail-value">WhatsApp (Message vocal)</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="admin-card">
+    <div class="card-header">
+      <h2>Client</h2>
+    </div>
+    <div class="details-list">
+      <div class="detail-item">
+        <span class="detail-label">Nom</span>
+        <span class="detail-value">Mairie de Colombes</span>
+      </div>
+      <div class="detail-item">
+        <span class="detail-label">SIRET</span>
+        <span class="detail-value">213 920 065 00018</span>
+      </div>
+      <div class="detail-item">
+        <span class="detail-label">Email</span>
+        <span class="detail-value">contact@mairie-colombes.fr</span>
+      </div>
+      <div class="detail-item">
+        <span class="detail-label">Téléphone</span>
+        <span class="detail-value">01 47 60 80 80</span>
+      </div>
+      <div class="detail-item">
+        <span class="detail-label">Adresse</span>
+        <span class="detail-value">
+          Place de la République<br>
+          92700 Colombes
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Quote Lines -->
+<div class="admin-card" style="margin-top: var(--spacing-xl);">
+  <div class="card-header">
+    <h2>Lignes du devis</h2>
+  </div>
+  <div class="table-responsive">
+    <table class="admin-table">
+      <thead>
+        <tr>
+          <th>Description</th>
+          <th>Quantité</th>
+          <th>Prix unitaire HT</th>
+          <th>Total HT</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td data-label="Description">Rénovation murs extérieurs</td>
+          <td data-label="Quantité">120 m²</td>
+          <td data-label="Prix unitaire">18.50€</td>
+          <td data-label="Total" class="font-weight-bold">2 220€</td>
+        </tr>
+        <tr>
+          <td data-label="Description">Enduit de finition</td>
+          <td data-label="Quantité">120 m²</td>
+          <td data-label="Prix unitaire">4.80€</td>
+          <td data-label="Total" class="font-weight-bold">576€</td>
+        </tr>
+        <tr>
+          <td data-label="Description">Main d'œuvre</td>
+          <td data-label="Quantité">1</td>
+          <td data-label="Prix unitaire">704€</td>
+          <td data-label="Total" class="font-weight-bold">704€</td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td colspan="3" style="text-align: right; font-weight: bold;">Total HT</td>
+          <td class="font-weight-bold">2 800€</td>
+        </tr>
+        <tr>
+          <td colspan="3" style="text-align: right;">TVA 20%</td>
+          <td>560€</td>
+        </tr>
+        <tr style="background: rgba(31, 157, 85, 0.08);">
+          <td colspan="3" style="text-align: right; font-weight: bold; font-size: 1.125rem;">Total TTC</td>
+          <td style="font-weight: bold; font-size: 1.125rem; color: var(--primary-green);">3 360€</td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+</div>

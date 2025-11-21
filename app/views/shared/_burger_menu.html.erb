@@ -1,0 +1,74 @@
+<!-- Slide-out Menu -->
+<div id="side-menu" class="fixed inset-0 bg-black bg-opacity-50 z-20 hidden">
+  <div class="bg-white w-64 h-full shadow-xl p-6">
+    <button id="menu-close" class="mb-8 text-gray-500">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+      </svg>
+    </button>
+    
+    <nav class="space-y-4 text-sm font-medium">
+      <%= link_to client_dashboard_path, class: "block text-gray-800 hover:text-green-600 #{active_page == :dashboard ? 'text-green-600 font-semibold' : ''}" do %>
+        📊 ACCUEIL
+      <% end %>
+      <%= link_to quotes_path, class: "block text-gray-800 hover:text-green-600 #{active_page == :quotes ? 'text-green-600 font-semibold' : ''}" do %>
+        📄 MES DEVIS
+      <% end %>
+      <%= link_to invoices_path, class: "block text-gray-800 hover:text-green-600 #{active_page == :invoices ? 'text-green-600 font-semibold' : ''}" do %>
+        🧾 MES FACTURES
+      <% end %>
+      <%= link_to clients_path, class: "block text-gray-800 hover:text-green-600 #{active_page == :clients ? 'text-green-600 font-semibold' : ''}" do %>
+        👥 MES CLIENTS
+      <% end %>
+      
+      <hr class="my-4 border-gray-200">
+      
+      <%= link_to client_profile_path, class: "block text-gray-800 hover:text-green-600" do %>
+        ⚙️ MON COMPTE
+      <% end %>
+      <%= button_to client_subscription_path, method: :post, class: "block text-left w-full text-gray-800 hover:text-green-600" do %>
+        💳 ABONNEMENT
+      <% end %>
+      
+      <hr class="my-4 border-gray-200">
+      
+      <%= link_to destroy_user_session_path, method: :delete, class: "block text-red-600 hover:text-red-700 font-semibold", data: { turbo_method: :delete } do %>
+        🚪 DÉCONNEXION
+      <% end %>
+    </nav>
+  </div>
+</div>
+
+<script>
+  // Menu toggle logic - Compatible avec Turbo
+  function initBurgerMenu() {
+    const menuToggle = document.getElementById('menu-toggle');
+    const menuClose = document.getElementById('menu-close');
+    const sideMenu = document.getElementById('side-menu');
+    
+    menuToggle?.addEventListener('click', () => {
+      sideMenu?.classList.remove('hidden');
+    });
+    
+    menuClose?.addEventListener('click', () => {
+      sideMenu?.classList.add('hidden');
+    });
+    
+    sideMenu?.addEventListener('click', (e) => {
+      if (e.target.id === 'side-menu') {
+        e.target.classList.add('hidden');
+      }
+    });
+  }
+
+  // Initialiser au chargement
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initBurgerMenu);
+  } else {
+    initBurgerMenu();
+  }
+
+  // Réinitialiser avec Turbo
+  document.addEventListener('turbo:load', initBurgerMenu);
+  document.addEventListener('turbo:render', initBurgerMenu);
+</script>

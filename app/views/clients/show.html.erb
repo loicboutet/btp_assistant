@@ -1,300 +1,105 @@
-<div class="admin-page-header">
-  <%= link_to clients_path, class: "back-link" do %>
-    <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16" style="margin-right: 4px;">
-      <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
-    </svg>
-    Retour aux clients
-  <% end %>
-  <div class="header-with-actions">
-    <div>
-      <h1>Entreprise Dubois</h1>
-      <p class="text-muted">Client depuis le 15 septembre 2025</p>
-    </div>
-    <div class="header-actions">
-      <%= link_to "#", class: "btn btn-secondary btn-sm" do %>
-        <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-          <path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z"/>
-        </svg>
-        <span>Modifier</span>
-      <% end %>
-      <%= link_to "#", class: "btn btn-whatsapp btn-sm" do %>
-        <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-          <path d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.933 7.933 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.898 7.898 0 0 0 13.6 2.326zM7.994 14.521a6.573 6.573 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.557 6.557 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592zm3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.729.729 0 0 0-.529.247c-.182.198-.691.677-.691 1.654 0 .977.71 1.916.81 2.049.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232z"/>
-        </svg>
-        <span>Contacter sur WhatsApp</span>
+<% content_for :title, "Client - Devis WhatsApp" %>
+<% content_for :page_title, "Client" %>
+<% content_for :back_path, clients_path %>
+<% content_for :active_page, :clients %>
+
+<!-- Content -->
+<main class="p-4 max-w-3xl mx-auto">
+  
+  <!-- Client Header -->
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-4">
+    <div class="flex justify-between items-start mb-4">
+      <div>
+        <h2 class="text-2xl font-bold text-gray-900"><%= @client&.name || "Nom Client" %></h2>
+        <p class="text-gray-600 mt-1"><%= @client&.address&.split(',')&.last&.strip || "Ville" %></p>
+      </div>
+      <%= link_to edit_client_path(@client&.id || params[:id]), class: "bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-lg transition" do %>
+        ✏️ Modifier
       <% end %>
     </div>
   </div>
-</div>
 
-<div class="admin-content-grid">
-  <!-- Client Information Card -->
-  <div class="admin-card">
-    <div class="card-header">
-      <h2>Informations du Client</h2>
-    </div>
-    <div class="details-list">
-      <div class="detail-item">
-        <span class="detail-label">Nom de l'entreprise</span>
-        <span class="detail-value">Entreprise Dubois</span>
+  <!-- Client Info -->
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-4">
+    <h3 class="font-semibold text-gray-900 mb-4">Coordonnées</h3>
+    
+    <div class="space-y-3 text-sm">
+      <div class="flex justify-between py-2 border-b border-gray-100">
+        <span class="text-gray-600">Nom</span>
+        <span class="font-medium text-gray-900"><%= @client&.name || "Client" %></span>
       </div>
-      <div class="detail-item">
-        <span class="detail-label">Contact principal</span>
-        <span class="detail-value">Marie Dubois</span>
+      
+      <div class="flex justify-between py-2 border-b border-gray-100">
+        <span class="text-gray-600">Email</span>
+        <span class="font-medium text-gray-900"><%= @client&.email || "-" %></span>
       </div>
-      <div class="detail-item">
-        <span class="detail-label">Type de client</span>
-        <span class="detail-value">
-          <span class="badge badge-blue">Professionnel</span>
-        </span>
+      
+      <div class="flex justify-between py-2 border-b border-gray-100">
+        <span class="text-gray-600">Téléphone</span>
+        <span class="font-medium text-gray-900"><%= @client&.phone || "-" %></span>
       </div>
-      <div class="detail-item">
-        <span class="detail-label">SIRET</span>
-        <span class="detail-value">987 654 321 00015</span>
+      
+      <div class="flex justify-between py-2 border-b border-gray-100">
+        <span class="text-gray-600">Adresse</span>
+        <span class="font-medium text-gray-900 text-right"><%= @client&.address || "Adresse" %></span>
       </div>
-      <div class="detail-item">
-        <span class="detail-label">Adresse</span>
-        <span class="detail-value">
-          42 Avenue de la République<br>
-          69003 Lyon<br>
-          France
-        </span>
-      </div>
-      <div class="detail-item">
-        <span class="detail-label">Créé le</span>
-        <span class="detail-value">15 septembre 2025</span>
-      </div>
-      <div class="detail-item">
-        <span class="detail-label">Créé via</span>
-        <span class="detail-value">
-          <span class="badge badge-green">WhatsApp</span>
-        </span>
-      </div>
+      
+      <% if @client&.siret.present? %>
+        <div class="flex justify-between py-2">
+          <span class="text-gray-600">SIRET</span>
+          <span class="font-medium text-gray-900"><%= @client.siret %></span>
+        </div>
+      <% end %>
     </div>
   </div>
 
-  <!-- Contact Information Card -->
-  <div class="admin-card">
-    <div class="card-header">
-      <h2>Coordonnées</h2>
-    </div>
-    <div class="details-list">
-      <div class="detail-item">
-        <span class="detail-label">Téléphone</span>
-        <span class="detail-value">
-          <a href="tel:+33698765432" class="text-link">+33 6 98 76 54 32</a>
-        </span>
+  <!-- Documents -->
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+    <h3 class="font-semibold text-gray-900 mb-4">Documents associés</h3>
+    
+    <div class="grid grid-cols-2 gap-4 mb-4">
+      <div class="text-center p-4 bg-blue-50 rounded-lg">
+        <p class="text-3xl font-bold text-blue-600"><%= @client&.quotes&.count || 0 %></p>
+        <p class="text-sm text-gray-600">Devis</p>
       </div>
-      <div class="detail-item">
-        <span class="detail-label">Email</span>
-        <span class="detail-value">
-          <a href="mailto:m.dubois@entreprise-dubois.fr" class="text-link">m.dubois@entreprise-dubois.fr</a>
-        </span>
-      </div>
-      <div class="detail-item">
-        <span class="detail-label">WhatsApp</span>
-        <span class="detail-value">
-          <span class="badge badge-green">✓ Connecté</span>
-        </span>
-      </div>
-      <div class="detail-item">
-        <span class="detail-label">Conversation active</span>
-        <span class="detail-value">
-          <%= link_to "Voir l'historique", "#", class: "text-link" %>
-        </span>
+      <div class="text-center p-4 bg-green-50 rounded-lg">
+        <p class="text-3xl font-bold text-green-600"><%= @client&.invoices&.count || 0 %></p>
+        <p class="text-sm text-gray-600">Factures</p>
       </div>
     </div>
-  </div>
-</div>
-
-<!-- Statistics Card -->
-<div class="admin-card" style="margin-top: var(--spacing-lg);">
-  <div class="card-header">
-    <h2>Statistiques</h2>
-  </div>
-  <div class="stats-grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
-    <div class="quick-stat">
-      <div class="quick-stat-label">Devis envoyés</div>
-      <div class="quick-stat-value">8</div>
-    </div>
-    <div class="quick-stat">
-      <div class="quick-stat-label">Devis acceptés</div>
-      <div class="quick-stat-value">5</div>
-    </div>
-    <div class="quick-stat">
-      <div class="quick-stat-label">Factures émises</div>
-      <div class="quick-stat-value">5</div>
-    </div>
-    <div class="quick-stat">
-      <div class="quick-stat-label">Chiffre d'affaires total</div>
-      <div class="quick-stat-value">42 850€</div>
-    </div>
-  </div>
-</div>
-
-<!-- Recent Quotes -->
-<div class="admin-card" style="margin-top: var(--spacing-lg);">
-  <div class="card-header">
-    <h2>Devis Récents</h2>
-    <%= link_to "Voir tous", "#", class: "btn-outline btn-sm" %>
-  </div>
-  <div style="overflow-x: auto;">
-    <table class="admin-table">
-      <thead>
-        <tr>
-          <th>Numéro</th>
-          <th>Date</th>
-          <th>Montant</th>
-          <th>Statut</th>
-          <th style="text-align: right;">Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>
-            <%= link_to "DEVIS-2025-0042", "#", class: "text-link" %>
-          </td>
-          <td>25 octobre 2025</td>
-          <td><strong>16 590,00 €</strong></td>
-          <td><span class="status-badge status-success">Accepté</span></td>
-          <td style="text-align: right;">
-            <div class="action-buttons">
-              <%= link_to "#", class: "btn-outline btn-xs" do %>
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="14" height="14" style="display: inline-block; vertical-align: middle; margin-right: 4px;">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                </svg>
-                <span>Voir</span>
-              <% end %>
+    
+    <!-- Recent Documents List -->
+    <% if @client&.recent_quotes&.any? || @client&.recent_invoices&.any? %>
+      <div class="space-y-2">
+        <h4 class="text-sm font-medium text-gray-700 mb-2">Documents récents</h4>
+        
+        <% (@client&.recent_quotes || []).each do |quote| %>
+          <%= link_to quote_path(quote.id), class: "block p-3 bg-blue-50 hover:bg-blue-100 rounded-lg transition" do %>
+            <div class="flex justify-between items-center">
+              <div>
+                <p class="font-medium text-gray-900 text-sm">📄 <%= quote.number %></p>
+                <p class="text-xs text-gray-600"><%= l(quote.created_at, format: :short) rescue "Date" %></p>
+              </div>
+              <p class="font-semibold text-gray-900"><%= number_to_currency(quote.amount, unit: "", precision: 0) %> €</p>
             </div>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <%= link_to "DEVIS-2025-0038", "#", class: "text-link" %>
-          </td>
-          <td>18 octobre 2025</td>
-          <td><strong>8 420,00 €</strong></td>
-          <td><span class="status-badge status-info">Envoyé</span></td>
-          <td style="text-align: right;">
-            <div class="action-buttons">
-              <%= link_to "#", class: "btn-outline btn-xs" do %>
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="14" height="14" style="display: inline-block; vertical-align: middle; margin-right: 4px;">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                </svg>
-                <span>Voir</span>
-              <% end %>
+          <% end %>
+        <% end %>
+        
+        <% (@client&.recent_invoices || []).each do |invoice| %>
+          <%= link_to invoice_path(invoice.id), class: "block p-3 bg-green-50 hover:bg-green-100 rounded-lg transition" do %>
+            <div class="flex justify-between items-center">
+              <div>
+                <p class="font-medium text-gray-900 text-sm">🧾 <%= invoice.number %></p>
+                <p class="text-xs text-gray-600"><%= l(invoice.created_at, format: :short) rescue "Date" %></p>
+              </div>
+              <p class="font-semibold text-gray-900"><%= number_to_currency(invoice.amount, unit: "", precision: 0) %> €</p>
             </div>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <%= link_to "DEVIS-2025-0029", "#", class: "text-link" %>
-          </td>
-          <td>05 octobre 2025</td>
-          <td><strong>12 350,00 €</strong></td>
-          <td><span class="status-badge status-success">Accepté</span></td>
-          <td style="text-align: right;">
-            <div class="action-buttons">
-              <%= link_to "#", class: "btn-outline btn-xs" do %>
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="14" height="14" style="display: inline-block; vertical-align: middle; margin-right: 4px;">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                </svg>
-                <span>Voir</span>
-              <% end %>
-            </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-</div>
-
-<!-- Recent Invoices -->
-<div class="admin-card" style="margin-top: var(--spacing-lg);">
-  <div class="card-header">
-    <h2>Factures Récentes</h2>
-    <%= link_to "Voir toutes", "#", class: "btn-outline btn-sm" %>
-  </div>
-  <div style="overflow-x: auto;">
-    <table class="admin-table">
-      <thead>
-        <tr>
-          <th>Numéro</th>
-          <th>Date</th>
-          <th>Échéance</th>
-          <th>Montant</th>
-          <th>Statut</th>
-          <th style="text-align: right;">Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>
-            <%= link_to "FACT-2025-0028", "#", class: "text-link" %>
-          </td>
-          <td>28 octobre 2025</td>
-          <td>27 novembre 2025</td>
-          <td><strong>16 590,00 €</strong></td>
-          <td><span class="status-badge status-success">Payée</span></td>
-          <td style="text-align: right;">
-            <div class="action-buttons">
-              <%= link_to "#", class: "btn-outline btn-xs" do %>
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="14" height="14" style="display: inline-block; vertical-align: middle; margin-right: 4px;">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                </svg>
-                <span>Voir</span>
-              <% end %>
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <%= link_to "FACT-2025-0019", "#", class: "text-link" %>
-          </td>
-          <td>08 octobre 2025</td>
-          <td>07 novembre 2025</td>
-          <td><strong>12 350,00 €</strong></td>
-          <td><span class="status-badge status-success">Payée</span></td>
-          <td style="text-align: right;">
-            <div class="action-buttons">
-              <%= link_to "#", class: "btn-outline btn-xs" do %>
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="14" height="14" style="display: inline-block; vertical-align: middle; margin-right: 4px;">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                </svg>
-                <span>Voir</span>
-              <% end %>
-            </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-</div>
-
-<!-- Actions -->
-<div class="admin-card" style="margin-top: var(--spacing-lg);">
-  <div class="card-header">
-    <h2>Actions</h2>
-  </div>
-  <div class="quick-actions-grid">
-    <%= link_to "#", class: "btn btn-primary btn-block" do %>
-      <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
-        <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
-      </svg>
-      <span>Créer un devis pour ce client</span>
-    <% end %>
-    <%= link_to "#", class: "btn btn-primary btn-block" do %>
-      <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
-        <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
-      </svg>
-      <span>Créer une facture pour ce client</span>
+          <% end %>
+        <% end %>
+      </div>
+    <% else %>
+      <p class="text-center text-gray-500 text-sm py-4">Aucun document pour ce client</p>
     <% end %>
   </div>
-</div>
+
+</main>

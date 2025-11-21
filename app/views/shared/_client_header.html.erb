@@ -1,0 +1,27 @@
+<!-- Header -->
+<header class="bg-white shadow-sm sticky top-0 z-10">
+  <div class="flex items-center justify-between p-4">
+    <!-- Back button or Logo -->
+    <% if local_assigns[:show_back] && back_path.present? %>
+      <%= link_to back_path, class: "text-gray-700 hover:text-gray-900" do %>
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+        </svg>
+      <% end %>
+    <% else %>
+      <%= link_to client_dashboard_path, class: "flex items-center hover:opacity-80" do %>
+        <%= image_tag "logo.png", alt: "Logo", class: "h-10" %>
+      <% end %>
+    <% end %>
+    
+    <!-- Page Title -->
+    <h1 class="text-lg font-semibold text-gray-900"><%= page_title %></h1>
+    
+    <!-- Menu Icon -->
+    <button id="menu-toggle" class="p-2">
+      <svg class="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+      </svg>
+    </button>
+  </div>
+</header>

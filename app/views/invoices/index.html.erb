@@ -1,261 +1,216 @@
 <% content_for :title, "Mes Factures - Devis WhatsApp" %>
+<% content_for :page_title, "Mes factures" %>
+<% content_for :back_path, client_dashboard_path %>
+<% content_for :active_page, :invoices %>
 
-<div class="admin-page-header">
-  <div>
-    <h1>Mes Factures</h1>
-    <p class="text-muted">Consultez et gérez toutes vos factures créées via WhatsApp</p>
-  </div>
-</div>
-
-<!-- Statistics Cards -->
-<div class="stats-grid" style="margin-bottom: var(--spacing-lg);">
-  <div class="stat-card">
-    <div class="stat-icon bg-blue">
-      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-        <polyline points="14 2 14 8 20 8"></polyline>
-      </svg>
-    </div>
-    <div class="stat-content">
-      <div class="stat-value">15</div>
-      <div class="stat-label">Factures émises</div>
-      <div class="stat-change positive">+4 ce mois-ci</div>
-    </div>
+<!-- Content -->
+<main class="p-4 max-w-2xl mx-auto">
+  
+  <!-- Simple Search -->
+  <div class="mb-4">
+    <input type="text" 
+           id="invoice-search"
+           placeholder="🔍 Rechercher..." 
+           class="w-full px-5 py-4 text-base bg-white rounded-full border-2 border-gray-200 focus:outline-none focus:border-green-500 shadow-sm">
   </div>
 
-  <div class="stat-card">
-    <div class="stat-icon bg-green">
-      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <polyline points="20 6 9 17 4 12"></polyline>
-      </svg>
-    </div>
-    <div class="stat-content">
-      <div class="stat-value">12</div>
-      <div class="stat-label">Payées</div>
-      <div class="stat-change positive">80% taux</div>
-    </div>
-  </div>
-
-  <div class="stat-card">
-    <div class="stat-icon bg-orange">
-      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <path d="M12 8v4l2 2"></path>
-        <circle cx="12" cy="12" r="10"></circle>
-      </svg>
-    </div>
-    <div class="stat-content">
-      <div class="stat-value">2</div>
-      <div class="stat-label">En attente</div>
-      <div class="stat-change neutral">Non payées</div>
-    </div>
-  </div>
-
-  <div class="stat-card">
-    <div class="stat-icon bg-purple">
-      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <line x1="12" y1="1" x2="12" y2="23"></line>
-        <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
-      </svg>
-    </div>
-    <div class="stat-content">
-      <div class="stat-value">58 420 €</div>
-      <div class="stat-label">Chiffre d'affaires</div>
-      <div class="stat-change positive">+16 590€ ce mois</div>
-    </div>
-  </div>
-</div>
-
-<!-- Filters -->
-<div class="admin-card" style="margin-bottom: var(--spacing-lg);">
-  <div class="filters-bar">
-    <div class="search-box">
-      <input type="text" class="form-input" placeholder="Rechercher une facture...">
-    </div>
-    <div class="filter-group">
-      <select class="form-select">
-        <option>Tous les statuts</option>
-        <option>Payées</option>
-        <option>En attente</option>
-        <option>En retard</option>
-        <option>Brouillons</option>
-      </select>
-    </div>
-    <div class="filter-group">
-      <select class="form-select">
-        <option>Tous les clients</option>
-        <option>Entreprise Dubois</option>
-        <option>Martin SAS</option>
-        <option>Résidence Les Pins</option>
-      </select>
-    </div>
-    <div class="filter-actions">
-      <button type="button" class="btn btn-primary btn-sm">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="11" cy="11" r="8"></circle>
-          <path d="m21 21-4.35-4.35"></path>
-        </svg>
-        Rechercher
+  <!-- Simple Filters -->
+  <div class="grid grid-cols-3 gap-3 mb-6">
+    <div class="relative">
+      <button type="button" data-filter="client" class="filter-btn w-full flex flex-col items-center justify-center py-4 px-3 bg-white rounded-2xl border-2 border-gray-200 shadow-sm hover:border-green-500 active:bg-gray-50 transition">
+        <span class="text-2xl mb-1">📄</span>
+        <span class="text-xs font-semibold text-center leading-tight filter-label">Tous les clients</span>
       </button>
-      <button type="button" class="btn btn-secondary btn-sm">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"></path>
-          <path d="M21 3v5h-5"></path>
-          <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"></path>
-          <path d="M3 21v-5h5"></path>
-        </svg>
-        Réinitialiser
+      
+      <div data-dropdown="client" class="dropdown hidden absolute top-full mt-2 left-0 right-0 bg-white rounded-xl shadow-xl border-2 border-gray-200 py-2 z-20 max-h-60 overflow-y-auto">
+        <button type="button" data-value="all" class="block w-full text-left px-4 py-3 text-sm hover:bg-gray-100 font-semibold text-green-600">Tous les clients</button>
+        <div class="border-t border-gray-100 my-1"></div>
+        <% @invoices.map(&:client_name).uniq.sort.each do |client| %>
+          <button type="button" data-value="<%= client %>" class="block w-full text-left px-4 py-3 text-sm hover:bg-gray-100"><%= client %></button>
+        <% end %>
+      </div>
+    </div>
+
+    <div class="relative">
+      <button type="button" data-filter="month" class="filter-btn w-full flex flex-col items-center justify-center py-4 px-3 bg-white rounded-2xl border-2 border-gray-200 shadow-sm hover:border-green-500 active:bg-gray-50 transition">
+        <span class="text-2xl mb-1">📅</span>
+        <span class="text-xs font-semibold text-center leading-tight filter-label">Tous les mois</span>
       </button>
+      
+      <div data-dropdown="month" class="dropdown hidden absolute top-full mt-2 left-0 right-0 bg-white rounded-xl shadow-xl border-2 border-gray-200 py-2 z-20 max-h-60 overflow-y-auto">
+        <button type="button" data-value="all" class="block w-full text-left px-4 py-3 text-sm hover:bg-gray-100 font-semibold text-green-600">Tous les mois</button>
+        <div class="border-t border-gray-100 my-1"></div>
+        <% @invoices.group_by { |i| i.created_at.strftime('%Y-%m') }.keys.sort.reverse.each do |month| %>
+          <% date = Date.parse("#{month}-01") %>
+          <button type="button" data-value="<%= month %>" data-label="<%= l(date, format: '%B %Y') %>" class="block w-full text-left px-4 py-3 text-sm hover:bg-gray-100"><%= l(date, format: '%B %Y') %></button>
+        <% end %>
+      </div>
+    </div>
+
+    <div class="relative">
+      <button type="button" data-filter="status" class="filter-btn w-full flex flex-col items-center justify-center py-4 px-3 bg-white rounded-2xl border-2 border-gray-200 shadow-sm hover:border-green-500 active:bg-gray-50 transition">
+        <span class="text-2xl mb-1">🏷️</span>
+        <span class="text-xs font-semibold text-center leading-tight filter-label">Tous</span>
+      </button>
+      
+      <div data-dropdown="status" class="dropdown hidden absolute top-full mt-2 left-0 right-0 bg-white rounded-xl shadow-xl border-2 border-gray-200 py-2 z-20">
+        <button type="button" data-value="all" class="block w-full text-left px-4 py-3 text-sm hover:bg-gray-100 font-semibold text-green-600">Tous</button>
+        <div class="border-t border-gray-100 my-1"></div>
+        <button type="button" data-value="paid" data-short="Payées" class="block w-full text-left px-4 py-3 text-sm hover:bg-gray-100">✅ Payées</button>
+        <button type="button" data-value="pending" data-short="En attente" class="block w-full text-left px-4 py-3 text-sm hover:bg-gray-100">⏳ En attente</button>
+        <button type="button" data-value="overdue" data-short="En retard" class="block w-full text-left px-4 py-3 text-sm hover:bg-gray-100">⚠️ En retard</button>
+      </div>
     </div>
   </div>
-</div>
 
-<!-- Invoices Table -->
-<div class="admin-card">
-  <div class="card-header">
-    <h2>Liste des Factures</h2>
-  </div>
-  <div style="overflow-x: auto;">
-    <table class="admin-table">
-      <thead>
-        <tr>
-          <th>Numéro</th>
-          <th>Client</th>
-          <th>Date d'émission</th>
-          <th>Échéance</th>
-          <th>Montant TTC</th>
-          <th>Statut</th>
-          <th style="text-align: right;">Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><strong>FACT-2025-0028</strong></td>
-          <td>
-            <div>Entreprise Dubois</div>
-            <div class="text-muted small">Lyon</div>
-          </td>
-          <td>28 oct. 2025</td>
-          <td>27 nov. 2025</td>
-          <td><strong>16 590,00 €</strong></td>
-          <td><span class="status-badge status-success">Payée</span></td>
-          <td style="text-align: right;">
-            <div class="action-buttons">
-              <%= link_to invoice_path(1), class: "btn btn-xs btn-outline" do %>
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="14" height="14" style="display: inline-block; vertical-align: middle; margin-right: 4px;">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                </svg>
-                <span>Voir</span>
-              <% end %>
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <td><strong>FACT-2025-0027</strong></td>
-          <td>
-            <div>Martin SAS</div>
-            <div class="text-muted small">Paris</div>
-          </td>
-          <td>26 oct. 2025</td>
-          <td>25 nov. 2025</td>
-          <td><strong>8 420,00 €</strong></td>
-          <td><span class="status-badge status-info">Envoyée</span></td>
-          <td style="text-align: right;">
-            <div class="action-buttons">
-              <%= link_to invoice_path(2), class: "btn btn-xs btn-outline" do %>
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="14" height="14" style="display: inline-block; vertical-align: middle; margin-right: 4px;">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                </svg>
-                <span>Voir</span>
-              <% end %>
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <td><strong>FACT-2025-0026</strong></td>
-          <td>
-            <div>Résidence Les Pins</div>
-            <div class="text-muted small">Marseille</div>
-          </td>
-          <td>22 oct. 2025</td>
-          <td>21 nov. 2025</td>
-          <td><strong>12 350,00 €</strong></td>
-          <td><span class="status-badge status-success">Payée</span></td>
-          <td style="text-align: right;">
-            <div class="action-buttons">
-              <%= link_to invoice_path(3), class: "btn btn-xs btn-outline" do %>
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="14" height="14" style="display: inline-block; vertical-align: middle; margin-right: 4px;">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                </svg>
-                <span>Voir</span>
-              <% end %>
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <td><strong>FACT-2025-0025</strong></td>
-          <td>
-            <div>Copropriété Soleil</div>
-            <div class="text-muted small">Nice</div>
-          </td>
-          <td>18 oct. 2025</td>
-          <td>17 nov. 2025</td>
-          <td><strong>21 060,00 €</strong></td>
-          <td><span class="status-badge status-success">Payée</span></td>
-          <td style="text-align: right;">
-            <div class="action-buttons">
-              <%= link_to invoice_path(4), class: "btn btn-xs btn-outline" do %>
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="14" height="14" style="display: inline-block; vertical-align: middle; margin-right: 4px;">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                </svg>
-                <span>Voir</span>
-              <% end %>
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <td><strong>FACT-2025-0024</strong></td>
-          <td>
-            <div>Société Bertrand</div>
-            <div class="text-muted small">Toulouse</div>
-          </td>
-          <td>10 oct. 2025</td>
-          <td><span class="danger-text">09 oct. 2025</span></td>
-          <td><strong>7 200,00 €</strong></td>
-          <td><span class="status-badge status-danger">En retard</span></td>
-          <td style="text-align: right;">
-            <div class="action-buttons">
-              <%= link_to invoice_path(5), class: "btn btn-xs btn-outline" do %>
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="14" height="14" style="display: inline-block; vertical-align: middle; margin-right: 4px;">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                </svg>
-                <span>Voir</span>
-              <% end %>
-            </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+  <!-- Active Filters -->
+  <div id="active-filters" class="mb-4 hidden">
+    <div class="flex flex-wrap gap-2 items-center">
+      <span class="text-sm text-gray-600 font-semibold">Filtres:</span>
+      <div id="badges-container"></div>
+      <button type="button" id="clear-all" class="text-sm text-red-600 hover:text-red-700 font-semibold underline">Tout effacer</button>
+    </div>
   </div>
 
-  <!-- Pagination -->
-  <div class="pagination">
-    <button class="btn btn-secondary btn-sm" disabled>
-      <svg width="14" height="14" fill="currentColor" viewBox="0 0 16 16">
-        <path fill-rule="evenodd" d="M12 8a.5.5 0 0 1-.5.5H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5a.5.5 0 0 1 .5.5z"/>
-      </svg>
-      Précédent
-    </button>
-    <span class="pagination-info">Page 1 sur 3</span>
-    <button class="btn btn-secondary btn-sm">
-      Suivant
-      <svg width="14" height="14" fill="currentColor" viewBox="0 0 16 16">
-        <path fill-rule="evenodd" d="M4 8a.5.5 0 0 1 .5-.5h5.793L8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L10.293 8.5H4.5A.5.5 0 0 1 4 8z"/>
-      </svg>
-    </button>
+  <!-- List -->
+  <div class="space-y-3">
+    <% @invoices.each do |invoice| %>
+      <%= link_to invoice_path(invoice.id), 
+                  class: "block invoice-item",
+                  data: { 
+                    client: invoice.client_name,
+                    month: invoice.created_at.strftime('%Y-%m'),
+                    status: invoice.status,
+                    search: "#{invoice.number} #{invoice.client_name}".downcase
+                  } do %>
+        <div class="bg-white rounded-xl p-5 shadow-sm border border-gray-200 hover:shadow-md transition">
+          <div class="flex justify-between items-start mb-3">
+            <div>
+              <h3 class="font-semibold text-gray-800 text-lg"><%= invoice.number %></h3>
+              <p class="text-sm text-gray-600"><%= invoice.client_name %></p>
+              <p class="text-xs text-gray-500 mt-1"><%= l(invoice.created_at, format: :short) %></p>
+            </div>
+            <span class="px-3 py-1 <%= invoice.status == 'paid' ? 'bg-green-100 text-green-800' : invoice.status == 'overdue' ? 'bg-red-100 text-red-800' : 'bg-yellow-100 text-yellow-800' %> text-xs font-medium rounded-full">
+              <%= invoice.status.humanize %>
+            </span>
+          </div>
+          <div class="pt-3 border-t border-gray-100">
+            <p class="text-2xl font-bold text-gray-900"><%= number_to_currency(invoice.amount, unit: "", precision: 2) %> €</p>
+          </div>
+        </div>
+      <% end %>
+    <% end %>
+    
+    <div id="no-results" class="hidden bg-white rounded-xl p-12 text-center shadow-sm border border-gray-200">
+      <div class="text-6xl mb-4">🔍</div>
+      <h3 class="text-lg font-semibold text-gray-900 mb-2">Aucun résultat</h3>
+      <p class="text-gray-600">Essayez de modifier vos filtres.</p>
+    </div>
   </div>
-</div>
+
+  <div class="mt-8 text-center">
+    <p class="text-sm text-gray-500">💬 Pour créer une facture, envoyez <strong>"créer une facture"</strong> sur WhatsApp</p>
+  </div>
+
+</main>
+
+<script>
+  document.addEventListener('turbo:load', function() {
+    const filters = { client: 'all', month: 'all', status: 'all', search: '' };
+
+    // Toggle dropdowns
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        const type = this.dataset.filter;
+        document.querySelectorAll('.dropdown').forEach(d => {
+          d.classList.toggle('hidden', d.dataset.dropdown !== type);
+        });
+      });
+    });
+
+    // Select filter value
+    document.querySelectorAll('.dropdown button').forEach(btn => {
+      btn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        const dropdown = this.closest('.dropdown');
+        const type = dropdown.dataset.dropdown;
+        const value = this.dataset.value;
+        
+        filters[type] = value;
+        
+        const filterBtn = document.querySelector(`[data-filter="${type}"]`);
+        const label = filterBtn.querySelector('.filter-label');
+        
+        if (value === 'all') {
+          label.textContent = type === 'client' ? 'Tous les clients' : type === 'month' ? 'Tous les mois' : 'Tous';
+        } else {
+          label.textContent = this.dataset.short || this.dataset.label || value;
+        }
+        
+        dropdown.classList.add('hidden');
+        applyFilters();
+      });
+    });
+
+    // Search
+    document.getElementById('invoice-search')?.addEventListener('input', function(e) {
+      filters.search = e.target.value.toLowerCase();
+      applyFilters();
+    });
+
+    // Close dropdowns
+    document.addEventListener('click', () => {
+      document.querySelectorAll('.dropdown').forEach(d => d.classList.add('hidden'));
+    });
+
+    // Clear all
+    document.getElementById('clear-all')?.addEventListener('click', function() {
+      filters.client = filters.month = filters.status = 'all';
+      filters.search = '';
+      document.querySelector('[data-filter="client"] .filter-label').textContent = 'Tous les clients';
+      document.querySelector('[data-filter="month"] .filter-label').textContent = 'Tous les mois';
+      document.querySelector('[data-filter="status"] .filter-label').textContent = 'Tous';
+      document.getElementById('invoice-search').value = '';
+      applyFilters();
+    });
+
+    function applyFilters() {
+      let visible = 0;
+      document.querySelectorAll('.invoice-item').forEach(item => {
+        const match = 
+          (filters.client === 'all' || item.dataset.client === filters.client) &&
+          (filters.month === 'all' || item.dataset.month === filters.month) &&
+          (filters.status === 'all' || item.dataset.status === filters.status) &&
+          (filters.search === '' || item.dataset.search.includes(filters.search));
+        
+        item.style.display = match ? 'block' : 'none';
+        if (match) visible++;
+      });
+
+      document.getElementById('no-results').style.display = visible === 0 ? 'block' : 'none';
+      updateBadges();
+    }
+
+    function updateBadges() {
+      const hasFilters = filters.client !== 'all' || filters.month !== 'all' || filters.status !== 'all';
+      document.getElementById('active-filters').classList.toggle('hidden', !hasFilters);
+      
+      if (!hasFilters) return;
+
+      let html = '';
+      if (filters.client !== 'all') {
+        html += `<span class="px-3 py-1.5 bg-green-100 text-green-800 text-sm font-medium rounded-full inline-flex items-center">${filters.client} <button type="button" onclick="document.querySelector('[data-filter=client] .filter-label').textContent='Tous les clients'; this.closest('script').dispatchEvent(new Event('clear-client'));" class="ml-2 text-base font-bold">×</button></span>`;
+      }
+      if (filters.month !== 'all') {
+        const label = document.querySelector('[data-filter="month"] .filter-label').textContent;
+        html += `<span class="px-3 py-1.5 bg-blue-100 text-blue-800 text-sm font-medium rounded-full inline-flex items-center">${label} <button type="button" class="ml-2 text-base font-bold">×</button></span>`;
+      }
+      if (filters.status !== 'all') {
+        const label = document.querySelector('[data-filter="status"] .filter-label').textContent;
+        html += `<span class="px-3 py-1.5 bg-purple-100 text-purple-800 text-sm font-medium rounded-full inline-flex items-center">${label} <button type="button" class="ml-2 text-base font-bold">×</button></span>`;
+      }
+      document.getElementById('badges-container').innerHTML = html;
+    }
+  });
+</script>

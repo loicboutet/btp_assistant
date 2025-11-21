@@ -108,151 +108,153 @@
   <div class="card-header">
     <h2>Activité des webhooks</h2>
   </div>
-  <table class="admin-table">
-    <thead>
-      <tr>
-        <th>Horodatage</th>
-        <th>Source</th>
-        <th>Type d'événement</th>
-        <th>Utilisateur</th>
-        <th>Détails</th>
-        <th>Statut</th>
-        <th>Temps</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td class="text-nowrap">14:23:45</td>
-        <td><span class="badge badge-green">Unipile</span></td>
-        <td>message.received</td>
-        <td>
-          <div class="user-info-compact">
-            <div class="user-avatar-sm">JD</div>
-            <span>Jean Dupont</span>
-          </div>
-        </td>
-        <td class="text-muted small">Message vocal transcrit</td>
-        <td><span class="status-badge status-success">Success</span></td>
-        <td>1.2s</td>
-        <td>
-          <button class="btn btn-xs btn-outline" disabled>Rejouer</button>
-        </td>
-      </tr>
-      <tr>
-        <td class="text-nowrap">14:15:22</td>
-        <td><span class="badge badge-purple">Stripe</span></td>
-        <td>payment_intent.succeeded</td>
-        <td>
-          <div class="user-info-compact">
-            <div class="user-avatar-sm">MM</div>
-            <span>Marie Martin</span>
-          </div>
-        </td>
-        <td class="text-muted small">Paiement de 59€</td>
-        <td><span class="status-badge status-success">Success</span></td>
-        <td>0.8s</td>
-        <td>
-          <button class="btn btn-xs btn-outline" disabled>Rejouer</button>
-        </td>
-      </tr>
-      <tr>
-        <td class="text-nowrap">13:45:11</td>
-        <td><span class="badge badge-green">Unipile</span></td>
-        <td>message.received</td>
-        <td>
-          <div class="user-info-compact">
-            <div class="user-avatar-sm">AD</div>
-            <span>Ahmet Demir</span>
-          </div>
-        </td>
-        <td class="text-muted small">Message texte (Turkish)</td>
-        <td><span class="status-badge status-success">Success</span></td>
-        <td>0.9s</td>
-        <td>
-          <button class="btn btn-xs btn-outline" disabled>Rejouer</button>
-        </td>
-      </tr>
-      <tr class="row-warning">
-        <td class="text-nowrap">12:30:45</td>
-        <td><span class="badge badge-green">Unipile</span></td>
-        <td>message.received</td>
-        <td>
-          <div class="user-info-compact">
-            <div class="user-avatar-sm">PL</div>
-            <span>Pierre Lefebvre</span>
-          </div>
-        </td>
-        <td class="text-muted small">Erreur transcription</td>
-        <td><span class="status-badge status-warning">Retry</span></td>
-        <td>3.5s</td>
-        <td>
-          <%= link_to replay_admin_webhook_path(1), method: :post, class: "btn btn-xs btn-primary", data: { confirm: "Rejouer ce webhook ?" } do %>
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="14" height="14" style="display: inline-block; vertical-align: middle; margin-right: 4px;">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" />
-            </svg>
-            <span>Rejouer</span>
-          <% end %>
-        </td>
-      </tr>
-      <tr>
-        <td class="text-nowrap">11:22:18</td>
-        <td><span class="badge badge-purple">Stripe</span></td>
-        <td>customer.subscription.updated</td>
-        <td>
-          <div class="user-info-compact">
-            <div class="user-avatar-sm">CK</div>
-            <span>Can Kaya</span>
-          </div>
-        </td>
-        <td class="text-muted small">Mise à jour abonnement</td>
-        <td><span class="status-badge status-success">Success</span></td>
-        <td>0.7s</td>
-        <td>
-          <button class="btn btn-xs btn-outline" disabled>Rejouer</button>
-        </td>
-      </tr>
-      <tr class="row-danger">
-        <td class="text-nowrap">10:15:33</td>
-        <td><span class="badge badge-purple">Stripe</span></td>
-        <td>invoice.payment_failed</td>
-        <td>
-          <div class="user-info-compact">
-            <div class="user-avatar-sm">AÖ</div>
-            <span>Ali Öztürk</span>
-          </div>
-        </td>
-        <td class="text-muted small">Échec paiement</td>
-        <td><span class="status-badge status-danger">Failed</span></td>
-        <td>1.1s</td>
-        <td>
-          <%= link_to replay_admin_webhook_path(2), method: :post, class: "btn btn-xs btn-primary", data: { confirm: "Rejouer ce webhook ?" } do %>
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="14" height="14" style="display: inline-block; vertical-align: middle; margin-right: 4px;">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" />
-            </svg>
-            <span>Rejouer</span>
-          <% end %>
-        </td>
-      </tr>
-      <tr>
-        <td class="text-nowrap">09:45:22</td>
-        <td><span class="badge badge-green">Unipile</span></td>
-        <td>account.connected</td>
-        <td>
-          <div class="user-info-compact">
-            <div class="user-avatar-sm">MY</div>
-            <span>Mehmet Yılmaz</span>
-          </div>
-        </td>
-        <td class="text-muted small">WhatsApp connecté</td>
-        <td><span class="status-badge status-success">Success</span></td>
-        <td>1.0s</td>
-        <td>
-          <button class="btn btn-xs btn-outline" disabled>Rejouer</button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <div class="table-responsive" data-controller="table-scroll">
+    <table class="admin-table">
+      <thead>
+        <tr>
+          <th>Horodatage</th>
+          <th>Source</th>
+          <th>Type d'événement</th>
+          <th>Utilisateur</th>
+          <th>Détails</th>
+          <th>Statut</th>
+          <th>Temps</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td data-label="Horodatage" class="text-nowrap">14:23:45</td>
+          <td data-label="Source"><span class="badge badge-green">Unipile</span></td>
+          <td data-label="Type">message.received</td>
+          <td data-label="Utilisateur">
+            <div class="user-info-compact">
+              <div class="user-avatar-sm">JD</div>
+              <span>Jean Dupont</span>
+            </div>
+          </td>
+          <td data-label="Détails" class="text-muted small">Message vocal transcrit</td>
+          <td data-label="Statut"><span class="status-badge status-success">Success</span></td>
+          <td data-label="Temps">1.2s</td>
+          <td data-label="Actions">
+            <button class="btn btn-xs btn-outline" disabled>Rejouer</button>
+          </td>
+        </tr>
+        <tr>
+          <td data-label="Horodatage" class="text-nowrap">14:15:22</td>
+          <td data-label="Source"><span class="badge badge-purple">Stripe</span></td>
+          <td data-label="Type">payment_intent.succeeded</td>
+          <td data-label="Utilisateur">
+            <div class="user-info-compact">
+              <div class="user-avatar-sm">MM</div>
+              <span>Marie Martin</span>
+            </div>
+          </td>
+          <td data-label="Détails" class="text-muted small">Paiement de 59€</td>
+          <td data-label="Statut"><span class="status-badge status-success">Success</span></td>
+          <td data-label="Temps">0.8s</td>
+          <td data-label="Actions">
+            <button class="btn btn-xs btn-outline" disabled>Rejouer</button>
+          </td>
+        </tr>
+        <tr>
+          <td data-label="Horodatage" class="text-nowrap">13:45:11</td>
+          <td data-label="Source"><span class="badge badge-green">Unipile</span></td>
+          <td data-label="Type">message.received</td>
+          <td data-label="Utilisateur">
+            <div class="user-info-compact">
+              <div class="user-avatar-sm">AD</div>
+              <span>Ahmet Demir</span>
+            </div>
+          </td>
+          <td data-label="Détails" class="text-muted small">Message texte (Turkish)</td>
+          <td data-label="Statut"><span class="status-badge status-success">Success</span></td>
+          <td data-label="Temps">0.9s</td>
+          <td data-label="Actions">
+            <button class="btn btn-xs btn-outline" disabled>Rejouer</button>
+          </td>
+        </tr>
+        <tr class="row-warning">
+          <td data-label="Horodatage" class="text-nowrap">12:30:45</td>
+          <td data-label="Source"><span class="badge badge-green">Unipile</span></td>
+          <td data-label="Type">message.received</td>
+          <td data-label="Utilisateur">
+            <div class="user-info-compact">
+              <div class="user-avatar-sm">PL</div>
+              <span>Pierre Lefebvre</span>
+            </div>
+          </td>
+          <td data-label="Détails" class="text-muted small">Erreur transcription</td>
+          <td data-label="Statut"><span class="status-badge status-warning">Retry</span></td>
+          <td data-label="Temps">3.5s</td>
+          <td data-label="Actions">
+            <%= link_to replay_admin_webhook_path(1), method: :post, class: "btn btn-xs btn-primary", data: { confirm: "Rejouer ce webhook ?" } do %>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="14" height="14">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" />
+              </svg>
+              <span>Rejouer</span>
+            <% end %>
+          </td>
+        </tr>
+        <tr>
+          <td data-label="Horodatage" class="text-nowrap">11:22:18</td>
+          <td data-label="Source"><span class="badge badge-purple">Stripe</span></td>
+          <td data-label="Type">customer.subscription.updated</td>
+          <td data-label="Utilisateur">
+            <div class="user-info-compact">
+              <div class="user-avatar-sm">CK</div>
+              <span>Can Kaya</span>
+            </div>
+          </td>
+          <td data-label="Détails" class="text-muted small">Mise à jour abonnement</td>
+          <td data-label="Statut"><span class="status-badge status-success">Success</span></td>
+          <td data-label="Temps">0.7s</td>
+          <td data-label="Actions">
+            <button class="btn btn-xs btn-outline" disabled>Rejouer</button>
+          </td>
+        </tr>
+        <tr class="row-danger">
+          <td data-label="Horodatage" class="text-nowrap">10:15:33</td>
+          <td data-label="Source"><span class="badge badge-purple">Stripe</span></td>
+          <td data-label="Type">invoice.payment_failed</td>
+          <td data-label="Utilisateur">
+            <div class="user-info-compact">
+              <div class="user-avatar-sm">AÖ</div>
+              <span>Ali Öztürk</span>
+            </div>
+          </td>
+          <td data-label="Détails" class="text-muted small">Échec paiement</td>
+          <td data-label="Statut"><span class="status-badge status-danger">Failed</span></td>
+          <td data-label="Temps">1.1s</td>
+          <td data-label="Actions">
+            <%= link_to replay_admin_webhook_path(2), method: :post, class: "btn btn-xs btn-primary", data: { confirm: "Rejouer ce webhook ?" } do %>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="14" height="14">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" />
+              </svg>
+              <span>Rejouer</span>
+            <% end %>
+          </td>
+        </tr>
+        <tr>
+          <td data-label="Horodatage" class="text-nowrap">09:45:22</td>
+          <td data-label="Source"><span class="badge badge-green">Unipile</span></td>
+          <td data-label="Type">account.connected</td>
+          <td data-label="Utilisateur">
+            <div class="user-info-compact">
+              <div class="user-avatar-sm">MY</div>
+              <span>Mehmet Yılmaz</span>
+            </div>
+          </td>
+          <td data-label="Détails" class="text-muted small">WhatsApp connecté</td>
+          <td data-label="Statut"><span class="status-badge status-success">Success</span></td>
+          <td data-label="Temps">1.0s</td>
+          <td data-label="Actions">
+            <button class="btn btn-xs btn-outline" disabled>Rejouer</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>
 
 <!-- Pagination -->

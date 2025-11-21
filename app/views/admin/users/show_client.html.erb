@@ -1,0 +1,199 @@
+<% content_for :title, "Mairie de Colombes - Client" %>
+
+<div class="admin-page-header">
+  <div class="header-with-actions">
+    <div>
+      <%= link_to "← Retour aux clients", clients_admin_user_path(params[:id]), class: "back-link" %>
+      <h1>Mairie de Colombes</h1>
+      <p class="text-muted">Client de Jean Dupont • Professionnel</p>
+    </div>
+    <div class="header-actions">
+      <%= link_to edit_client_admin_user_path(params[:id], client_id: params[:client_id]), class: "btn btn-primary" do %>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="16" height="16">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
+        </svg>
+        <span>Modifier</span>
+      <% end %>
+      <button class="btn btn-danger" data-confirm="Supprimer ce client ?">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="16" height="16">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
+        </svg>
+        <span>Supprimer</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Client Stats -->
+<div class="stats-grid">
+  <div class="stat-card">
+    <div class="stat-icon bg-purple">📄</div>
+    <div class="stat-content">
+      <div class="stat-value">23</div>
+      <div class="stat-label">Total documents</div>
+      <div class="stat-detail">12 devis, 11 factures</div>
+    </div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon bg-green">💰</div>
+    <div class="stat-content">
+      <div class="stat-value">45 780€</div>
+      <div class="stat-label">Chiffre d'affaires</div>
+      <div class="stat-change positive">Factures payées</div>
+    </div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon bg-blue">📋</div>
+    <div class="stat-content">
+      <div class="stat-value">8 420€</div>
+      <div class="stat-label">Devis en attente</div>
+      <div class="stat-detail">3 devis actifs</div>
+    </div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon bg-orange">📅</div>
+    <div class="stat-content">
+      <div class="stat-value">Il y a 3j</div>
+      <div class="stat-label">Dernier document</div>
+      <div class="stat-detail">Facture #F-2025-0234</div>
+    </div>
+  </div>
+</div>
+
+<!-- Client Details -->
+<div class="admin-content-grid">
+  <div class="admin-card">
+    <div class="card-header">
+      <h2>Informations client</h2>
+      <%= link_to edit_client_admin_user_path(params[:id], client_id: params[:client_id]), class: "btn btn-sm btn-outline" do %>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="14" height="14">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
+        </svg>
+        <span>Modifier</span>
+      <% end %>
+    </div>
+    <div class="details-list">
+      <div class="detail-item">
+        <span class="detail-label">Nom</span>
+        <span class="detail-value">Mairie de Colombes</span>
+      </div>
+      <div class="detail-item">
+        <span class="detail-label">Type</span>
+        <span class="detail-value"><span class="badge badge-blue">Professionnel</span></span>
+      </div>
+      <div class="detail-item">
+        <span class="detail-label">SIRET</span>
+        <span class="detail-value">213 920 065 00018</span>
+      </div>
+      <div class="detail-item">
+        <span class="detail-label">Email</span>
+        <span class="detail-value">contact@mairie-colombes.fr</span>
+      </div>
+      <div class="detail-item">
+        <span class="detail-label">Téléphone</span>
+        <span class="detail-value">01 47 60 80 80</span>
+      </div>
+      <div class="detail-item">
+        <span class="detail-label">Adresse</span>
+        <span class="detail-value">
+          Place de la République<br>
+          92700 Colombes
+        </span>
+      </div>
+      <div class="detail-item">
+        <span class="detail-label">Créé le</span>
+        <span class="detail-value">15 janvier 2025</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="admin-card">
+    <div class="card-header">
+      <h2>Statistiques</h2>
+    </div>
+    <div class="details-list">
+      <div class="detail-item">
+        <span class="detail-label">Total documents</span>
+        <span class="detail-value">23</span>
+      </div>
+      <div class="detail-item">
+        <span class="detail-label">Devis créés</span>
+        <span class="detail-value">12</span>
+      </div>
+      <div class="detail-item">
+        <span class="detail-label">Factures créées</span>
+        <span class="detail-value">11</span>
+      </div>
+      <div class="detail-item">
+        <span class="detail-label">CA total</span>
+        <span class="detail-value success-text">45 780€</span>
+      </div>
+      <div class="detail-item">
+        <span class="detail-label">Devis en attente</span>
+        <span class="detail-value">8 420€</span>
+      </div>
+      <div class="detail-item">
+        <span class="detail-label">Premier document</span>
+        <span class="detail-value">15 janvier 2025</span>
+      </div>
+      <div class="detail-item">
+        <span class="detail-label">Dernier document</span>
+        <span class="detail-value">Il y a 3 jours</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Recent Documents -->
+<div class="admin-card" style="margin-top: var(--spacing-xl);">
+  <div class="card-header">
+    <h2>Documents récents</h2>
+  </div>
+  <div class="table-responsive" data-controller="table-scroll">
+    <table class="admin-table">
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Numéro</th>
+          <th>Date</th>
+          <th>Montant HT</th>
+          <th>Montant TTC</th>
+          <th>Statut</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td data-label="Type"><span class="badge badge-purple">Facture</span></td>
+          <td data-label="Numéro">F-2025-0234</td>
+          <td data-label="Date">27 mai 2025</td>
+          <td data-label="Montant HT">3 500€</td>
+          <td data-label="Montant TTC" class="font-weight-bold">4 200€</td>
+          <td data-label="Statut"><span class="status-badge status-success">Payée</span></td>
+          <td data-label="Actions">
+            <div class="action-buttons">
+              <%= link_to invoice_admin_user_path(params[:id], invoice_id: 1), class: "btn btn-xs btn-outline" do %>
+                <span>Voir</span>
+              <% end %>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td data-label="Type"><span class="badge badge-blue">Devis</span></td>
+          <td data-label="Numéro">D-2025-0456</td>
+          <td data-label="Date">20 mai 2025</td>
+          <td data-label="Montant HT">2 800€</td>
+          <td data-label="Montant TTC" class="font-weight-bold">3 360€</td>
+          <td data-label="Statut"><span class="status-badge status-warning">En attente</span></td>
+          <td data-label="Actions">
+            <div class="action-buttons">
+              <%= link_to quote_admin_user_path(params[:id], quote_id: 1), class: "btn btn-xs btn-outline" do %>
+                <span>Voir</span>
+              <% end %>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

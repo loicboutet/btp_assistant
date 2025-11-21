@@ -1,0 +1,175 @@
+<% content_for :title, "Facture #F-2025-0234" %>
+
+<div class="admin-page-header">
+  <div class="header-with-actions">
+    <div>
+      <%= link_to "← Retour aux factures", invoices_admin_user_path(params[:id]), class: "back-link" %>
+      <h1>Facture #F-2025-0234</h1>
+      <p class="text-muted">Mairie de Colombes • Émise le 27 mai 2025</p>
+    </div>
+    <div class="header-actions">
+      <button class="btn btn-outline">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="16" height="16">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
+        </svg>
+        <span>Télécharger PDF</span>
+      </button>
+      <button class="btn btn-primary">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="16" height="16">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        <span>Marquer comme payée</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Invoice Info -->
+<div class="admin-content-grid">
+  <div class="admin-card">
+    <div class="card-header">
+      <h2>Informations de la facture</h2>
+    </div>
+    <div class="details-list">
+      <div class="detail-item">
+        <span class="detail-label">Numéro</span>
+        <span class="detail-value">F-2025-0234</span>
+      </div>
+      <div class="detail-item">
+        <span class="detail-label">Date d'émission</span>
+        <span class="detail-value">27 mai 2025</span>
+      </div>
+      <div class="detail-item">
+        <span class="detail-label">Date d'échéance</span>
+        <span class="detail-value">26 juin 2025</span>
+      </div>
+      <div class="detail-item">
+        <span class="detail-label">Statut</span>
+        <span class="detail-value"><span class="status-badge status-success">Payée</span></span>
+      </div>
+      <div class="detail-item">
+        <span class="detail-label">Date de paiement</span>
+        <span class="detail-value">25 mai 2025</span>
+      </div>
+      <div class="detail-item">
+        <span class="detail-label">Créée via</span>
+        <span class="detail-value">WhatsApp (Message texte)</span>
+      </div>
+      <div class="detail-item">
+        <span class="detail-label">Basée sur devis</span>
+        <span class="detail-value">
+          <%= link_to "D-2025-0423", quote_admin_user_path(params[:id], quote_id: 2), class: "text-link" %>
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <div class="admin-card">
+    <div class="card-header">
+      <h2>Client</h2>
+    </div>
+    <div class="details-list">
+      <div class="detail-item">
+        <span class="detail-label">Nom</span>
+        <span class="detail-value">Mairie de Colombes</span>
+      </div>
+      <div class="detail-item">
+        <span class="detail-label">SIRET</span>
+        <span class="detail-value">213 920 065 00018</span>
+      </div>
+      <div class="detail-item">
+        <span class="detail-label">Email</span>
+        <span class="detail-value">contact@mairie-colombes.fr</span>
+      </div>
+      <div class="detail-item">
+        <span class="detail-label">Téléphone</span>
+        <span class="detail-value">01 47 60 80 80</span>
+      </div>
+      <div class="detail-item">
+        <span class="detail-label">Adresse</span>
+        <span class="detail-value">
+          Place de la République<br>
+          92700 Colombes
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Invoice Lines -->
+<div class="admin-card" style="margin-top: var(--spacing-xl);">
+  <div class="card-header">
+    <h2>Lignes de la facture</h2>
+  </div>
+  <div class="table-responsive">
+    <table class="admin-table">
+      <thead>
+        <tr>
+          <th>Description</th>
+          <th>Quantité</th>
+          <th>Prix unitaire HT</th>
+          <th>Total HT</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td data-label="Description">Réparation façade principale</td>
+          <td data-label="Quantité">85 m²</td>
+          <td data-label="Prix unitaire">28.50€</td>
+          <td data-label="Total" class="font-weight-bold">2 422.50€</td>
+        </tr>
+        <tr>
+          <td data-label="Description">Peinture extérieure</td>
+          <td data-label="Quantité">85 m²</td>
+          <td data-label="Prix unitaire">12.50€</td>
+          <td data-label="Total" class="font-weight-bold">1 062.50€</td>
+        </tr>
+        <tr>
+          <td data-label="Description">Frais de déplacement</td>
+          <td data-label="Quantité">1</td>
+          <td data-label="Prix unitaire">15€</td>
+          <td data-label="Total" class="font-weight-bold">15€</td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td colspan="3" style="text-align: right; font-weight: bold;">Total HT</td>
+          <td class="font-weight-bold">3 500€</td>
+        </tr>
+        <tr>
+          <td colspan="3" style="text-align: right;">TVA 20%</td>
+          <td>700€</td>
+        </tr>
+        <tr style="background: rgba(31, 157, 85, 0.08);">
+          <td colspan="3" style="text-align: right; font-weight: bold; font-size: 1.125rem;">Total TTC</td>
+          <td style="font-weight: bold; font-size: 1.125rem; color: var(--primary-green);">4 200€</td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+</div>
+
+<!-- Payment Info -->
+<div class="admin-card" style="margin-top: var(--spacing-xl);">
+  <div class="card-header">
+    <h2>Informations de paiement</h2>
+  </div>
+  <div class="details-list">
+    <div class="detail-item">
+      <span class="detail-label">Statut</span>
+      <span class="detail-value"><span class="status-badge status-success">Payée</span></span>
+    </div>
+    <div class="detail-item">
+      <span class="detail-label">Date de paiement</span>
+      <span class="detail-value">25 mai 2025</span>
+    </div>
+    <div class="detail-item">
+      <span class="detail-label">Méthode de paiement</span>
+      <span class="detail-value">Virement bancaire</span>
+    </div>
+    <div class="detail-item">
+      <span class="detail-label">Référence</span>
+      <span class="detail-value">VIR-2025-05-25-001</span>
+    </div>
+  </div>
+</div>

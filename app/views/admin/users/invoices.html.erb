@@ -1,0 +1,144 @@
+<% content_for :title, "Factures - Jean Dupont" %>
+
+<div class="admin-page-header">
+  <div class="header-with-actions">
+    <div>
+      <%= link_to "← Retour à l'utilisateur", admin_user_path(params[:id]), class: "back-link" %>
+      <h1>Factures de Jean Dupont</h1>
+      <p class="text-muted">Dupont Maçonnerie • 45 factures créées</p>
+    </div>
+  </div>
+</div>
+
+<!-- Stats -->
+<div class="stats-grid">
+  <div class="stat-card">
+    <div class="stat-icon bg-purple">📄</div>
+    <div class="stat-content">
+      <div class="stat-value">45</div>
+      <div class="stat-label">Total factures</div>
+      <div class="stat-change positive">+12 ce mois</div>
+    </div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon bg-green">✓</div>
+    <div class="stat-content">
+      <div class="stat-value">38</div>
+      <div class="stat-label">Payées</div>
+      <div class="stat-detail">84.4% du total</div>
+    </div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon bg-orange">⏳</div>
+    <div class="stat-content">
+      <div class="stat-value">7</div>
+      <div class="stat-label">En attente</div>
+      <div class="stat-detail">15.6% du total</div>
+    </div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon bg-blue">💰</div>
+    <div class="stat-content">
+      <div class="stat-value">123 560€</div>
+      <div class="stat-label">CA total</div>
+      <div class="stat-detail">TTC facturé</div>
+    </div>
+  </div>
+</div>
+
+<!-- Invoices Table -->
+<div class="admin-card">
+  <div class="table-responsive" data-controller="table-scroll">
+    <table class="admin-table">
+      <thead>
+        <tr>
+          <th>Numéro</th>
+          <th>Client</th>
+          <th>Date d'émission</th>
+          <th>Date d'échéance</th>
+          <th>Montant HT</th>
+          <th>Montant TTC</th>
+          <th>Statut</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td data-label="Numéro">F-2025-0234</td>
+          <td data-label="Client">
+            <div class="user-info-compact">
+              <div class="user-avatar-sm">MC</div>
+              <span>Mairie de Colombes</span>
+            </div>
+          </td>
+          <td data-label="Date émission">27 mai 2025</td>
+          <td data-label="Échéance">26 juin 2025</td>
+          <td data-label="Montant HT">3 500€</td>
+          <td data-label="Montant TTC" class="font-weight-bold">4 200€</td>
+          <td data-label="Statut"><span class="status-badge status-success">Payée</span></td>
+          <td data-label="Actions">
+            <div class="action-buttons">
+              <%= link_to invoice_admin_user_path(params[:id], invoice_id: 1), class: "btn btn-xs btn-outline" do %>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="14" height="14">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+                <span>Voir</span>
+              <% end %>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td data-label="Numéro">F-2025-0221</td>
+          <td data-label="Client">
+            <div class="user-info-compact">
+              <div class="user-avatar-sm">SL</div>
+              <span>Sophie Lambert</span>
+            </div>
+          </td>
+          <td data-label="Date émission">24 mai 2025</td>
+          <td data-label="Échéance">23 juin 2025</td>
+          <td data-label="Montant HT">2 100€</td>
+          <td data-label="Montant TTC" class="font-weight-bold">2 520€</td>
+          <td data-label="Statut"><span class="status-badge status-success">Payée</span></td>
+          <td data-label="Actions">
+            <div class="action-buttons">
+              <%= link_to invoice_admin_user_path(params[:id], invoice_id: 2), class: "btn btn-xs btn-outline" do %>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="14" height="14">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+                <span>Voir</span>
+              <% end %>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td data-label="Numéro">F-2025-0198</td>
+          <td data-label="Client">
+            <div class="user-info-compact">
+              <div class="user-avatar-sm">AB</div>
+              <span>ABC Construction</span>
+            </div>
+          </td>
+          <td data-label="Date émission">18 mai 2025</td>
+          <td data-label="Échéance" class="warning-text">17 juin 2025 (bientôt)</td>
+          <td data-label="Montant HT">8 900€</td>
+          <td data-label="Montant TTC" class="font-weight-bold">10 680€</td>
+          <td data-label="Statut"><span class="status-badge status-warning">En attente</span></td>
+          <td data-label="Actions">
+            <div class="action-buttons">
+              <%= link_to invoice_admin_user_path(params[:id], invoice_id: 3), class: "btn btn-xs btn-outline" do %>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="14" height="14">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+                <span>Voir</span>
+              <% end %>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
