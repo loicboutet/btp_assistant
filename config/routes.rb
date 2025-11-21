@@ -99,6 +99,12 @@ Rails.application.routes.draw do
       end
     end
 
+    # Global Data Views
+    resources :clients, only: [:index, :show]
+    resources :quotes, only: [:index, :show]
+    resources :invoices, only: [:index, :show]
+
+
     get 'settings', to: 'settings#index', as: :settings
     get 'settings/unipile', to: 'settings#unipile'
     get 'settings/stripe', to: 'settings#stripe_config'

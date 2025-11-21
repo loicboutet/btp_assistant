@@ -1,0 +1,202 @@
+<% content_for :title, "Tous les Devis - Admin" %>
+
+<div class="admin-page-header">
+  <h1>Tous les Devis</h1>
+  <p class="text-muted">542 devis • 398 acceptés • 98 en attente • 46 refusés</p>
+</div>
+
+<!-- Filters -->
+<div class="admin-card" style="margin-bottom: var(--spacing-lg);">
+  <h3 class="filters-title">Filtres de recherche</h3>
+  <div class="filters-bar">
+    <div class="search-box">
+      <input type="search" placeholder="Rechercher par numéro, client..." class="form-input">
+    </div>
+    <div class="filter-group">
+      <select class="form-select">
+        <option>Tous les statuts</option>
+        <option>Acceptés</option>
+        <option>En attente</option>
+        <option>Refusés</option>
+        <option>Expirés</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <select class="form-select">
+        <option>Tous les utilisateurs</option>
+        <option>Jean Dupont</option>
+        <option>Marie Martin</option>
+        <option>Ahmet Demir</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <select class="form-select">
+        <option>Toutes les périodes</option>
+        <option>Aujourd'hui</option>
+        <option>Cette semaine</option>
+        <option selected>Ce mois</option>
+        <option>Ce trimestre</option>
+      </select>
+    </div>
+    <div class="filter-actions">
+      <button class="btn btn-outline">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="20" height="20">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+        <span>Effacer</span>
+      </button>
+      <button class="btn btn-primary">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="20" height="20">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 3c2.755 0 5.455.232 8.083.678.533.09.917.556.917 1.096v1.044a2.25 2.25 0 01-.659 1.591l-5.432 5.432a2.25 2.25 0 00-.659 1.591v2.927a2.25 2.25 0 01-1.244 2.013L9.75 21v-6.568a2.25 2.25 0 00-.659-1.591L3.659 7.409A2.25 2.25 0 013 5.818V4.774c0-.54.384-1.006.917-1.096A48.32 48.32 0 0112 3z" />
+        </svg>
+        <span>Filtrer</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="admin-card">
+  <div class="table-responsive" data-controller="table-scroll">
+    <table class="admin-table">
+      <thead>
+        <tr>
+          <th>Numéro</th>
+          <th>Utilisateur</th>
+          <th>Client</th>
+          <th>Date émission</th>
+          <th>Validité</th>
+          <th>Montant TTC</th>
+          <th>Statut</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td data-label="Numéro">D-2025-0456</td>
+          <td data-label="Utilisateur">
+            <div class="user-info-compact">
+              <div class="user-avatar-sm">JD</div>
+              <span>Jean Dupont</span>
+            </div>
+          </td>
+          <td data-label="Client">
+            <div>Mairie de Colombes</div>
+            <div class="text-muted small">SIRET: 213 920 065</div>
+          </td>
+          <td data-label="Date">27 mai 2025</td>
+          <td data-label="Validité">
+            <div>30j</div>
+            <div class="text-muted small">Expire 26 juin</div>
+          </td>
+          <td data-label="Montant" class="font-weight-bold">3 360€</td>
+          <td data-label="Statut"><span class="status-badge status-warning">En attente</span></td>
+          <td data-label="Actions">
+            <%= link_to quote_admin_user_path(1, quote_id: 1), class: "btn btn-xs btn-outline" do %>
+              <span>Voir</span>
+            <% end %>
+          </td>
+        </tr>
+        <tr>
+          <td data-label="Numéro">D-2025-0445</td>
+          <td data-label="Utilisateur">
+            <div class="user-info-compact">
+              <div class="user-avatar-sm">MM</div>
+              <span>Marie Martin</span>
+            </div>
+          </td>
+          <td data-label="Client">
+            <div>Sophie Lambert</div>
+            <div class="text-muted small">Particulier</div>
+          </td>
+          <td data-label="Date">26 mai 2025</td>
+          <td data-label="Validité">
+            <div>30j</div>
+            <div class="text-muted small">Expire 25 juin</div>
+          </td>
+          <td data-label="Montant" class="font-weight-bold">5 400€</td>
+          <td data-label="Statut"><span class="status-badge status-success">Accepté</span></td>
+          <td data-label="Actions">
+            <%= link_to quote_admin_user_path(2, quote_id: 2), class: "btn btn-xs btn-outline" do %>
+              <span>Voir</span>
+            <% end %>
+          </td>
+        </tr>
+        <tr>
+          <td data-label="Numéro">D-2025-0434</td>
+          <td data-label="Utilisateur">
+            <div class="user-info-compact">
+              <div class="user-avatar-sm">MY</div>
+              <span>Mehmet Yılmaz</span>
+            </div>
+          </td>
+          <td data-label="Client">
+            <div>Yılmaz Holding</div>
+            <div class="text-muted small">SIRET: 789 123 456</div>
+          </td>
+          <td data-label="Date">24 mai 2025</td>
+          <td data-label="Validité">
+            <div>60j</div>
+            <div class="text-muted small">Expire 23 juil</div>
+          </td>
+          <td data-label="Montant" class="font-weight-bold">18 900€</td>
+          <td data-label="Statut"><span class="status-badge status-success">Accepté</span></td>
+          <td data-label="Actions">
+            <%= link_to quote_admin_user_path(3, quote_id: 3), class: "btn btn-xs btn-outline" do %>
+              <span>Voir</span>
+            <% end %>
+          </td>
+        </tr>
+        <tr>
+          <td data-label="Numéro">D-2025-0421</td>
+          <td data-label="Utilisateur">
+            <div class="user-info-compact">
+              <div class="user-avatar-sm">AD</div>
+              <span>Ahmet Demir</span>
+            </div>
+          </td>
+          <td data-label="Client">
+            <div>Copropriété Les Lilas</div>
+            <div class="text-muted small">SIRET: 456 789 123</div>
+          </td>
+          <td data-label="Date">22 mai 2025</td>
+          <td data-label="Validité" class="danger-text">
+            <div>Expiré</div>
+            <div class="text-muted small">Expiré 21 mai</div>
+          </td>
+          <td data-label="Montant" class="font-weight-bold">7 200€</td>
+          <td data-label="Statut"><span class="status-badge status-danger">Refusé</span></td>
+          <td data-label="Actions">
+            <%= link_to quote_admin_user_path(4, quote_id: 4), class: "btn btn-xs btn-outline" do %>
+              <span>Voir</span>
+            <% end %>
+          </td>
+        </tr>
+        <tr>
+          <td data-label="Numéro">D-2025-0412</td>
+          <td data-label="Utilisateur">
+            <div class="user-info-compact">
+              <div class="user-avatar-sm">PL</div>
+              <span>Pierre Lefebvre</span>
+            </div>
+          </td>
+          <td data-label="Client">
+            <div>M. et Mme Dubois</div>
+            <div class="text-muted small">Particulier</div>
+          </td>
+          <td data-label="Date">20 mai 2025</td>
+          <td data-label="Validité">
+            <div>30j</div>
+            <div class="text-muted small">Expire 19 juin</div>
+          </td>
+          <td data-label="Montant" class="font-weight-bold">2 890€</td>
+          <td data-label="Statut"><span class="status-badge status-warning">En attente</span></td>
+          <td data-label="Actions">
+            <%= link_to quote_admin_user_path(5, quote_id: 5), class: "btn btn-xs btn-outline" do %>
+              <span>Voir</span>
+            <% end %>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
