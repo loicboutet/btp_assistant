@@ -1,8 +1,8 @@
-<% if collection.respond_to?(:total_pages) && collection.total_pages > 1 %>
+<% if defined?(@total_pages) && @total_pages.to_i > 1 %>
   <div class="pagination">
     <%= link_to_previous_page collection, '← Précédent', class: 'btn btn-outline' %>
     <span class="pagination-info">
-      Page <%= collection.current_page %> sur <%= collection.total_pages %>
+      Page <%= @current_page %> sur <%= @total_pages %>
     </span>
     <%= link_to_next_page collection, 'Suivant →', class: 'btn btn-outline' %>
   </div>

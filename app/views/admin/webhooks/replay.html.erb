@@ -1,190 +1,78 @@
-<% content_for :title, "Rejouer le Webhook - Admin" %>
+<% content_for :title, "Rejouer le Webhook" %>
 
 <div class="admin-page-header">
   <%= link_to admin_webhooks_path, class: "back-link" do %>
-    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" width="16" height="16" style="display: inline-block; vertical-align: middle; margin-right: 4px;">
-      <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
-    </svg>
-    Retour aux webhooks
+    ← Retour aux webhooks
   <% end %>
-  <h1>Rejouer le Webhook</h1>
-  <p class="text-muted">Renvoyer un webhook pour retraitement</p>
+  <h1>Rejouer le webhook</h1>
+  <p class="text-muted">Ce rejeu est limité aux échecs de traitement WhatsApp (whatsapp_message_processing_failed).</p>
 </div>
 
-<!-- Webhook Details Card -->
 <div class="admin-card" style="margin-bottom: var(--spacing-lg);">
   <div class="card-header">
-    <h2>Détails du Webhook</h2>
-    <span class="badge badge-blue">ID: #<%= params[:id] %></span>
+    <h2>Événement</h2>
+    <span class="badge <%= @webhook.log_type_badge_class %>"><%= @webhook.log_type %></span>
   </div>
 
   <div class="details-list">
     <div class="detail-item">
-      <span class="detail-label">Type de webhook</span>
-      <span class="detail-value">
-        <span class="badge badge-blue">unipile.message.received</span>
-      </span>
+      <span class="detail-label">SystemLog ID</span>
+      <span class="detail-value">#<%= @webhook.id %></span>
     </div>
-    
+
+    <div class="detail-item">
+      <span class="detail-label">Event</span>
+      <span class="detail-value"><%= @webhook.event %></span>
+    </div>
+
     <div class="detail-item">
       <span class="detail-label">Horodatage</span>
-      <span class="detail-value">30/10/2025 14:23:45</span>
+      <span class="detail-value"><%= l(@webhook.created_at, format: :long) rescue @webhook.created_at %></span>
     </div>
-    
-    <div class="detail-item">
-      <span class="detail-label">Statut</span>
-      <span class="detail-value">
-        <span class="status-badge status-danger">Échec</span>
-      </span>
-    </div>
-    
+
     <div class="detail-item">
       <span class="detail-label">Utilisateur</span>
-      <span class="detail-value">Jean Dupont (jean.dupont@example.com)</span>
+      <span class="detail-value">
+        <% if @webhook.user %>
+          <%= link_to "##{@webhook.user_id} - #{@webhook.user.display_name}", admin_user_path(@webhook.user_id) %>
+        <% else %>
+          —
+        <% end %>
+      </span>
     </div>
-    
+
     <div class="detail-item">
-      <span class="detail-label">Tentatives</span>
-      <span class="detail-value">3 / 5</span>
-    </div>
-    
-    <div class="detail-item">
-      <span class="detail-label">Dernière erreur</span>
-      <span class="detail-value danger-text">Connection timeout - Unable to reach OpenAI API</span>
+      <span class="detail-label">Description</span>
+      <span class="detail-value"><%= @webhook.description.presence || '—' %></span>
     </div>
   </div>
 </div>
 
-<!-- Payload Card -->
 <div class="admin-card" style="margin-bottom: var(--spacing-lg);">
   <div class="card-header">
-    <h2>Payload du Webhook</h2>
+    <h2>Métadonnées (JSON)</h2>
   </div>
-  
+
   <div style="background-color: var(--bg-light); padding: var(--spacing-md); border-radius: var(--radius-md); overflow-x: auto;">
-    <pre style="margin: 0; font-family: monospace; font-size: var(--font-size-sm); color: var(--text-dark); white-space: pre-wrap; word-wrap: break-word;"><code>{
-  "event": "message.received",
-  "timestamp": "2025-10-30T14:23:45.123Z",
-  "provider": "unipile",
-  "account_id": "acc_123456789",
-  "message": {
-    "id": "msg_987654321",
-    "type": "voice",
-    "from": "+33612345678",
-    "to": "+33698765432",
-    "timestamp": "2025-10-30T14:23:40.000Z",
-    "content": {
-      "audio_url": "https://unipile.com/media/audio_123.ogg",
-      "duration": 15,
-      "mime_type": "audio/ogg"
-    }
-  },
-  "user": {
-    "id": "usr_456789123",
-    "email": "jean.dupont@example.com",
-    "whatsapp_number": "+33698765432"
-  }
-}</code></pre>
+    <pre style="margin:0; white-space: pre-wrap; word-wrap: break-word;"><%= JSON.pretty_generate(@webhook.metadata || {}) %></pre>
   </div>
 </div>
 
-<!-- Response History Card -->
-<div class="admin-card" style="margin-bottom: var(--spacing-lg);">
-  <div class="card-header">
-    <h2>Historique des tentatives</h2>
-  </div>
-
-  <div class="admin-table-wrapper" style="overflow-x: auto;">
-    <table class="admin-table">
-      <thead>
-        <tr>
-          <th>Tentative</th>
-          <th>Date/Heure</th>
-          <th>Statut</th>
-          <th>Code HTTP</th>
-          <th>Message</th>
-          <th>Durée</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>3</td>
-          <td>30/10/2025 14:28:45</td>
-          <td><span class="status-badge status-danger">Échec</span></td>
-          <td>504</td>
-          <td class="danger-text">Gateway Timeout</td>
-          <td>30.2s</td>
-        </tr>
-        <tr>
-          <td>2</td>
-          <td>30/10/2025 14:25:15</td>
-          <td><span class="status-badge status-danger">Échec</span></td>
-          <td>500</td>
-          <td class="danger-text">Internal Server Error</td>
-          <td>12.5s</td>
-        </tr>
-        <tr>
-          <td>1</td>
-          <td>30/10/2025 14:23:50</td>
-          <td><span class="status-badge status-danger">Échec</span></td>
-          <td>503</td>
-          <td class="danger-text">Service Unavailable</td>
-          <td>5.3s</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-</div>
-
-<!-- Alert Box -->
 <div class="alert alert-warning" style="margin-bottom: var(--spacing-lg);">
-  <strong>⚠️ Attention:</strong> Le rejeu de ce webhook va déclencher à nouveau le traitement complet du message, 
-  incluant la transcription audio, l'analyse par GPT-4 et l'envoi de la réponse WhatsApp. 
-  Assurez-vous que c'est bien ce que vous souhaitez faire.
+  <strong>⚠️ Attention :</strong> le rejeu remet le message en "non traité" et relance <code>ProcessWhatsappMessageJob</code>.
+  Cela peut renvoyer un message à l'utilisateur.
 </div>
 
-<!-- Actions Card -->
 <div class="admin-card">
   <div class="card-header">
     <h2>Actions</h2>
   </div>
 
   <div class="quick-actions-grid">
-    <%= button_to replay_admin_webhook_path(params[:id]), method: :post, class: "btn btn-primary btn-block", data: { confirm: "Êtes-vous sûr de vouloir rejouer ce webhook ?" } do %>
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" width="20" height="20">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" />
-      </svg>
-      Rejouer le webhook maintenant
+    <%= button_to replay_admin_webhook_path(@webhook), method: :post, class: "btn btn-primary btn-block", data: { confirm: "Confirmer le rejeu ?" } do %>
+      Rejouer maintenant
     <% end %>
 
-    <%= link_to admin_webhooks_path, class: "btn btn-outline btn-block" do %>
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" width="20" height="20">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-      </svg>
-      Annuler
-    <% end %>
-  </div>
-
-  <div style="margin-top: var(--spacing-lg); padding-top: var(--spacing-lg); border-top: 1px solid var(--border-light);">
-    <h3 style="font-size: var(--font-size-base); font-weight: var(--font-weight-semibold); margin-bottom: var(--spacing-sm); color: var(--text-dark);">
-      Options avancées
-    </h3>
-    
-    <div style="display: flex; flex-direction: column; gap: var(--spacing-sm);">
-      <div class="checkbox-label">
-        <input type="checkbox" id="skip_openai" name="skip_openai">
-        <label for="skip_openai">Ignorer l'appel OpenAI (utiliser réponse en cache)</label>
-      </div>
-      
-      <div class="checkbox-label">
-        <input type="checkbox" id="skip_whatsapp" name="skip_whatsapp">
-        <label for="skip_whatsapp">Ne pas envoyer de réponse WhatsApp</label>
-      </div>
-      
-      <div class="checkbox-label">
-        <input type="checkbox" id="force_retry" name="force_retry" checked>
-        <label for="force_retry">Forcer le rejeu même si déjà réussi</label>
-      </div>
-    </div>
+    <%= link_to "Annuler", admin_webhooks_path, class: "btn btn-outline btn-block" %>
   </div>
 </div>

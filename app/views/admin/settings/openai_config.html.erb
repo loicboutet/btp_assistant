@@ -3,300 +3,48 @@
 <div class="admin-page-header">
   <%= link_to "← Retour aux paramètres", admin_settings_path, class: "back-link" %>
   <h1>Configuration OpenAI</h1>
-  <p class="text-muted">Intelligence artificielle et traitement des messages</p>
+  <p class="text-muted">IA (GPT) + transcription (Whisper)</p>
 </div>
 
-<!-- Status Overview -->
-<div class="stats-grid">
-  <div class="stat-card">
-    <div class="stat-icon bg-blue">
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="32" height="32">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.894 20.567L16.5 21.75l-.394-1.183a2.25 2.25 0 00-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 001.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 001.423 1.423l1.183.394-1.183.394a2.25 2.25 0 00-1.423 1.423z" />
-      </svg>
-    </div>
-    <div class="stat-content">
-      <div class="stat-value"><span class="status-badge status-success">Opérationnel</span></div>
-      <div class="stat-label">Statut API</div>
-      <div class="stat-change neutral">GPT-4 + Whisper</div>
-    </div>
-  </div>
-
-  <div class="stat-card">
-    <div class="stat-icon bg-green">
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="32" height="32">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
-      </svg>
-    </div>
-    <div class="stat-content">
-      <div class="stat-value">3 247</div>
-      <div class="stat-label">Requêtes (24h)</div>
-      <div class="stat-change neutral">GPT: 1 355, Whisper: 1 892</div>
-    </div>
-  </div>
-
-  <div class="stat-card">
-    <div class="stat-icon bg-purple">
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="32" height="32">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-      </svg>
-    </div>
-    <div class="stat-content">
-      <div class="stat-value success-text">96.8%</div>
-      <div class="stat-label">Taux de succès</div>
-      <div class="stat-change positive">3 143 / 3 247</div>
-    </div>
-  </div>
-
-  <div class="stat-card">
-    <div class="stat-icon bg-orange">
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="32" height="32">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18.75a60.07 60.07 0 0115.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 013 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 00-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 01-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 003 15h-.75M15 10.5a3 3 0 11-6 0 3 3 0 016 0zm3 0h.008v.008H18V10.5zm-12 0h.008v.008H6V10.5z" />
-      </svg>
-    </div>
-    <div class="stat-content">
-      <div class="stat-value">~247€</div>
-      <div class="stat-label">Coût estimé (mois)</div>
-      <div class="stat-change neutral">Basé sur 30j</div>
-    </div>
-  </div>
-</div>
-
-<!-- Configuration Form -->
-<div class="admin-card" style="margin-top: var(--spacing-xl);">
+<div class="admin-card">
   <div class="card-header">
     <h2>Configuration API</h2>
   </div>
-  <form class="settings-form">
-    <div class="form-fields-grid">
-      <div class="form-group">
-        <label class="form-label">API Key</label>
-        <input type="password" class="form-input" value="sk-••••••••••••••••••••••••••••••••" placeholder="sk-...">
-        <small class="form-hint">Clé API OpenAI</small>
-      </div>
 
-      <div class="form-group">
-        <label class="form-label">Organization ID</label>
-        <input type="text" class="form-input" value="org-••••••••••••••••" placeholder="org-...">
-        <small class="form-hint">ID de votre organisation OpenAI (optionnel)</small>
-      </div>
+  <%= form_with model: @app_setting, url: admin_settings_openai_path, method: :patch, class: "settings-form" do |f| %>
+    <div class="form-group">
+      <%= f.label :openai_api_key, "API Key", class: "form-label" %>
+      <%= f.password_field :openai_api_key, class: "form-input", value: nil, placeholder: "sk-..." %>
+      <small class="form-hint">Clé OpenAI (enregistrée chiffrée)</small>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :openai_model, "Modèle", class: "form-label" %>
+      <%= f.text_field :openai_model, class: "form-input", placeholder: "gpt-4" %>
+      <small class="form-hint">Ex: gpt-4, gpt-4.1-mini…</small>
     </div>
 
     <div class="form-actions">
-      <button type="button" class="btn btn-outline btn-with-icon">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="20" height="20">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-        </svg>
-        <span>Annuler</span>
-      </button>
-      <button type="submit" class="btn btn-primary btn-with-icon">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="20" height="20">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
-        </svg>
-        <span>Sauvegarder</span>
-      </button>
+      <%= f.submit "Sauvegarder", class: "btn btn-primary" %>
     </div>
-  </form>
+  <% end %>
 </div>
 
-<!-- GPT Configuration -->
 <div class="admin-card" style="margin-top: var(--spacing-xl);">
   <div class="card-header">
-    <h2>Configuration GPT (Traitement de texte)</h2>
+    <h2>Test de connexion</h2>
+    <%= button_to admin_settings_test_connection_path(service: 'openai'), method: :post, class: "btn btn-primary", form: { data: { turbo: false } } do %>
+      Tester la connexion
+    <% end %>
   </div>
-  <form class="settings-form">
-    <div class="form-fields-grid">
-      <div class="form-group">
-        <label class="form-label">Modèle GPT</label>
-        <select class="form-select">
-          <option>GPT-3.5 Turbo</option>
-          <option selected>GPT-4</option>
-          <option>GPT-4 Turbo</option>
-        </select>
-        <small class="form-hint">Modèle utilisé pour le traitement des conversations</small>
-      </div>
 
-      <div class="form-group">
-        <label class="form-label">Temperature</label>
-        <input type="number" class="form-input" value="0.7" min="0" max="2" step="0.1">
-        <small class="form-hint">Contrôle la créativité des réponses (0-2). Recommandé: 0.7</small>
-      </div>
-
-      <div class="form-group">
-        <label class="form-label">Max Tokens</label>
-        <input type="number" class="form-input" value="2000" min="100" max="4000" step="100">
-        <small class="form-hint">Longueur maximale des réponses</small>
-      </div>
-
-      <div class="form-group">
-        <label class="form-label">Langues supportées</label>
-        <div class="checkbox-group">
-          <label class="checkbox-label">
-            <input type="checkbox" checked disabled>
-            <span>🇫🇷 Français</span>
-          </label>
-          <label class="checkbox-label">
-            <input type="checkbox" checked disabled>
-            <span>🇹🇷 Turc</span>
-          </label>
-        </div>
-        <small class="form-hint">GPT détecte automatiquement la langue de l'utilisateur</small>
-      </div>
+  <% if @app_setting.openai_configured? %>
+    <div class="alert alert-info">
+      Configuration détectée. Lancez un test pour vérifier l'accès à l'API OpenAI.
     </div>
-
-    <div class="form-actions">
-      <button type="button" class="btn btn-outline btn-with-icon">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="20" height="20">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-        </svg>
-        <span>Annuler</span>
-      </button>
-      <button type="submit" class="btn btn-primary btn-with-icon">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="20" height="20">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
-        </svg>
-        <span>Sauvegarder</span>
-      </button>
+  <% else %>
+    <div class="alert alert-warning">
+      OpenAI n'est pas configuré (API key requise).
     </div>
-  </form>
-</div>
-
-<!-- Whisper Configuration -->
-<div class="admin-card" style="margin-top: var(--spacing-xl);">
-  <div class="card-header">
-    <h2>Configuration Whisper (Transcription vocale)</h2>
-  </div>
-  <form class="settings-form">
-    <div class="form-fields-grid">
-      <div class="form-group">
-        <label class="form-label">Modèle Whisper</label>
-        <select class="form-select">
-          <option selected>Whisper-1</option>
-        </select>
-        <small class="form-hint">Modèle utilisé pour la transcription audio</small>
-      </div>
-
-      <div class="form-group">
-        <label class="form-label">Détection automatique de langue</label>
-        <label class="checkbox-label">
-          <input type="checkbox" checked>
-          <span>Activer la détection automatique</span>
-        </label>
-        <small class="form-hint">Whisper détecte automatiquement la langue parlée</small>
-      </div>
-
-      <div class="form-group">
-        <label class="form-label">Format audio supporté</label>
-        <input type="text" class="form-input" value="mp3, wav, ogg, m4a" readonly>
-        <small class="form-hint">Formats audio acceptés par Whisper</small>
-      </div>
-    </div>
-
-    <div class="form-actions">
-      <button type="button" class="btn btn-outline btn-with-icon">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="20" height="20">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-        </svg>
-        <span>Annuler</span>
-      </button>
-      <button type="submit" class="btn btn-primary btn-with-icon">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="20" height="20">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
-        </svg>
-        <span>Sauvegarder</span>
-      </button>
-    </div>
-  </form>
-</div>
-
-<!-- Usage Statistics -->
-<div class="admin-card" style="margin-top: var(--spacing-xl);">
-  <div class="card-header">
-    <h2>Statistiques d'utilisation (30j)</h2>
-  </div>
-  <div class="stats-grid">
-    <div class="stat-card">
-      <div class="stat-icon bg-blue">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="32" height="32">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.894 20.567L16.5 21.75l-.394-1.183a2.25 2.25 0 00-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 001.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 001.423 1.423l1.183.394-1.183.394a2.25 2.25 0 00-1.423 1.423z" />
-        </svg>
-      </div>
-      <div class="stat-content">
-        <div class="stat-value">40 650</div>
-        <div class="stat-label">Total requêtes GPT</div>
-        <div class="stat-change neutral">~1 355/jour</div>
-      </div>
-    </div>
-
-    <div class="stat-card">
-      <div class="stat-icon bg-purple">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="32" height="32">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M19.114 5.636a9 9 0 010 12.728M16.463 8.288a5.25 5.25 0 010 7.424M6.75 8.25l4.72-4.72a.75.75 0 011.28.53v15.88a.75.75 0 01-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.507-1.938-1.354A9.01 9.01 0 012.25 12c0-.83.112-1.633.322-2.396C2.806 8.756 3.63 8.25 4.51 8.25H6.75z" />
-        </svg>
-      </div>
-      <div class="stat-content">
-        <div class="stat-value">56 760</div>
-        <div class="stat-label">Total transcriptions Whisper</div>
-        <div class="stat-change neutral">~1 892/jour</div>
-      </div>
-    </div>
-
-    <div class="stat-card">
-      <div class="stat-icon bg-green">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="32" height="32">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
-        </svg>
-      </div>
-      <div class="stat-content">
-        <div class="stat-value">2.4M</div>
-        <div class="stat-label">Tokens GPT utilisés</div>
-        <div class="stat-change neutral">~80K/jour</div>
-      </div>
-    </div>
-
-    <div class="stat-card">
-      <div class="stat-icon bg-orange">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="32" height="32">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-        </svg>
-      </div>
-      <div class="stat-content">
-        <div class="stat-value">947 min</div>
-        <div class="stat-label">Minutes audio transcrits</div>
-        <div class="stat-change neutral">~31.5 min/jour</div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Performance -->
-<div class="admin-card" style="margin-top: var(--spacing-xl);">
-  <div class="card-header">
-    <h2>Performance & Qualité</h2>
-  </div>
-  <div class="details-list">
-    <div class="detail-item">
-      <span class="detail-label">Taux de succès GPT</span>
-      <span class="detail-value success-text">97.2%</span>
-    </div>
-    <div class="detail-item">
-      <span class="detail-label">Taux de succès Whisper</span>
-      <span class="detail-value success-text">96.5%</span>
-    </div>
-    <div class="detail-item">
-      <span class="detail-label">Temps de réponse moyen GPT</span>
-      <span class="detail-value">2.3s</span>
-    </div>
-    <div class="detail-item">
-      <span class="detail-label">Temps de transcription moyen</span>
-      <span class="detail-value">1.8s</span>
-    </div>
-    <div class="detail-item">
-      <span class="detail-label">Précision transcription (estimée)</span>
-      <span class="detail-value success-text">94%</span>
-    </div>
-    <div class="detail-item">
-      <span class="detail-label">Satisfaction utilisateurs</span>
-      <span class="detail-value success-text">4.6/5</span>
-    </div>
-  </div>
+  <% end %>
 </div>

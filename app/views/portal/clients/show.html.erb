@@ -1,0 +1,128 @@
+<% content_for :title, @client.name %>
+<% content_for :page_title, @client.name %>
+<% content_for :active_page, :clients %>
+<% content_for :back_path, client_clients_path %>
+
+<!-- Content -->
+<main class="p-4 max-w-2xl mx-auto">
+  
+  <!-- Client Header -->
+  <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-200 mb-4">
+    <div class="flex items-center space-x-4 mb-4">
+      <!-- Avatar -->
+      <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
+        <span class="text-2xl font-bold text-green-600"><%= @client.name.first(2).upcase %></span>
+      </div>
+      <div>
+        <h2 class="text-xl font-bold text-gray-900"><%= @client.name %></h2>
+        <% if @client.created_via == 'whatsapp' %>
+          <p class="text-xs text-gray-500"><%= t('client.clients.created_via_whatsapp') %></p>
+        <% end %>
+      </div>
+    </div>
+    
+    <div class="space-y-3 text-sm">
+      <% if @client.address.present? %>
+        <div class="flex items-start space-x-3">
+          <span class="text-gray-400">📍</span>
+          <p class="text-gray-700"><%= @client.address %></p>
+        </div>
+      <% end %>
+      
+      <% if @client.contact_phone.present? %>
+        <div class="flex items-center space-x-3">
+          <span class="text-gray-400">📞</span>
+          <p class="text-gray-700"><%= @client.contact_phone %></p>
+        </div>
+      <% end %>
+      
+      <% if @client.contact_email.present? %>
+        <div class="flex items-center space-x-3">
+          <span class="text-gray-400">✉️</span>
+          <p class="text-gray-700"><%= @client.contact_email %></p>
+        </div>
+      <% end %>
+      
+      <% if @client.siret.present? %>
+        <div class="flex items-center space-x-3">
+          <span class="text-gray-400">🏢</span>
+          <p class="text-gray-700">SIRET: <%= @client.siret %></p>
+        </div>
+      <% end %>
+    </div>
+  </div>
+  
+  <!-- Stats -->
+  <div class="grid grid-cols-2 gap-3 mb-4">
+    <div class="bg-white rounded-xl p-4 shadow-sm border border-gray-200 text-center">
+      <p class="text-2xl font-bold text-gray-900"><%= @stats[:total_quotes] %></p>
+      <p class="text-xs text-gray-500"><%= t('client.clients.total_quotes') %></p>
+    </div>
+    <div class="bg-white rounded-xl p-4 shadow-sm border border-gray-200 text-center">
+      <p class="text-2xl font-bold text-gray-900"><%= @stats[:total_invoices] %></p>
+      <p class="text-xs text-gray-500"><%= t('client.clients.total_invoices') %></p>
+    </div>
+    <div class="bg-white rounded-xl p-4 shadow-sm border border-gray-200 text-center">
+      <p class="text-2xl font-bold text-green-600"><%= number_to_currency(@stats[:total_amount], unit: '€', format: '%n %u') %></p>
+      <p class="text-xs text-gray-500"><%= t('client.clients.paid_total') %></p>
+    </div>
+    <div class="bg-white rounded-xl p-4 shadow-sm border border-gray-200 text-center">
+      <p class="text-2xl font-bold <%= @stats[:unpaid_amount] > 0 ? 'text-yellow-600' : 'text-gray-900' %>"><%= number_to_currency(@stats[:unpaid_amount], unit: '€', format: '%n %u') %></p>
+      <p class="text-xs text-gray-500"><%= t('client.clients.unpaid_total') %></p>
+    </div>
+  </div>
+  
+  <!-- Recent Quotes -->
+  <% if @quotes.any? %>
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 mb-4 overflow-hidden">
+      <h3 class="font-semibold text-gray-900 p-4 border-b border-gray-200"><%= t('client.clients.recent_quotes') %></h3>
+      <div class="divide-y divide-gray-200">
+        <% @quotes.each do |quote| %>
+          <%= link_to client_quote_path(quote), class: "block p-4 hover:bg-gray-50 transition" do %>
+            <div class="flex justify-between items-center">
+              <div>
+                <p class="font-medium text-gray-900"><%= quote.quote_number %></p>
+                <p class="text-xs text-gray-500"><%= l(quote.issue_date, format: :long) %></p>
+              </div>
+              <div class="text-right">
+                <p class="font-bold text-gray-900"><%= number_to_currency(quote.total_amount, unit: '€', format: '%n %u') %></p>
+                <%= render 'portal/shared/quote_status_badge', quote: quote %>
+              </div>
+            </div>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+  
+  <!-- Recent Invoices -->
+  <% if @invoices.any? %>
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 mb-4 overflow-hidden">
+      <h3 class="font-semibold text-gray-900 p-4 border-b border-gray-200"><%= t('client.clients.recent_invoices') %></h3>
+      <div class="divide-y divide-gray-200">
+        <% @invoices.each do |invoice| %>
+          <%= link_to client_invoice_path(invoice), class: "block p-4 hover:bg-gray-50 transition" do %>
+            <div class="flex justify-between items-center">
+              <div>
+                <p class="font-medium text-gray-900"><%= invoice.invoice_number %></p>
+                <p class="text-xs text-gray-500"><%= l(invoice.issue_date, format: :long) %></p>
+              </div>
+              <div class="text-right">
+                <p class="font-bold text-gray-900"><%= number_to_currency(invoice.total_amount, unit: '€', format: '%n %u') %></p>
+                <%= render 'portal/shared/invoice_status_badge', invoice: invoice %>
+              </div>
+            </div>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+
+  <!-- Hint -->
+  <div class="mt-8 text-center">
+    <p class="text-sm text-gray-500">
+      💬 <%= t('client.clients.whatsapp_hint_html') %>
+    </p>
+  </div>
+
+</main>

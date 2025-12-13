@@ -1,191 +1,115 @@
+<% content_for :title, "Modifier utilisateur - Admin" %>
+
 <div class="admin-page-header">
-  <%= link_to admin_user_path(1), class: "back-link" do %>
+  <%= link_to admin_user_path(@user), class: "back-link" do %>
     <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16" style="margin-right: 4px;">
       <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
     </svg>
     Retour au profil utilisateur
   <% end %>
   <h1>Modifier l'utilisateur</h1>
-  <p class="text-muted">Jean Dupont - jean.dupont@example.com</p>
+  <p class="text-muted"><%= @user.display_name %></p>
 </div>
 
 <div class="admin-card">
-  <%= form_with url: admin_user_path(1), method: :patch, local: true do |f| %>
-    <!-- Personal Information Section -->
+  <%= form_with model: @user, url: admin_user_path(@user), method: :patch, local: true do |f| %>
+
     <div style="margin-bottom: var(--spacing-xl);">
-      <h3 style="margin-bottom: var(--spacing-lg); color: var(--primary-green);">Informations Personnelles</h3>
-      
+      <h3 style="margin-bottom: var(--spacing-lg); color: var(--primary-green);">Identité & Contact</h3>
+
       <div class="form-fields-grid">
         <div class="form-group">
           <%= f.label :first_name, "Prénom", class: "form-label" %>
-          <%= f.text_field :first_name, value: "Jean", class: "form-input", required: true %>
+          <%= f.text_field :first_name, class: "form-input" %>
         </div>
 
         <div class="form-group">
           <%= f.label :last_name, "Nom", class: "form-label" %>
-          <%= f.text_field :last_name, value: "Dupont", class: "form-input", required: true %>
+          <%= f.text_field :last_name, class: "form-input" %>
         </div>
       </div>
 
       <div class="form-fields-grid">
         <div class="form-group">
           <%= f.label :email, "Email", class: "form-label" %>
-          <%= f.email_field :email, value: "jean.dupont@example.com", class: "form-input", required: true %>
-          <span class="form-hint">L'adresse email pour la connexion au compte</span>
+          <%= f.email_field :email, class: "form-input" %>
         </div>
 
         <div class="form-group">
-          <%= f.label :whatsapp_phone, "Téléphone WhatsApp", class: "form-label" %>
-          <%= f.text_field :whatsapp_phone, value: "+33612345678", class: "form-input", required: true %>
-          <span class="form-hint">Format: +33612345678 (sans espaces)</span>
+          <%= f.label :phone_number, "Téléphone WhatsApp (E.164)", class: "form-label" %>
+          <%= f.text_field :phone_number, class: "form-input", placeholder: "+33612345678" %>
+          <span class="form-hint">Ex: +33612345678 (sans espaces)</span>
         </div>
       </div>
 
       <div class="form-group">
         <%= f.label :preferred_language, "Langue préférée", class: "form-label" %>
-        <%= f.select :preferred_language, 
-          [["🇫🇷 Français", "fr"], ["🇹🇷 Türkçe", "tr"]], 
-          { selected: "fr" }, 
-          class: "form-select", required: true %>
+        <%= f.select :preferred_language, [["🇫🇷 Français", "fr"], ["🇹🇷 Türkçe", "tr"]], {}, class: "form-select" %>
       </div>
     </div>
 
-    <!-- Business Information Section -->
     <div style="margin-bottom: var(--spacing-xl);">
       <h3 style="margin-bottom: var(--spacing-lg); color: var(--primary-green);">Informations Professionnelles</h3>
-      
+
       <div class="form-group">
         <%= f.label :company_name, "Nom de l'entreprise", class: "form-label" %>
-        <%= f.text_field :company_name, value: "Dupont Maçonnerie SARL", class: "form-input", required: true %>
+        <%= f.text_field :company_name, class: "form-input" %>
       </div>
 
       <div class="form-fields-grid">
         <div class="form-group">
           <%= f.label :siret, "Numéro SIRET", class: "form-label" %>
-          <%= f.text_field :siret, value: "12345678900012", class: "form-input", required: true %>
-          <span class="form-hint">14 chiffres sans espaces</span>
+          <%= f.text_field :siret, class: "form-input" %>
         </div>
 
         <div class="form-group">
           <%= f.label :vat_number, "Numéro de TVA", class: "form-label" %>
-          <%= f.text_field :vat_number, value: "FR12345678901", class: "form-input" %>
-          <span class="form-hint">Optionnel - Format: FR + 11 chiffres</span>
+          <%= f.text_field :vat_number, class: "form-input" %>
         </div>
       </div>
 
       <div class="form-group">
         <%= f.label :address, "Adresse complète", class: "form-label" %>
-        <%= f.text_area :address, value: "15 Rue de la Construction\n75001 Paris\nFrance", class: "form-textarea", rows: 3, required: true %>
+        <%= f.text_area :address, class: "form-textarea", rows: 3 %>
       </div>
     </div>
 
-    <!-- Account Settings Section -->
     <div style="margin-bottom: var(--spacing-xl);">
-      <h3 style="margin-bottom: var(--spacing-lg); color: var(--primary-green);">Paramètres du Compte</h3>
-      
+      <h3 style="margin-bottom: var(--spacing-lg); color: var(--primary-green);">Compte & Stripe</h3>
+
       <div class="form-group">
-        <%= f.label :account_status, "Statut du compte", class: "form-label" %>
-        <%= f.select :account_status, 
-          [
-            ["En attente (Pending)", "pending"],
-            ["Actif (Active)", "active"],
-            ["Suspendu (Suspended)", "suspended"]
-          ], 
-          { selected: "active" }, 
-          class: "form-select", required: true %>
-        <span class="form-hint">Changez en "Suspendu" pour bloquer l'accès au compte</span>
+        <%= label_tag :account_status, "Statut du compte", class: "form-label" %>
+        <%= select_tag :"user[account_status]",
+          options_for_select(
+            [
+              ["En attente (pending)", "pending"],
+              ["Actif (active)", "active"],
+              ["Suspendu (canceled)", "suspended"]
+            ],
+            (@user.subscription_status == 'canceled' ? 'suspended' : @user.subscription_status)
+          ),
+          class: "form-select" %>
+      </div>
+
+      <div class="form-group">
+        <%= f.label :stripe_customer_id, "Stripe Customer ID", class: "form-label" %>
+        <%= f.text_field :stripe_customer_id, class: "form-input" %>
+        <span class="form-hint">Optionnel (rempli automatiquement lors du paiement)</span>
       </div>
 
       <div class="alert alert-warning" style="margin-top: var(--spacing-md);">
-        <strong>WhatsApp Connection:</strong> Pour réinitialiser la connexion WhatsApp, utilisez le bouton "Déconnecter WhatsApp" sur la page de profil de l'utilisateur.
+        <strong>WhatsApp :</strong> Pour réinitialiser la connexion WhatsApp, utilisez le bouton "Réinitialiser WhatsApp" sur la page de profil de l'utilisateur.
       </div>
     </div>
 
-    <!-- Stripe Information Section -->
-    <div style="margin-bottom: var(--spacing-xl);">
-      <h3 style="margin-bottom: var(--spacing-lg); color: var(--primary-green);">Informations Stripe</h3>
-      
-      <div class="form-group">
-        <%= f.label :stripe_customer_id, "ID Client Stripe", class: "form-label" %>
-        <%= f.text_field :stripe_customer_id, value: "cus_NffrFeUfNV2Hib", class: "form-input", readonly: true, style: "background-color: var(--bg-light);" %>
-        <span class="form-hint">Lecture seule - Géré automatiquement par Stripe</span>
-      </div>
-
-      <div class="details-list" style="margin-top: var(--spacing-md);">
-        <div class="detail-item">
-          <span class="detail-label">Abonnement actif</span>
-          <span class="detail-value">
-            <span class="badge badge-green">Oui</span>
-          </span>
-        </div>
-        <div class="detail-item">
-          <span class="detail-label">Prochaine facturation</span>
-          <span class="detail-value">15 novembre 2025</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- Password Reset Section -->
-    <div style="margin-bottom: var(--spacing-xl);">
-      <h3 style="margin-bottom: var(--spacing-lg); color: var(--primary-green);">Réinitialisation du Mot de Passe</h3>
-      
-      <div class="form-fields-grid">
-        <div class="form-group">
-          <%= f.label :password, "Nouveau mot de passe", class: "form-label" %>
-          <%= f.password_field :password, class: "form-input", placeholder: "Laissez vide pour ne pas changer" %>
-          <span class="form-hint">Minimum 6 caractères</span>
-        </div>
-
-        <div class="form-group">
-          <%= f.label :password_confirmation, "Confirmation du mot de passe", class: "form-label" %>
-          <%= f.password_field :password_confirmation, class: "form-input", placeholder: "Confirmez le nouveau mot de passe" %>
-        </div>
-      </div>
-
-      <div class="alert alert-info">
-        <strong>Note:</strong> Si vous définissez un nouveau mot de passe, l'utilisateur recevra un email de notification.
-      </div>
-    </div>
-
-    <!-- Form Actions -->
     <div class="form-actions">
-      <button type="submit" class="btn btn-primary" style="display: inline-flex; align-items: center; gap: 0.5rem;">
-        <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-          <path d="M10.97 4.97a.235.235 0 0 0-.02.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05z"/>
-        </svg>
+      <button type="submit" class="btn btn-primary">
         <span>Enregistrer les modifications</span>
       </button>
-      <%= link_to admin_user_path(1), class: "btn btn-secondary", style: "display: inline-flex; align-items: center; gap: 0.5rem;" do %>
-        <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-          <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
-        </svg>
+      <%= link_to admin_user_path(@user), class: "btn btn-secondary" do %>
         <span>Annuler</span>
       <% end %>
     </div>
-  <% end %>
-</div>
 
-<!-- Danger Zone -->
-<div class="admin-card" style="margin-top: var(--spacing-lg); border: 2px solid #DC2626;">
-  <div class="card-header">
-    <h2 style="color: #DC2626;">Zone Dangereuse</h2>
-  </div>
-  
-  <div class="details-list">
-    <div class="detail-item">
-      <div>
-        <strong style="color: var(--text-dark);">Supprimer ce compte</strong>
-        <p class="text-muted" style="margin: 0.5rem 0 0 0; font-size: var(--font-size-sm);">
-          Une fois supprimé, toutes les données de l'utilisateur seront perdues définitivement. Cette action est irréversible.
-        </p>
-      </div>
-      <%= link_to "#", class: "btn btn-danger btn-sm", data: { confirm: "Êtes-vous sûr de vouloir supprimer cet utilisateur ? Cette action est irréversible." } do %>
-        <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-          <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
-          <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
-        </svg>
-        <span>Supprimer l'utilisateur</span>
-      <% end %>
-    </div>
-  </div>
+  <% end %>
 </div>

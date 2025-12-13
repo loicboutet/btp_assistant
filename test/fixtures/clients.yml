@@ -1,0 +1,28 @@
+# Client fixtures for testing
+
+client_acme:
+  user: active_user
+  name: "ACME Construction"
+  address: "15 Rue de la Paix, 75001 Paris"
+  siret: "55566677788899"
+  contact_phone: "+33612345679"
+  contact_email: "contact@acme.fr"
+  created_via: "whatsapp"
+
+client_martin:
+  user: active_user
+  name: "Martin Renovation"
+  address: "42 Avenue des Champs, 69001 Lyon"
+  siret: ~
+  contact_phone: "+33698765433"
+  contact_email: ~
+  created_via: "whatsapp"
+
+client_turkish:
+  user: turkish_user
+  name: "Ahmet Insaat"
+  address: "456 Test Caddesi, Istanbul"
+  siret: ~
+  contact_phone: "+905551234568"
+  contact_email: "ahmet@test.com"
+  created_via: "whatsapp"

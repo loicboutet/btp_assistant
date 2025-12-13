@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title><%= content_for(:title) || "Admin - Devis WhatsApp" %></title>
+    <title><%= content_for(:title) || "Admin - BTP Assistant" %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
@@ -35,7 +35,7 @@
         <!-- Logo Section -->
         <div class="admin-sidebar-logo">
           <%= link_to admin_dashboard_path do %>
-            <%= image_tag "logo.png", alt: "Devis WhatsApp Admin" %>
+            <%= image_tag "logo.png", alt: "BTP Assistant Admin" %>
           <% end %>
         </div>
 
@@ -95,6 +95,35 @@
             <span>Abonnements</span>
           <% end %>
 
+          <%= link_to admin_system_logs_path, class: "admin-nav-item #{controller_name == 'system_logs' ? 'active' : ''}", data: { action: "click->admin-layout#closeSidebar" } do %>
+            <span class="admin-nav-item-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M11.25 6.75h1.5m-1.5 3h1.5m-1.5 3h1.5m3-9A2.25 2.25 0 0117.25 6v12A2.25 2.25 0 0115 20.25H9A2.25 2.25 0 016.75 18V6A2.25 2.25 0 019 3.75h6A2.25 2.25 0 0117.25 6z" />
+              </svg>
+            </span>
+            <span>System logs</span>
+          <% end %>
+
+          <%= link_to admin_whatsapp_messages_path, class: "admin-nav-item #{controller_name == 'whatsapp_messages' ? 'active' : ''}", data: { action: "click->admin-layout#closeSidebar" } do %>
+            <span class="admin-nav-item-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 12a8.25 8.25 0 11-16.5 0 8.25 8.25 0 0116.5 0z" />
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75l1.5 1.5 4.5-4.5" />
+              </svg>
+            </span>
+            <span>WhatsApp</span>
+          <% end %>
+
+          <%= link_to admin_llm_conversations_path, class: "admin-nav-item #{controller_name == 'llm_conversations' ? 'active' : ''}", data: { action: "click->admin-layout#closeSidebar" } do %>
+            <span class="admin-nav-item-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 18.75a6 6 0 006-6v-1.5a6 6 0 10-12 0v1.5a6 6 0 006 6z" />
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 18.75v2.25" />
+              </svg>
+            </span>
+            <span>LLM</span>
+          <% end %>
+
           <%= link_to admin_webhooks_path, class: "admin-nav-item #{controller_name == 'webhooks' ? 'active' : ''}", data: { action: "click->admin-layout#closeSidebar" } do %>
             <span class="admin-nav-item-icon">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
@@ -102,6 +131,15 @@
               </svg>
             </span>
             <span>Webhooks</span>
+          <% end %>
+
+          <%= link_to admin_prompts_path, class: "admin-nav-item #{controller_name == 'prompts' ? 'active' : ''}", data: { action: "click->admin-layout#closeSidebar" } do %>
+            <span class="admin-nav-item-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 8.25h9m-9 3H12m-4.5 3h9M21 6.75A2.25 2.25 0 0018.75 4.5H5.25A2.25 2.25 0 003 6.75v10.5A2.25 2.25 0 005.25 19.5h13.5A2.25 2.25 0 0021 17.25V6.75z" />
+              </svg>
+            </span>
+            <span>Prompts</span>
           <% end %>
 
           <%= link_to admin_settings_path, class: "admin-nav-item #{controller_name == 'settings' ? 'active' : ''}", data: { action: "click->admin-layout#closeSidebar" } do %>
@@ -126,8 +164,20 @@
             <!-- Profile Dropdown -->
             <div class="profile-dropdown">
               <button class="profile-dropdown-toggle" data-action="click->admin-layout#toggleProfileMenu" aria-label="User menu">
-                <div class="profile-avatar">AD</div>
-                <span class="profile-name">Admin User</span>
+                <div class="profile-avatar">
+                  <% if admin_signed_in? %>
+                    <%= current_admin.email[0..1].upcase %>
+                  <% else %>
+                    AD
+                  <% end %>
+                </div>
+                <span class="profile-name">
+                  <% if admin_signed_in? %>
+                    <%= current_admin.email %>
+                  <% else %>
+                    Admin
+                  <% end %>
+                </span>
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" width="20" height="20">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
                 </svg>
@@ -147,7 +197,7 @@
                   <span>Voir le site</span>
                 <% end %>
                 <div class="profile-dropdown-divider"></div>
-                <%= link_to destroy_user_session_path, data: { turbo_method: :delete }, class: "profile-dropdown-item profile-dropdown-item-danger" do %>
+                <%= link_to destroy_admin_session_path, data: { turbo_method: :delete }, class: "profile-dropdown-item profile-dropdown-item-danger" do %>
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75" />
                   </svg>
@@ -167,7 +217,7 @@
             <%= notice %>
           </div>
         <% end %>
-        
+
         <% if alert %>
           <div class="alert alert-error">
             <%= alert %>

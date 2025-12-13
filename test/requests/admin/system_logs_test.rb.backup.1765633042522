@@ -1,0 +1,37 @@
+# frozen_string_literal: true
+
+require "test_helper"
+
+class AdminSystemLogsTest < AdminRequestTestCase
+  test "index lists logs" do
+    sign_in_admin
+
+    SystemLog.log_info("event_x", description: "desc")
+
+    get admin_system_logs_path
+    assert_response :success
+
+    assert_select "h1", /Logs système/i
+    assert_match "event_x", response.body
+  end
+
+  test "index supports filters" do
+    sign_in_admin
+
+    SystemLog.log_warning("warning_event", description: "something")
+
+    get admin_system_logs_path, params: { log_type: "warning" }
+    assert_response :success
+    assert_match "warning_event", response.body
+  end
+
+  test "show displays a log" do
+    sign_in_admin
+
+    log = SystemLog.log_audit("audit_event", description: "audit")
+
+    get admin_system_log_path(log)
+    assert_response :success
+    assert_match "audit_event", response.body
+  end
+end

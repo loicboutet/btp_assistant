@@ -3,17 +3,28 @@ Rails.application.routes.draw do
   root "home#index"
 
   # ========================================
-  # Devise Routes
+  # Admin Devise Routes (Back-office users)
   # ========================================
-  devise_for :users, controllers: {
-    sessions: 'users/sessions',
-    registrations: 'users/registrations',
-    passwords: 'users/passwords'
-  }, path: '', path_names: {
+  devise_for :admins, class_name: 'AdminUser', controllers: {
+    sessions: 'admins/sessions',
+    registrations: 'admins/registrations',
+    passwords: 'admins/passwords'
+  }, path: 'admin', path_names: {
     sign_in: 'login',
     sign_out: 'logout',
     sign_up: 'sign_up'
   }
+
+  # ========================================
+  # Signed URL Access for Artisans (Users)
+  # ========================================
+  get 'u/:token', to: 'user_sessions#show', as: :signed_user_access
+
+  # ========================================
+  # Payment Pages (Stripe redirect)
+  # ========================================
+  get 'payment/success', to: 'payment#success'
+  get 'payment/canceled', to: 'payment#canceled'
 
   # ========================================
   # Public Routes
@@ -24,44 +35,38 @@ Rails.application.routes.draw do
   get 'about', to: 'pages#about'
   get 'support', to: 'pages#support'
   get 'contact', to: 'pages#contact'
-  get 'sign_up/success', to: 'registrations#success', as: :registration_success
 
   # ========================================
-  # Client Routes
+  # Client Routes (Artisan Web Interface)
+  # IMPORTANT: We keep the URL helpers prefix as `client_*` for backwards compatibility,
+  # but the controllers are now namespaced under `Portal::` to avoid collision with the
+  # `Client` model.
   # ========================================
-  get 'dashboard', to: 'dashboard#index', as: :client_dashboard
-  get 'profile', to: 'profile#show', as: :client_profile
-  patch 'profile', to: 'profile#update'
+  scope module: 'portal', as: 'client' do
+    get 'dashboard', to: 'dashboard#index'
+    get 'profile', to: 'profile#show'
+    patch 'profile', to: 'profile#update'
+    post 'profile/billing_portal', to: 'profile#billing_portal', as: :billing_portal
 
-  get 'whatsapp/connect', to: 'whatsapp#connect', as: :whatsapp_connect
-  post 'whatsapp/connect', to: 'whatsapp#create'
-  get 'whatsapp/status', to: 'whatsapp#status', as: :whatsapp_status
-  delete 'whatsapp/disconnect', to: 'whatsapp#disconnect', as: :whatsapp_disconnect
-
-  resources :clients
-  
-  resources :quotes, only: [:index, :show, :edit, :update, :destroy] do
-    member do
-      get :pdf
-      get :preview
-      post :send_whatsapp
+    resources :quotes, only: [:index, :show] do
+      member do
+        get :pdf
+        post :send_whatsapp
+      end
     end
+
+    resources :invoices, only: [:index, :show] do
+      member do
+        get :pdf
+        post :send_whatsapp
+      end
+    end
+
+    resources :clients, only: [:index, :show]
   end
 
-  resources :invoices, only: [:index, :show, :destroy] do
-    member do
-      get :pdf
-      get :preview
-      post :send_whatsapp
-      patch :status
-    end
-  end
-
-  resources :conversations, only: [:index, :show]
-  post 'subscription/portal', to: 'subscriptions#portal', as: :client_subscription
-
   # ========================================
-  # Admin Routes
+  # Admin Routes (Back-office)
   # ========================================
   namespace :admin do
     root to: 'dashboard#index', as: :dashboard
@@ -75,7 +80,7 @@ Rails.application.routes.draw do
         get :logs
         get :stripe_portal
         post :create_stripe_portal
-        
+
         get :clients
         get 'clients/:client_id', to: 'users#show_client', as: :client
         get 'clients/:client_id/edit', to: 'users#edit_client', as: :edit_client
@@ -86,12 +91,12 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :subscriptions, only: [:index, :show] do
+    resources :subscriptions, only: [:index, :show, :new, :create, :edit, :update] do
       collection do
         get :overdue
       end
     end
-    
+
     resources :webhooks, only: [:index] do
       member do
         get :replay
@@ -104,11 +109,34 @@ Rails.application.routes.draw do
     resources :quotes, only: [:index, :show]
     resources :invoices, only: [:index, :show]
 
-
+    # Settings
     get 'settings', to: 'settings#index', as: :settings
+    patch 'settings', to: 'settings#update'
     get 'settings/unipile', to: 'settings#unipile'
+    patch 'settings/unipile', to: 'settings#update_unipile'
     get 'settings/stripe', to: 'settings#stripe_config'
+    patch 'settings/stripe', to: 'settings#update_stripe'
     get 'settings/openai', to: 'settings#openai_config'
+    patch 'settings/openai', to: 'settings#update_openai'
+    post 'settings/test_connection', to: 'settings#test_connection'
+
+    # LLM Prompts Management
+    resources :prompts, only: [:index, :edit, :update] do
+      member do
+        post :test
+      end
+    end
+
+    # System Logs
+    resources :system_logs, only: [:index, :show]
+
+    # Legacy alias: certaines maquettes utilisaient /admin/logs
+    # On mappe volontairement sur SystemLogsController pour éviter toute incohérence.
+    resources :logs, only: [:index, :show], controller: :system_logs
+
+    # WhatsApp Monitoring
+    resources :whatsapp_messages, only: [:index, :show]
+    resources :llm_conversations, only: [:index, :show]
   end
 
   # ========================================

@@ -1,0 +1,103 @@
+<% content_for :title, "LLM - Conversations" %>
+
+<div class="admin-page-header">
+  <h1>Conversations LLM</h1>
+  <p class="text-muted">Historique des appels OpenAI (LlmConversation)</p>
+</div>
+
+<div class="admin-card" style="margin-bottom: var(--spacing-lg);">
+  <h3 class="filters-title">Filtres</h3>
+
+  <%= form_with url: admin_llm_conversations_path, method: :get, local: true, class: "filters-bar" do |f| %>
+    <div class="filter-group">
+      <%= f.select :user_id, options_for_select([['Tous les utilisateurs', '']] + @users_for_filter.map { |u| ["##{u.id} - #{u.display_name}", u.id] }, @filters[:user_id]), {}, class: "form-select" %>
+    </div>
+
+    <div class="filter-group">
+      <%= f.select :tool_name, options_for_select([['Tous les outils', '']] + @tools.map { |t| [t, t] }, @filters[:tool_name]), {}, class: "form-select" %>
+    </div>
+
+    <div class="filter-group">
+      <label style="display:flex; gap:8px; align-items:center;">
+        <%= f.check_box :with_errors, { checked: ActiveModel::Type::Boolean.new.cast(@filters[:with_errors]) }, 'true', 'false' %>
+        <span>Erreurs</span>
+      </label>
+    </div>
+
+    <div class="filter-group">
+      <%= f.date_field :from, value: @filters[:from], class: "form-input" %>
+    </div>
+
+    <div class="filter-group">
+      <%= f.date_field :to, value: @filters[:to], class: "form-input" %>
+    </div>
+
+    <div class="filter-actions">
+      <%= link_to "Effacer", admin_llm_conversations_path, class: "btn btn-outline" %>
+      <%= f.submit "Filtrer", class: "btn btn-primary" %>
+    </div>
+  <% end %>
+</div>
+
+<div class="admin-card">
+  <table class="admin-table">
+    <thead>
+      <tr>
+        <th>Horodatage</th>
+        <th>User</th>
+        <th>Message</th>
+        <th>Outil</th>
+        <th>Model</th>
+        <th>Tokens</th>
+        <th>Durée</th>
+        <th>Erreur</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @llm_conversations.each do |c| %>
+        <tr class="<%= 'row-danger' if c.error_message.present? %>">
+          <td class="text-nowrap"><%= l(c.created_at, format: :short) rescue c.created_at %></td>
+          <td><%= link_to "##{c.user_id} - #{c.user.display_name}", admin_user_path(c.user_id) %></td>
+          <td>
+            <% if c.whatsapp_message_id %>
+              <%= link_to "WA ##{c.whatsapp_message_id}", admin_whatsapp_message_path(c.whatsapp_message_id) %>
+            <% else %>
+              —
+            <% end %>
+          </td>
+          <td><%= c.tool_name.presence || '—' %></td>
+          <td><%= c.model.presence || '—' %></td>
+          <td><%= c.total_tokens.presence || '—' %></td>
+          <td><%= c.duration_seconds.presence || '—' %></td>
+          <td class="text-muted small"><%= c.error_message.to_s.truncate(80) %></td>
+          <td><%= link_to "Détails", admin_llm_conversation_path(c), class: "btn btn-xs btn-outline" %></td>
+        </tr>
+      <% end %>
+
+      <% if @llm_conversations.empty? %>
+        <tr>
+          <td colspan="9" class="text-muted">Aucune conversation</td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
+<% if @total_pages > 1 %>
+  <div class="pagination">
+    <% if @current_page > 1 %>
+      <%= link_to "← Précédent", admin_llm_conversations_path(request.query_parameters.merge(page: @current_page - 1)), class: "btn btn-outline" %>
+    <% else %>
+      <button class="btn btn-outline" disabled>Précédent</button>
+    <% end %>
+
+    <span class="pagination-info">Page <%= @current_page %> sur <%= @total_pages %></span>
+
+    <% if @current_page < @total_pages %>
+      <%= link_to "Suivant →", admin_llm_conversations_path(request.query_parameters.merge(page: @current_page + 1)), class: "btn btn-outline" %>
+    <% else %>
+      <button class="btn btn-outline" disabled>Suivant</button>
+    <% end %>
+  </div>
+<% end %>

@@ -1,0 +1,15 @@
+# frozen_string_literal: true
+
+system_prompt:
+  name: system_prompt
+  description: Prompt principal
+  prompt_text: "Tu es un assistant."
+  is_active: true
+  version: 1
+
+payment_required:
+  name: payment_required
+  description: Prompt paiement requis
+  prompt_text: "L'utilisateur doit payer."
+  is_active: true
+  version: 2

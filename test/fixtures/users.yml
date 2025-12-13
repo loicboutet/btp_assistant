@@ -1,11 +1,64 @@
-# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+# User fixtures for artisans
+# Users access via WhatsApp and signed URLs (no passwords)
 
-# This model initially had no columns defined. If you add columns to the
-# model remove the "{}" from the fixture names and add the columns immediately
-# below each fixture, per the syntax in the comments below
-#
-one: {}
-# column: value
-#
-two: {}
-# column: value
+active_user:
+  phone_number: "+33612345678"
+  company_name: "Entreprise Active"
+  siret: "12345678901234"
+  address: "123 Rue de Paris, 75001 Paris"
+  vat_number: "FR12345678901"
+  preferred_language: "fr"
+  subscription_status: "active"
+  onboarding_completed: true
+  first_message_at: <%= 30.days.ago %>
+  last_activity_at: <%= 1.hour.ago %>
+  unipile_chat_id: "chat_active_123"
+  unipile_attendee_id: "33612345678@s.whatsapp.net"
+
+pending_user:
+  phone_number: "+33698765432"
+  company_name: ~
+  siret: ~
+  address: ~
+  preferred_language: "fr"
+  subscription_status: "pending"
+  onboarding_completed: false
+  first_message_at: <%= 1.day.ago %>
+  last_activity_at: <%= 1.hour.ago %>
+  unipile_chat_id: "chat_pending_456"
+
+past_due_user:
+  phone_number: "+33611223344"
+  company_name: "Entreprise Past Due"
+  siret: "98765432109876"
+  address: "456 Avenue Lyon, 69001 Lyon"
+  preferred_language: "fr"
+  subscription_status: "past_due"
+  onboarding_completed: true
+  first_message_at: <%= 60.days.ago %>
+  last_activity_at: <%= 2.days.ago %>
+  unipile_chat_id: "chat_pastdue_789"
+
+canceled_user:
+  phone_number: "+33622334455"
+  company_name: "Entreprise Annulée"
+  siret: "11111111111111"
+  address: "789 Boulevard Marseille, 13001 Marseille"
+  preferred_language: "fr"
+  subscription_status: "canceled"
+  onboarding_completed: true
+  first_message_at: <%= 90.days.ago %>
+  last_activity_at: <%= 30.days.ago %>
+  unipile_chat_id: "chat_canceled_101"
+
+turkish_user:
+  phone_number: "+905551234567"
+  company_name: "Türk İşletme"
+  siret: "22222222222222"
+  address: "123 Test Sokak, Istanbul"
+  preferred_language: "tr"
+  subscription_status: "active"
+  onboarding_completed: true
+  first_message_at: <%= 15.days.ago %>
+  last_activity_at: <%= 3.hours.ago %>
+  unipile_chat_id: "chat_turkish_202"

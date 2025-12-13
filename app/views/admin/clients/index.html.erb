@@ -2,46 +2,43 @@
 
 <div class="admin-page-header">
   <h1>Tous les Clients</h1>
-  <p class="text-muted">247 clients • 189 professionnels • 58 particuliers</p>
+  <p class="text-muted"><%= Client.count %> clients</p>
 </div>
 
 <!-- Filters -->
 <div class="admin-card" style="margin-bottom: var(--spacing-lg);">
   <h3 class="filters-title">Filtres de recherche</h3>
-  <div class="filters-bar">
+
+  <%= form_with url: admin_clients_path, method: :get, local: true, class: "filters-bar" do %>
     <div class="search-box">
-      <input type="search" placeholder="Rechercher par nom, SIRET, ville..." class="form-input">
+      <%= text_field_tag :q, params[:q], type: :search, placeholder: "Rechercher par nom, SIRET, adresse, entreprise...", class: "form-input" %>
     </div>
+
     <div class="filter-group">
-      <select class="form-select">
-        <option>Tous les types</option>
-        <option>Professionnels</option>
-        <option>Particuliers</option>
-      </select>
+      <%= select_tag :kind,
+            options_for_select([
+              ["Tous les types", ""],
+              ["Professionnels", "professional"],
+              ["Particuliers", "individual"]
+            ], params[:kind]),
+            class: "form-select" %>
     </div>
+
     <div class="filter-group">
-      <select class="form-select">
-        <option>Tous les utilisateurs</option>
-        <option>Jean Dupont</option>
-        <option>Marie Martin</option>
-        <option>Ahmet Demir</option>
-      </select>
+      <%= select_tag :user_id,
+            options_for_select([["Tous les utilisateurs", ""]] + @users_for_filter.map { |u| [u.display_name, u.id] }, params[:user_id]),
+            class: "form-select" %>
     </div>
+
     <div class="filter-actions">
-      <button class="btn btn-outline">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="20" height="20">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-        </svg>
+      <%= link_to admin_clients_path, class: "btn btn-outline" do %>
         <span>Effacer</span>
-      </button>
-      <button class="btn btn-primary">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="20" height="20">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M12 3c2.755 0 5.455.232 8.083.678.533.09.917.556.917 1.096v1.044a2.25 2.25 0 01-.659 1.591l-5.432 5.432a2.25 2.25 0 00-.659 1.591v2.927a2.25 2.25 0 01-1.244 2.013L9.75 21v-6.568a2.25 2.25 0 00-.659-1.591L3.659 7.409A2.25 2.25 0 013 5.818V4.774c0-.54.384-1.006.917-1.096A48.32 48.32 0 0112 3z" />
-        </svg>
+      <% end %>
+      <button class="btn btn-primary" type="submit">
         <span>Filtrer</span>
       </button>
     </div>
-  </div>
+  <% end %>
 </div>
 
 <div class="admin-card">
@@ -52,120 +49,54 @@
           <th>Client</th>
           <th>Type</th>
           <th>Contact</th>
-          <th>Ville</th>
           <th>Utilisateur</th>
           <th>Documents</th>
           <th>CA Total</th>
-          <th>Dernier doc</th>
           <th>Actions</th>
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td data-label="Client">
-            <div class="user-name">Mairie de Colombes</div>
-            <div class="text-muted small">SIRET: 213 920 065</div>
-          </td>
-          <td data-label="Type"><span class="badge badge-blue">🏢 Pro</span></td>
-          <td data-label="Contact">
-            <div>contact@mairie-colombes.fr</div>
-            <div class="text-muted small">01 47 60 80 80</div>
-          </td>
-          <td data-label="Ville">Colombes (92)</td>
-          <td data-label="Utilisateur">
-            <div class="user-info-compact">
-              <div class="user-avatar-sm">JD</div>
-              <span>Jean Dupont</span>
-            </div>
-          </td>
-          <td data-label="Documents">23 docs</td>
-          <td data-label="CA" class="font-weight-bold success-text">45 780€</td>
-          <td data-label="Dernier">Il y a 3j</td>
-          <td data-label="Actions">
-            <%= link_to client_admin_user_path(1, client_id: 1), class: "btn btn-xs btn-outline" do %>
-              <span>Voir</span>
-            <% end %>
-          </td>
-        </tr>
-        <tr>
-          <td data-label="Client">
-            <div class="user-name">Sophie Lambert</div>
-            <div class="text-muted small">Particulier</div>
-          </td>
-          <td data-label="Type"><span class="badge badge-green">👤 Part.</span></td>
-          <td data-label="Contact">
-            <div>sophie.lambert@gmail.com</div>
-            <div class="text-muted small">06 12 34 56 78</div>
-          </td>
-          <td data-label="Ville">Paris (75)</td>
-          <td data-label="Utilisateur">
-            <div class="user-info-compact">
-              <div class="user-avatar-sm">JD</div>
-              <span>Jean Dupont</span>
-            </div>
-          </td>
-          <td data-label="Documents">8 docs</td>
-          <td data-label="CA" class="font-weight-bold success-text">12 560€</td>
-          <td data-label="Dernier">Il y a 1 sem</td>
-          <td data-label="Actions">
-            <%= link_to client_admin_user_path(1, client_id: 2), class: "btn btn-xs btn-outline" do %>
-              <span>Voir</span>
-            <% end %>
-          </td>
-        </tr>
-        <tr>
-          <td data-label="Client">
-            <div class="user-name">ABC Construction</div>
-            <div class="text-muted small">SIRET: 523 456 789</div>
-          </td>
-          <td data-label="Type"><span class="badge badge-blue">🏢 Pro</span></td>
-          <td data-label="Contact">
-            <div>contact@abc-construction.fr</div>
-            <div class="text-muted small">01 45 67 89 01</div>
-          </td>
-          <td data-label="Ville">Paris (75)</td>
-          <td data-label="Utilisateur">
-            <div class="user-info-compact">
-              <div class="user-avatar-sm">MM</div>
-              <span>Marie Martin</span>
-            </div>
-          </td>
-          <td data-label="Documents">34 docs</td>
-          <td data-label="CA" class="font-weight-bold success-text">89 340€</td>
-          <td data-label="Dernier">Hier</td>
-          <td data-label="Actions">
-            <%= link_to client_admin_user_path(2, client_id: 3), class: "btn btn-xs btn-outline" do %>
-              <span>Voir</span>
-            <% end %>
-          </td>
-        </tr>
-        <tr>
-          <td data-label="Client">
-            <div class="user-name">Yılmaz Holding</div>
-            <div class="text-muted small">SIRET: 789 123 456</div>
-          </td>
-          <td data-label="Type"><span class="badge badge-blue">🏢 Pro</span></td>
-          <td data-label="Contact">
-            <div>info@yilmaz-holding.fr</div>
-            <div class="text-muted small">01 23 45 67 89</div>
-          </td>
-          <td data-label="Ville">Saint-Denis (93)</td>
-          <td data-label="Utilisateur">
-            <div class="user-info-compact">
-              <div class="user-avatar-sm">MY</div>
-              <span>Mehmet Yılmaz</span>
-            </div>
-          </td>
-          <td data-label="Documents">56 docs</td>
-          <td data-label="CA" class="font-weight-bold success-text">124 890€</td>
-          <td data-label="Dernier">Il y a 2j</td>
-          <td data-label="Actions">
-            <%= link_to client_admin_user_path(3, client_id: 4), class: "btn btn-xs btn-outline" do %>
-              <span>Voir</span>
-            <% end %>
-          </td>
-        </tr>
+        <% @clients.each do |client| %>
+          <% quotes_count = client.quotes.count %>
+          <% invoices_count = client.invoices.count %>
+          <tr>
+            <td data-label="Client">
+              <div class="user-name"><%= client.name %></div>
+              <div class="text-muted small"><%= client.siret.present? ? "SIRET: #{client.siret}" : "Particulier" %></div>
+            </td>
+            <td data-label="Type">
+              <% if client.professional? %>
+                <span class="badge badge-blue">🏢 Pro</span>
+              <% else %>
+                <span class="badge badge-green">👤 Part.</span>
+              <% end %>
+            </td>
+            <td data-label="Contact">
+              <div><%= client.contact_email.presence || '-' %></div>
+              <div class="text-muted small"><%= client.contact_phone.presence || '-' %></div>
+            </td>
+            <td data-label="Utilisateur">
+              <div class="user-info-compact">
+                <div class="user-avatar-sm"><%= client.user.display_name.to_s.first(2).upcase %></div>
+                <span><%= client.user.display_name %></span>
+              </div>
+            </td>
+            <td data-label="Documents">
+              <%= quotes_count + invoices_count %> docs
+            </td>
+            <td data-label="CA" class="font-weight-bold success-text">
+              <%= ActionController::Base.helpers.number_to_currency(client.total_paid_amount, unit: '€', format: '%n %u') %>
+            </td>
+            <td data-label="Actions">
+              <%= link_to client_admin_user_path(client.user, client_id: client.id), class: "btn btn-xs btn-outline" do %>
+                <span>Voir</span>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
       </tbody>
     </table>
   </div>
 </div>
+
+<%= render 'shared/pagination', collection: @clients %>

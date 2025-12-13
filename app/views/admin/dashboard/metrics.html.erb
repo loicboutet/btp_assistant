@@ -5,36 +5,6 @@
   <p class="text-muted">Statistiques détaillées de l'application</p>
 </div>
 
-<!-- Time Range Selector -->
-<div class="admin-card" style="margin-bottom: 2rem;">
-  <label class="form-label">Période</label>
-  <div class="filters-bar">
-    <div class="filter-group">
-      <select class="form-select">
-        <option>7 derniers jours</option>
-        <option selected>30 derniers jours</option>
-        <option>3 derniers mois</option>
-        <option>12 derniers mois</option>
-        <option>Tout le temps</option>
-      </select>
-    </div>
-    <div class="filter-actions">
-      <button class="btn btn-outline">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="20" height="20">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-        </svg>
-        <span>Effacer</span>
-      </button>
-      <button class="btn btn-primary">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="20" height="20">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
-        </svg>
-        <span>Exporter CSV</span>
-      </button>
-    </div>
-  </div>
-</div>
-
 <!-- Revenue Metrics -->
 <div class="admin-card" style="margin-bottom: 3rem;">
   <div class="card-header">
@@ -42,28 +12,32 @@
   </div>
   <div class="metrics-grid">
     <div class="metric-item" style="background: linear-gradient(135deg, #128C7E 0%, #0d5f54 100%);">
-      <div class="metric-label" style="color: #FFFFFF;">MRR (Monthly Recurring Revenue)</div>
-      <div class="metric-value large" style="color: #FFFFFF;">2 847€</div>
-      <div class="metric-trend positive" style="background-color: rgba(255, 255, 255, 0.2); color: #FFFFFF;">↑ 8.2% vs mois dernier</div>
-      <div class="metric-detail" style="color: #FFFFFF;">ARR: 34 164€</div>
+      <div class="metric-label" style="color: #FFFFFF;">MRR (estimé)</div>
+      <div class="metric-value large" style="color: #FFFFFF;"><%= format_eur(@mrr_estimated) %></div>
+      <div class="metric-trend neutral" style="background-color: rgba(255, 255, 255, 0.2); color: #FFFFFF;">ARR: <%= format_eur(@arr_estimated) %></div>
+      <div class="metric-detail" style="color: #FFFFFF;">Basé sur SubscriptionInvoice (paid)
+      </div>
     </div>
+
     <div class="metric-item" style="background: linear-gradient(135deg, #128C7E 0%, #0d5f54 100%);">
-      <div class="metric-label" style="color: #FFFFFF;">Nouveaux abonnements</div>
-      <div class="metric-value large" style="color: #FFFFFF;">12</div>
-      <div class="metric-trend positive" style="background-color: rgba(255, 255, 255, 0.2); color: #FFFFFF;">↑ 20% vs mois dernier</div>
-      <div class="metric-detail" style="color: #FFFFFF;">Moyenne: 8/mois</div>
+      <div class="metric-label" style="color: #FFFFFF;">Abonnements actifs</div>
+      <div class="metric-value large" style="color: #FFFFFF;"><%= @subscriptions_by_status['active'] || 0 %></div>
+      <div class="metric-trend neutral" style="background-color: rgba(255, 255, 255, 0.2); color: #FFFFFF;">Past due: <%= @subscriptions_by_status['past_due'] || 0 %></div>
+      <div class="metric-detail" style="color: #FFFFFF;">Total: <%= @subscriptions_total %></div>
     </div>
+
     <div class="metric-item" style="background: linear-gradient(135deg, #128C7E 0%, #0d5f54 100%);">
-      <div class="metric-label" style="color: #FFFFFF;">Churn Rate</div>
-      <div class="metric-value large" style="color: #FFFFFF;">2.1%</div>
-      <div class="metric-trend positive" style="background-color: rgba(255, 255, 255, 0.2); color: #FFFFFF;">↓ 0.5% vs mois dernier</div>
-      <div class="metric-detail" style="color: #FFFFFF;">3 désabonnements</div>
+      <div class="metric-label" style="color: #FFFFFF;">Utilisateurs (statut abonnement)</div>
+      <div class="metric-value large" style="color: #FFFFFF;"><%= @total_users %></div>
+      <div class="metric-trend neutral" style="background-color: rgba(255, 255, 255, 0.2); color: #FFFFFF;">Actifs: <%= @active_users %></div>
+      <div class="metric-detail" style="color: #FFFFFF;">Past due: <%= @past_due_users %></div>
     </div>
+
     <div class="metric-item" style="background: linear-gradient(135deg, #128C7E 0%, #0d5f54 100%);">
-      <div class="metric-label" style="color: #FFFFFF;">ARPU (Average Revenue Per User)</div>
-      <div class="metric-value large" style="color: #FFFFFF;">60.57€</div>
-      <div class="metric-trend neutral" style="background-color: rgba(255, 255, 255, 0.2); color: #FFFFFF;">→ Stable</div>
-      <div class="metric-detail" style="color: #FFFFFF;">47 utilisateurs actifs</div>
+      <div class="metric-label" style="color: #FFFFFF;">ARPU (estimé)</div>
+      <div class="metric-value large" style="color: #FFFFFF;"><%= format_eur(@arpu_estimated) %></div>
+      <div class="metric-trend neutral" style="background-color: rgba(255, 255, 255, 0.2); color: #FFFFFF;">Base: <%= @active_users %> users actifs</div>
+      <div class="metric-detail" style="color: #FFFFFF;">(MRR / users actifs)</div>
     </div>
   </div>
 </div>
@@ -76,23 +50,26 @@
   <div class="metrics-grid">
     <div class="metric-item" style="background: linear-gradient(135deg, #00A884 0%, #00856A 100%);">
       <div class="metric-label" style="color: #FFFFFF;">Total utilisateurs</div>
-      <div class="metric-value" style="color: #FFFFFF;">52</div>
-      <div class="metric-detail" style="color: #FFFFFF;">47 actifs, 5 suspendus</div>
+      <div class="metric-value" style="color: #FFFFFF;"><%= @total_users %></div>
+      <div class="metric-detail" style="color: #FFFFFF;"><%= @active_users %> actifs, <%= @past_due_users %> past_due</div>
     </div>
+
     <div class="metric-item" style="background: linear-gradient(135deg, #00A884 0%, #00856A 100%);">
       <div class="metric-label" style="color: #FFFFFF;">Utilisateurs actifs (30j)</div>
-      <div class="metric-value" style="color: #FFFFFF;">47</div>
-      <div class="metric-detail" style="color: #FFFFFF;">90.4% du total</div>
+      <div class="metric-value" style="color: #FFFFFF;"><%= @active_users_30d %></div>
+      <div class="metric-detail" style="color: #FFFFFF;">Basé sur last_activity_at</div>
     </div>
+
     <div class="metric-item" style="background: linear-gradient(135deg, #00A884 0%, #00856A 100%);">
       <div class="metric-label" style="color: #FFFFFF;">Nouveaux utilisateurs (30j)</div>
-      <div class="metric-value" style="color: #FFFFFF;">12</div>
-      <div class="metric-detail" style="color: #FFFFFF;">+25.5% de croissance</div>
+      <div class="metric-value" style="color: #FFFFFF;"><%= @new_users_30d %></div>
+      <div class="metric-detail" style="color: #FFFFFF;">Créés depuis 30 jours</div>
     </div>
+
     <div class="metric-item" style="background: linear-gradient(135deg, #00A884 0%, #00856A 100%);">
-      <div class="metric-label" style="color: #FFFFFF;">Taux de rétention (90j)</div>
-      <div class="metric-value" style="color: #FFFFFF;">94.0%</div>
-      <div class="metric-detail" style="color: #FFFFFF;">Excellent</div>
+      <div class="metric-label" style="color: #FFFFFF;">Langues</div>
+      <div class="metric-value" style="color: #FFFFFF;">FR: <%= @users_by_language['fr'] || 0 %></div>
+      <div class="metric-detail" style="color: #FFFFFF;">TR: <%= @users_by_language['tr'] || 0 %></div>
     </div>
   </div>
 </div>
@@ -105,23 +82,26 @@
   <div class="metrics-grid">
     <div class="metric-item" style="background: linear-gradient(135deg, #10B981 0%, #059669 100%);">
       <div class="metric-label" style="color: #FFFFFF;">Total documents (30j)</div>
-      <div class="metric-value" style="color: #FFFFFF;">1 243</div>
-      <div class="metric-detail" style="color: #FFFFFF;">542 devis, 701 factures</div>
+      <div class="metric-value" style="color: #FFFFFF;"><%= @documents_30d %></div>
+      <div class="metric-detail" style="color: #FFFFFF;"><%= @quotes_30d %> devis, <%= @invoices_30d %> factures</div>
     </div>
+
     <div class="metric-item" style="background: linear-gradient(135deg, #10B981 0%, #059669 100%);">
-      <div class="metric-label" style="color: #FFFFFF;">Documents/utilisateur (30j)</div>
-      <div class="metric-value" style="color: #FFFFFF;">26.4</div>
-      <div class="metric-detail" style="color: #FFFFFF;">Moyenne quotidienne: 0.88</div>
+      <div class="metric-label" style="color: #FFFFFF;">Docs / user actif (30j)</div>
+      <div class="metric-value" style="color: #FFFFFF;"><%= @documents_per_active_user_30d %></div>
+      <div class="metric-detail" style="color: #FFFFFF;">(docs 30j / users actifs 30j)</div>
     </div>
+
     <div class="metric-item" style="background: linear-gradient(135deg, #10B981 0%, #059669 100%);">
-      <div class="metric-label" style="color: #FFFFFF;">Devis convertis en factures</div>
-      <div class="metric-value" style="color: #FFFFFF;">73.2%</div>
-      <div class="metric-detail" style="color: #FFFFFF;">397 conversions</div>
+      <div class="metric-label" style="color: #FFFFFF;">Aujourd'hui</div>
+      <div class="metric-value" style="color: #FFFFFF;"><%= @documents_today %></div>
+      <div class="metric-detail" style="color: #FFFFFF;"><%= @quotes_today %> devis, <%= @invoices_today %> factures</div>
     </div>
+
     <div class="metric-item" style="background: linear-gradient(135deg, #10B981 0%, #059669 100%);">
-      <div class="metric-label" style="color: #FFFFFF;">Documents cette semaine</div>
-      <div class="metric-value" style="color: #FFFFFF;">156</div>
-      <div class="metric-detail" style="color: #FFFFFF;">+12% vs semaine précédente</div>
+      <div class="metric-label" style="color: #FFFFFF;">Sur 7 jours</div>
+      <div class="metric-value" style="color: #FFFFFF;"><%= @documents_7d %></div>
+      <div class="metric-detail" style="color: #FFFFFF;"><%= @quotes_7d %> devis, <%= @invoices_7d %> factures</div>
     </div>
   </div>
 </div>
@@ -134,28 +114,31 @@
   <div class="metrics-grid">
     <div class="metric-item" style="background: linear-gradient(135deg, #25D366 0%, #1F9D55 100%);">
       <div class="metric-label" style="color: #FFFFFF;">Comptes WhatsApp connectés</div>
-      <div class="metric-value" style="color: #FFFFFF;">44</div>
-      <div class="metric-detail" style="color: #FFFFFF;">93.6% des utilisateurs actifs</div>
+      <div class="metric-value" style="color: #FFFFFF;"><%= @whatsapp_connected_users %></div>
+      <div class="metric-detail" style="color: #FFFFFF;"><%= @whatsapp_connected_users_rate %>% du total</div>
     </div>
+
     <div class="metric-item" style="background: linear-gradient(135deg, #25D366 0%, #1F9D55 100%);">
-      <div class="metric-label" style="color: #FFFFFF;">Messages traités (30j)</div>
-      <div class="metric-value" style="color: #FFFFFF;">3 247</div>
-      <div class="metric-detail" style="color: #FFFFFF;">Moyenne: 108/jour</div>
+      <div class="metric-label" style="color: #FFFFFF;">Messages (30j)</div>
+      <div class="metric-value" style="color: #FFFFFF;"><%= @messages_30d %></div>
+      <div class="metric-detail" style="color: #FFFFFF;">Aujourd'hui: <%= @messages_today %></div>
     </div>
+
     <div class="metric-item" style="background: linear-gradient(135deg, #25D366 0%, #1F9D55 100%);">
-      <div class="metric-label" style="color: #FFFFFF;">Messages vocaux transcrits</div>
-      <div class="metric-value" style="color: #FFFFFF;">1 892</div>
-      <div class="metric-detail" style="color: #FFFFFF;">58.3% du total</div>
+      <div class="metric-label" style="color: #FFFFFF;">Messages vocaux transcrits (30j)</div>
+      <div class="metric-value" style="color: #FFFFFF;"><%= @voice_transcribed_30d %></div>
+      <div class="metric-detail" style="color: #FFFFFF;">Audio avec transcription non vide</div>
     </div>
+
     <div class="metric-item" style="background: linear-gradient(135deg, #25D366 0%, #1F9D55 100%);">
-      <div class="metric-label" style="color: #FFFFFF;">Taux de succès IA</div>
-      <div class="metric-value" style="color: #FFFFFF;">96.8%</div>
-      <div class="metric-detail" style="color: #FFFFFF;">3 143 / 3 247 messages</div>
+      <div class="metric-label" style="color: #FFFFFF;">Taux de succès IA (30j)</div>
+      <div class="metric-value" style="color: #FFFFFF;"><%= format_percent(@ai_success_rate_30d) %></div>
+      <div class="metric-detail" style="color: #FFFFFF;">Messages entrants traités sans erreur</div>
     </div>
   </div>
 </div>
 
-<!-- System Performance -->
+<!-- System Performance (via SystemLog heuristics) -->
 <div class="admin-card" style="margin-bottom: 3rem;">
   <div class="card-header">
     <h2>Performance système</h2>
@@ -163,117 +146,26 @@
   <div class="metrics-grid">
     <div class="metric-item" style="background: linear-gradient(135deg, #14B8A6 0%, #0D9488 100%);">
       <div class="metric-label" style="color: #FFFFFF;">Webhooks Unipile (24h)</div>
-      <div class="metric-value" style="color: #FFFFFF;">247</div>
-      <div class="metric-detail" style="color: #FFFFFF;">98.4% succès</div>
+      <div class="metric-value" style="color: #FFFFFF;"><%= @unipile_webhook_stats_24h[:total] %></div>
+      <div class="metric-detail" style="color: #FFFFFF;">Succès: <%= format_percent(@unipile_webhook_stats_24h[:success_rate]) %> (<%= @unipile_webhook_stats_24h[:success] %>/<%= @unipile_webhook_stats_24h[:total] %>)</div>
     </div>
+
     <div class="metric-item" style="background: linear-gradient(135deg, #14B8A6 0%, #0D9488 100%);">
       <div class="metric-label" style="color: #FFFFFF;">Webhooks Stripe (24h)</div>
-      <div class="metric-value" style="color: #FFFFFF;">18</div>
-      <div class="metric-detail" style="color: #FFFFFF;">100% succès</div>
+      <div class="metric-value" style="color: #FFFFFF;"><%= @stripe_webhook_stats_24h[:total] %></div>
+      <div class="metric-detail" style="color: #FFFFFF;">Succès: <%= format_percent(@stripe_webhook_stats_24h[:success_rate]) %> (<%= @stripe_webhook_stats_24h[:success] %>/<%= @stripe_webhook_stats_24h[:total] %>)</div>
     </div>
+
     <div class="metric-item" style="background: linear-gradient(135deg, #14B8A6 0%, #0D9488 100%);">
-      <div class="metric-label" style="color: #FFFFFF;">Temps de réponse moyen</div>
-      <div class="metric-value" style="color: #FFFFFF;">1.2s</div>
-      <div class="metric-detail" style="color: #FFFFFF;">Excellent</div>
+      <div class="metric-label" style="color: #FFFFFF;">Webhooks (global, 24h)</div>
+      <div class="metric-value" style="color: #FFFFFF;"><%= @webhook_stats_24h[:total] %></div>
+      <div class="metric-detail" style="color: #FFFFFF;">Succès: <%= format_percent(@webhook_success_rate_24h) %> (<%= @webhook_stats_24h[:success] %>/<%= @webhook_stats_24h[:total] %>)</div>
     </div>
+
     <div class="metric-item" style="background: linear-gradient(135deg, #14B8A6 0%, #0D9488 100%);">
-      <div class="metric-label" style="color: #FFFFFF;">Uptime (30j)</div>
-      <div class="metric-value" style="color: #FFFFFF;">99.9%</div>
-      <div class="metric-detail" style="color: #FFFFFF;">~22 minutes downtime</div>
-    </div>
-  </div>
-</div>
-
-<!-- Language Distribution & Regions -->
-<div class="admin-content-grid">
-  <div class="admin-card">
-    <div class="card-header">
-      <h2>Distribution des langues</h2>
-    </div>
-    <div class="language-stats">
-      <div class="language-stat-item">
-        <div class="language-info">
-          <span class="language-flag">🇫🇷</span>
-          <span class="language-name">Français</span>
-        </div>
-        <div class="language-bar">
-          <div class="language-progress" style="width: 65%;"></div>
-        </div>
-        <div class="language-value">65% (34 utilisateurs)</div>
-      </div>
-      <div class="language-stat-item">
-        <div class="language-info">
-          <span class="language-flag">🇹🇷</span>
-          <span class="language-name">Turc</span>
-        </div>
-        <div class="language-bar">
-          <div class="language-progress" style="width: 35%; background: #e74c3c;"></div>
-        </div>
-        <div class="language-value">35% (18 utilisateurs)</div>
-      </div>
-    </div>
-  </div>
-
-  <div class="admin-card">
-    <div class="card-header">
-      <h2>Top régions</h2>
-    </div>
-    <div class="region-list">
-      <div class="region-item">
-        <span class="region-name">Île-de-France</span>
-        <span class="region-count">23 utilisateurs</span>
-      </div>
-      <div class="region-item">
-        <span class="region-name">Auvergne-Rhône-Alpes</span>
-        <span class="region-count">8 utilisateurs</span>
-      </div>
-      <div class="region-item">
-        <span class="region-name">Provence-Alpes-Côte d'Azur</span>
-        <span class="region-count">7 utilisateurs</span>
-      </div>
-      <div class="region-item">
-        <span class="region-name">Grand Est</span>
-        <span class="region-count">5 utilisateurs</span>
-      </div>
-      <div class="region-item">
-        <span class="region-name">Occitanie</span>
-        <span class="region-count">4 utilisateurs</span>
-      </div>
-      <div class="region-item">
-        <span class="region-name">Autres</span>
-        <span class="region-count">5 utilisateurs</span>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Growth Chart Placeholder -->
-<div class="admin-card" style="margin-top: 3rem;">
-  <div class="card-header">
-    <h2>Croissance mensuelle</h2>
-  </div>
-  <div class="chart-placeholder">
-    <div class="chart-bars">
-      <div class="chart-bar" style="height: 40%;" title="Janvier: 28 users">
-        <div class="bar-fill"></div>
-        <div class="bar-label">Jan</div>
-      </div>
-      <div class="chart-bar" style="height: 45%;" title="Février: 31 users">
-        <div class="bar-fill"></div>
-        <div class="bar-label">Fév</div>
-      </div>
-      <div class="chart-bar" style="height: 55%;" title="Mars: 37 users">
-        <div class="bar-fill"></div>
-        <div class="bar-label">Mar</div>
-      </div>
-      <div class="chart-bar" style="height: 65%;" title="Avril: 42 users">
-        <div class="bar-fill"></div>
-        <div class="bar-label">Avr</div>
-      </div>
-      <div class="chart-bar" style="height: 85%;" title="Mai: 52 users">
-        <div class="bar-fill"></div>
-        <div class="bar-label">Mai</div>
-      </div>
+      <div class="metric-label" style="color: #FFFFFF;">Note</div>
+      <div class="metric-value" style="color: #FFFFFF;">—</div>
+      <div class="metric-detail" style="color: #FFFFFF;">Les webhooks sont mesurés via SystemLog (pas de table dédiée)</div>
     </div>
   </div>
 </div>

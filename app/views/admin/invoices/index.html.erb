@@ -2,56 +2,58 @@
 
 <div class="admin-page-header">
   <h1>Toutes les Factures</h1>
-  <p class="text-muted">701 factures • 623 payées • 78 en attente • 3.2M€ CA total</p>
+  <p class="text-muted"><%= Invoice.count %> factures</p>
 </div>
 
 <!-- Filters -->
 <div class="admin-card" style="margin-bottom: var(--spacing-lg);">
   <h3 class="filters-title">Filtres de recherche</h3>
-  <div class="filters-bar">
+
+  <%= form_with url: admin_invoices_path, method: :get, local: true, class: "filters-bar" do %>
     <div class="search-box">
-      <input type="search" placeholder="Rechercher par numéro, client..." class="form-input">
+      <%= text_field_tag :q, params[:q], type: :search, placeholder: "Rechercher par numéro, client, entreprise...", class: "form-input" %>
     </div>
+
     <div class="filter-group">
-      <select class="form-select">
-        <option>Tous les statuts</option>
-        <option>Payées</option>
-        <option>En attente</option>
-        <option>En retard</option>
-      </select>
+      <%= select_tag :status,
+            options_for_select([
+              ["Tous les statuts", ""],
+              ["Brouillon", "draft"],
+              ["Envoyée", "sent"],
+              ["Payée", "paid"],
+              ["En retard", "overdue"],
+              ["Annulée", "canceled"]
+            ], params[:status]),
+            class: "form-select" %>
     </div>
+
     <div class="filter-group">
-      <select class="form-select">
-        <option>Tous les utilisateurs</option>
-        <option>Jean Dupont</option>
-        <option>Marie Martin</option>
-        <option>Ahmet Demir</option>
-      </select>
+      <%= select_tag :user_id,
+            options_for_select([["Tous les utilisateurs", ""]] + @users_for_filter.map { |u| [u.display_name, u.id] }, params[:user_id]),
+            class: "form-select" %>
     </div>
+
     <div class="filter-group">
-      <select class="form-select">
-        <option>Toutes les périodes</option>
-        <option>Aujourd'hui</option>
-        <option>Cette semaine</option>
-        <option selected>Ce mois</option>
-        <option>Ce trimestre</option>
-      </select>
+      <%= select_tag :period,
+            options_for_select([
+              ["Toutes les périodes", ""],
+              ["Aujourd'hui", "today"],
+              ["Cette semaine", "week"],
+              ["Ce mois", "month"],
+              ["Ce trimestre", "quarter"]
+            ], params[:period]),
+            class: "form-select" %>
     </div>
+
     <div class="filter-actions">
-      <button class="btn btn-outline">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="20" height="20">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-        </svg>
+      <%= link_to admin_invoices_path, class: "btn btn-outline" do %>
         <span>Effacer</span>
-      </button>
-      <button class="btn btn-primary">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="20" height="20">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M12 3c2.755 0 5.455.232 8.083.678.533.09.917.556.917 1.096v1.044a2.25 2.25 0 01-.659 1.591l-5.432 5.432a2.25 2.25 0 00-.659 1.591v2.927a2.25 2.25 0 01-1.244 2.013L9.75 21v-6.568a2.25 2.25 0 00-.659-1.591L3.659 7.409A2.25 2.25 0 013 5.818V4.774c0-.54.384-1.006.917-1.096A48.32 48.32 0 0112 3z" />
-        </svg>
+      <% end %>
+      <button class="btn btn-primary" type="submit">
         <span>Filtrer</span>
       </button>
     </div>
-  </div>
+  <% end %>
 </div>
 
 <div class="admin-card">
@@ -70,117 +72,33 @@
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td data-label="Numéro">F-2025-0234</td>
-          <td data-label="Utilisateur">
-            <div class="user-info-compact">
-              <div class="user-avatar-sm">JD</div>
-              <span>Jean Dupont</span>
-            </div>
-          </td>
-          <td data-label="Client">
-            <div>Mairie de Colombes</div>
-            <div class="text-muted small">SIRET: 213 920 065</div>
-          </td>
-          <td data-label="Date">27 mai 2025</td>
-          <td data-label="Échéance">26 juin 2025</td>
-          <td data-label="Montant" class="font-weight-bold success-text">4 200€</td>
-          <td data-label="Statut"><span class="status-badge status-success">Payée</span></td>
-          <td data-label="Actions">
-            <%= link_to invoice_admin_user_path(1, invoice_id: 1), class: "btn btn-xs btn-outline" do %>
-              <span>Voir</span>
-            <% end %>
-          </td>
-        </tr>
-        <tr>
-          <td data-label="Numéro">F-2025-0228</td>
-          <td data-label="Utilisateur">
-            <div class="user-info-compact">
-              <div class="user-avatar-sm">MM</div>
-              <span>Marie Martin</span>
-            </div>
-          </td>
-          <td data-label="Client">
-            <div>ABC Construction</div>
-            <div class="text-muted small">SIRET: 523 456 789</div>
-          </td>
-          <td data-label="Date">25 mai 2025</td>
-          <td data-label="Échéance">24 juin 2025</td>
-          <td data-label="Montant" class="font-weight-bold success-text">15 680€</td>
-          <td data-label="Statut"><span class="status-badge status-success">Payée</span></td>
-          <td data-label="Actions">
-            <%= link_to invoice_admin_user_path(2, invoice_id: 2), class: "btn btn-xs btn-outline" do %>
-              <span>Voir</span>
-            <% end %>
-          </td>
-        </tr>
-        <tr>
-          <td data-label="Numéro">F-2025-0221</td>
-          <td data-label="Utilisateur">
-            <div class="user-info-compact">
-              <div class="user-avatar-sm">MY</div>
-              <span>Mehmet Yılmaz</span>
-            </div>
-          </td>
-          <td data-label="Client">
-            <div>Yılmaz Holding</div>
-            <div class="text-muted small">SIRET: 789 123 456</div>
-          </td>
-          <td data-label="Date">23 mai 2025</td>
-          <td data-label="Échéance" class="warning-text">20 juin 2025</td>
-          <td data-label="Montant" class="font-weight-bold">12 450€</td>
-          <td data-label="Statut"><span class="status-badge status-warning">En attente</span></td>
-          <td data-label="Actions">
-            <%= link_to invoice_admin_user_path(3, invoice_id: 3), class: "btn btn-xs btn-outline" do %>
-              <span>Voir</span>
-            <% end %>
-          </td>
-        </tr>
-        <tr>
-          <td data-label="Numéro">F-2025-0215</td>
-          <td data-label="Utilisateur">
-            <div class="user-info-compact">
-              <div class="user-avatar-sm">AD</div>
-              <span>Ahmet Demir</span>
-            </div>
-          </td>
-          <td data-label="Client">
-            <div>Copropriété Les Lilas</div>
-            <div class="text-muted small">SIRET: 456 789 123</div>
-          </td>
-          <td data-label="Date">20 mai 2025</td>
-          <td data-label="Échéance">19 juin 2025</td>
-          <td data-label="Montant" class="font-weight-bold success-text">8 920€</td>
-          <td data-label="Statut"><span class="status-badge status-success">Payée</span></td>
-          <td data-label="Actions">
-            <%= link_to invoice_admin_user_path(4, invoice_id: 4), class: "btn btn-xs btn-outline" do %>
-              <span>Voir</span>
-            <% end %>
-          </td>
-        </tr>
-        <tr>
-          <td data-label="Numéro">F-2025-0209</td>
-          <td data-label="Utilisateur">
-            <div class="user-info-compact">
-              <div class="user-avatar-sm">PL</div>
-              <span>Pierre Lefebvre</span>
-            </div>
-          </td>
-          <td data-label="Client">
-            <div>M. et Mme Dubois</div>
-            <div class="text-muted small">Particulier</div>
-          </td>
-          <td data-label="Date">18 mai 2025</td>
-          <td data-label="Échéance" class="danger-text">18 juin 2025 (bientôt)</td>
-          <td data-label="Montant" class="font-weight-bold">3 240€</td>
-          <td data-label="Statut"><span class="status-badge status-warning">En attente</span></td>
-          <td data-label="Actions">
-            <%= link_to invoice_admin_user_path(5, invoice_id: 5), class: "btn btn-xs btn-outline" do %>
-              <span>Voir</span>
-            <% end %>
-          </td>
-        </tr>
+        <% @invoices.each do |inv| %>
+          <tr>
+            <td data-label="Numéro"><%= inv.invoice_number %></td>
+            <td data-label="Utilisateur">
+              <div class="user-info-compact">
+                <div class="user-avatar-sm"><%= inv.user.display_name.to_s.first(2).upcase %></div>
+                <span><%= inv.user.display_name %></span>
+              </div>
+            </td>
+            <td data-label="Client">
+              <div><%= inv.client.name %></div>
+              <div class="text-muted small"><%= inv.client.siret.present? ? "SIRET: #{inv.client.siret}" : "Particulier" %></div>
+            </td>
+            <td data-label="Date"><%= l(inv.issue_date) %></td>
+            <td data-label="Échéance"><%= inv.due_date ? l(inv.due_date) : '-' %></td>
+            <td data-label="Montant" class="font-weight-bold"><%= inv.formatted_total %></td>
+            <td data-label="Statut"><span class="status-badge"><%= inv.status %></span></td>
+            <td data-label="Actions">
+              <%= link_to invoice_admin_user_path(inv.user, invoice_id: inv.id), class: "btn btn-xs btn-outline" do %>
+                <span>Voir</span>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
       </tbody>
     </table>
   </div>
 </div>
+
+<%= render 'shared/pagination', collection: @invoices %>

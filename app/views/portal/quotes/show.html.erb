@@ -1,0 +1,115 @@
+<% content_for :title, @quote.quote_number %>
+<% content_for :page_title, @quote.quote_number %>
+<% content_for :active_page, :quotes %>
+<% content_for :back_path, client_quotes_path %>
+
+<!-- Content -->
+<main class="p-4 max-w-2xl mx-auto">
+  
+  <!-- Quote Header -->
+  <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-200 mb-4">
+    <div class="flex justify-between items-start mb-4">
+      <div>
+        <h2 class="text-xl font-bold text-gray-900"><%= @quote.quote_number %></h2>
+        <p class="text-gray-600"><%= @quote.client.name %></p>
+      </div>
+      <%= render 'portal/shared/quote_status_badge', quote: @quote %>
+    </div>
+    
+    <div class="grid grid-cols-2 gap-4 text-sm">
+      <div>
+        <p class="text-gray-500"><%= t('client.quotes.issue_date') %></p>
+        <p class="font-medium text-gray-900"><%= l(@quote.issue_date, format: :long) %></p>
+      </div>
+      <% if @quote.validity_date.present? %>
+        <div>
+          <p class="text-gray-500"><%= t('client.quotes.validity_date') %></p>
+          <p class="font-medium text-gray-900"><%= l(@quote.validity_date, format: :long) %></p>
+        </div>
+      <% end %>
+    </div>
+  </div>
+  
+  <!-- Client Info -->
+  <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-200 mb-4">
+    <h3 class="font-semibold text-gray-900 mb-3"><%= t('client.quotes.client_info') %></h3>
+    <div class="space-y-2 text-sm">
+      <p class="font-medium text-gray-900"><%= @quote.client.name %></p>
+      <% if @quote.client.address.present? %>
+        <p class="text-gray-600"><%= @quote.client.address %></p>
+      <% end %>
+      <% if @quote.client.siret.present? %>
+        <p class="text-gray-500">SIRET: <%= @quote.client.siret %></p>
+      <% end %>
+    </div>
+  </div>
+  
+  <!-- Items Table -->
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 mb-4 overflow-hidden">
+    <h3 class="font-semibold text-gray-900 p-4 border-b border-gray-200"><%= t('client.quotes.items') %></h3>
+    
+    <div class="overflow-x-auto">
+      <table class="w-full text-sm">
+        <thead class="bg-gray-50">
+          <tr>
+            <th class="px-4 py-3 text-left font-medium text-gray-700"><%= t('client.quotes.description') %></th>
+            <th class="px-4 py-3 text-right font-medium text-gray-700"><%= t('client.quotes.quantity') %></th>
+            <th class="px-4 py-3 text-right font-medium text-gray-700"><%= t('client.quotes.unit_price') %></th>
+            <th class="px-4 py-3 text-right font-medium text-gray-700"><%= t('client.quotes.total') %></th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-200">
+          <% @quote.items.each do |item| %>
+            <tr>
+              <td class="px-4 py-3 text-gray-900"><%= item.description %></td>
+              <td class="px-4 py-3 text-right text-gray-600"><%= number_with_precision(item.quantity, precision: 2) %> <%= item.unit %></td>
+              <td class="px-4 py-3 text-right text-gray-600"><%= number_to_currency(item.unit_price, unit: '€', format: '%n %u') %></td>
+              <td class="px-4 py-3 text-right font-medium text-gray-900"><%= number_to_currency(item.total_price, unit: '€', format: '%n %u') %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  
+  <!-- Totals -->
+  <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-200 mb-4">
+    <div class="space-y-2 text-sm">
+      <div class="flex justify-between">
+        <span class="text-gray-600"><%= t('client.quotes.subtotal') %></span>
+        <span class="text-gray-900"><%= number_to_currency(@quote.subtotal_amount, unit: '€', format: '%n %u') %></span>
+      </div>
+      <div class="flex justify-between">
+        <span class="text-gray-600"><%= t('client.quotes.vat', rate: @quote.vat_rate) %></span>
+        <span class="text-gray-900"><%= number_to_currency(@quote.vat_amount, unit: '€', format: '%n %u') %></span>
+      </div>
+      <div class="flex justify-between pt-2 border-t border-gray-200">
+        <span class="font-semibold text-gray-900"><%= t('client.quotes.total_ttc') %></span>
+        <span class="text-2xl font-bold text-gray-900"><%= number_to_currency(@quote.total_amount, unit: '€', format: '%n %u') %></span>
+      </div>
+    </div>
+  </div>
+  
+  <% if @quote.notes.present? %>
+    <!-- Notes -->
+    <div class="bg-yellow-50 rounded-xl p-6 border border-yellow-200 mb-4">
+      <h3 class="font-semibold text-gray-900 mb-2"><%= t('client.quotes.notes') %></h3>
+      <p class="text-sm text-gray-700"><%= @quote.notes %></p>
+    </div>
+  <% end %>
+  
+  <!-- Actions -->
+  <div class="space-y-3">
+    <%= link_to pdf_client_quote_path(@quote), 
+                class: "block w-full bg-green-600 hover:bg-green-700 text-white font-medium py-3 px-4 rounded-lg text-center transition" do %>
+      📥 <%= t('client.quotes.download_pdf') %>
+    <% end %>
+    
+    <%= button_to send_whatsapp_client_quote_path(@quote),
+                  method: :post,
+                  class: "w-full bg-white hover:bg-gray-50 text-gray-800 font-medium py-3 px-4 rounded-lg text-center transition border border-gray-300" do %>
+      💬 <%= t('client.quotes.send_whatsapp') %>
+    <% end %>
+  </div>
+
+</main>

@@ -1,0 +1,94 @@
+<% content_for :title, t('client.clients.title') %>
+<% content_for :page_title, t('client.clients.title') %>
+<% content_for :active_page, :clients %>
+<% content_for :back_path, client_dashboard_path %>
+
+<!-- Content -->
+<main class="p-4 max-w-2xl mx-auto">
+  
+  <!-- Simple Search -->
+  <div class="mb-6">
+    <%= form_with url: client_clients_path, method: :get, local: true, class: "relative" do |f| %>
+      <%= f.text_field :search, 
+                       value: params[:search],
+                       placeholder: "🔍 #{t('client.clients.search_placeholder')}", 
+                       class: "w-full px-5 py-4 bg-white rounded-full border border-gray-300 focus:outline-none focus:border-green-500 shadow-sm" %>
+    <% end %>
+  </div>
+
+  <% if params[:search].present? %>
+    <%= link_to client_clients_path, class: "inline-flex items-center mb-4 px-4 py-2 bg-gray-100 rounded-full text-sm font-medium text-gray-600 hover:bg-gray-200" do %>
+      ✕ <%= t('client.clients.clear_search') %>
+    <% end %>
+  <% end %>
+
+  <% if @clients.any? %>
+    <!-- List of Clients -->
+    <div class="space-y-3">
+      <% @clients.each do |client| %>
+        <%= link_to client_client_path(client), class: "block" do %>
+          <div class="bg-white rounded-xl p-5 shadow-sm border border-gray-200 hover:shadow-md transition">
+            <div class="flex items-center space-x-4">
+              <!-- Avatar -->
+              <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
+                <span class="text-lg font-bold text-green-600"><%= client.name.first(2).upcase %></span>
+              </div>
+              
+              <div class="flex-grow min-w-0">
+                <h3 class="font-semibold text-gray-800 truncate"><%= client.name %></h3>
+                <% if client.address.present? %>
+                  <p class="text-sm text-gray-500 truncate"><%= client.address %></p>
+                <% end %>
+              </div>
+              
+              <div class="flex-shrink-0 text-right">
+                <p class="text-xs text-gray-500"><%= client.quotes.count %> devis</p>
+                <p class="text-xs text-gray-500"><%= client.invoices.count %> factures</p>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      <% end %>
+    </div>
+    
+    <!-- Pagination -->
+    <% if @total_pages > 1 %>
+      <div class="mt-6 flex justify-center space-x-2">
+        <% if @current_page > 1 %>
+          <%= link_to client_clients_path(page: @current_page - 1, search: params[:search]), 
+                      class: "px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 text-sm" do %>
+            ← <%= t('pagination.previous') %>
+          <% end %>
+        <% end %>
+        
+        <span class="px-4 py-2 text-sm text-gray-600">
+          <%= t('pagination.page_info', current: @current_page, total: @total_pages) %>
+        </span>
+        
+        <% if @current_page < @total_pages %>
+          <%= link_to client_clients_path(page: @current_page + 1, search: params[:search]), 
+                      class: "px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 text-sm" do %>
+            <%= t('pagination.next') %> →
+          <% end %>
+        <% end %>
+      </div>
+    <% end %>
+  <% else %>
+    <!-- Empty State -->
+    <div class="bg-white rounded-xl p-8 shadow-sm border border-gray-200 text-center">
+      <div class="text-6xl mb-4">👥</div>
+      <h3 class="text-lg font-semibold text-gray-800 mb-2"><%= t('client.clients.no_clients') %></h3>
+      <p class="text-gray-600 text-sm">
+        <%= t('client.clients.no_clients_hint') %>
+      </p>
+    </div>
+  <% end %>
+
+  <!-- Hint -->
+  <div class="mt-8 text-center">
+    <p class="text-sm text-gray-500">
+      💬 <%= t('client.clients.whatsapp_hint_html') %>
+    </p>
+  </div>
+
+</main>

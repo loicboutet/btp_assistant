@@ -1,0 +1,121 @@
+<% content_for :title, "WhatsApp - Messages" %>
+
+<div class="admin-page-header">
+  <h1>Messages WhatsApp</h1>
+  <p class="text-muted">Historique inbound/outbound (WhatsappMessage)</p>
+</div>
+
+<div class="admin-card" style="margin-bottom: var(--spacing-lg);">
+  <h3 class="filters-title">Filtres</h3>
+
+  <%= form_with url: admin_whatsapp_messages_path, method: :get, local: true, class: "filters-bar" do |f| %>
+    <div class="search-box">
+      <%= f.search_field :q, value: @filters[:q], placeholder: "Recherche (contenu, transcription, unipile_message_id)", class: "form-input" %>
+    </div>
+
+    <div class="filter-group">
+      <%= f.select :user_id, options_for_select([['Tous les utilisateurs', '']] + @users_for_filter.map { |u| ["##{u.id} - #{u.display_name}", u.id] }, @filters[:user_id]), {}, class: "form-select" %>
+    </div>
+
+    <div class="filter-group">
+      <%= f.select :direction, options_for_select([['Toutes directions', '']] + @directions.map { |d| [d, d] }, @filters[:direction]), {}, class: "form-select" %>
+    </div>
+
+    <div class="filter-group">
+      <%= f.select :message_type, options_for_select([['Tous types', '']] + @message_types.map { |t| [t, t] }, @filters[:message_type]), {}, class: "form-select" %>
+    </div>
+
+    <div class="filter-group">
+      <%= f.select :processed, options_for_select([['Traité ?', ''], ['Oui', 'true'], ['Non', 'false']], @filters[:processed]), {}, class: "form-select" %>
+    </div>
+
+    <div class="filter-group">
+      <label style="display:flex; gap:8px; align-items:center;">
+        <%= f.check_box :with_errors, { checked: ActiveModel::Type::Boolean.new.cast(@filters[:with_errors]) }, 'true', 'false' %>
+        <span>Erreurs</span>
+      </label>
+    </div>
+
+    <div class="filter-group">
+      <%= f.date_field :from, value: @filters[:from], class: "form-input" %>
+    </div>
+
+    <div class="filter-group">
+      <%= f.date_field :to, value: @filters[:to], class: "form-input" %>
+    </div>
+
+    <div class="filter-actions">
+      <%= link_to "Effacer", admin_whatsapp_messages_path, class: "btn btn-outline" %>
+      <%= f.submit "Filtrer", class: "btn btn-primary" %>
+    </div>
+  <% end %>
+</div>
+
+<div class="admin-card">
+  <table class="admin-table">
+    <thead>
+      <tr>
+        <th>Horodatage</th>
+        <th>User</th>
+        <th>Dir</th>
+        <th>Type</th>
+        <th>Contenu</th>
+        <th>Langue</th>
+        <th>Traité</th>
+        <th>Erreur</th>
+        <th>LLM</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @whatsapp_messages.each do |m| %>
+        <tr class="<%= 'row-danger' if m.error_message.present? %>">
+          <td class="text-nowrap"><%= l(m.created_at, format: :short) rescue m.created_at %></td>
+          <td>
+            <%= link_to "##{m.user_id} - #{m.user.display_name}", admin_user_path(m.user_id) %>
+          </td>
+          <td><span class="badge"><%= m.direction %></span></td>
+          <td><span class="badge"><%= m.message_type %></span></td>
+          <td class="text-muted small"><%= m.display_content.to_s.truncate(120) %></td>
+          <td><%= m.detected_language.presence || '—' %></td>
+          <td><%= m.processed? ? 'Oui' : 'Non' %></td>
+          <td class="text-muted small"><%= m.error_message.to_s.truncate(80) %></td>
+          <td>
+            <% if m.llm_conversation %>
+              <%= link_to "##{m.llm_conversation.id}", admin_llm_conversation_path(m.llm_conversation) %>
+            <% else %>
+              —
+            <% end %>
+          </td>
+          <td>
+            <%= link_to "Détails", admin_whatsapp_message_path(m), class: "btn btn-xs btn-outline" %>
+          </td>
+        </tr>
+      <% end %>
+
+      <% if @whatsapp_messages.empty? %>
+        <tr>
+          <td colspan="10" class="text-muted">Aucun message</td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
+<% if @total_pages > 1 %>
+  <div class="pagination">
+    <% if @current_page > 1 %>
+      <%= link_to "← Précédent", admin_whatsapp_messages_path(request.query_parameters.merge(page: @current_page - 1)), class: "btn btn-outline" %>
+    <% else %>
+      <button class="btn btn-outline" disabled>Précédent</button>
+    <% end %>
+
+    <span class="pagination-info">Page <%= @current_page %> sur <%= @total_pages %></span>
+
+    <% if @current_page < @total_pages %>
+      <%= link_to "Suivant →", admin_whatsapp_messages_path(request.query_parameters.merge(page: @current_page + 1)), class: "btn btn-outline" %>
+    <% else %>
+      <button class="btn btn-outline" disabled>Suivant</button>
+    <% end %>
+  </div>
+<% end %>

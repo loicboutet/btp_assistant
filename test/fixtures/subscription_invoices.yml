@@ -1,0 +1,29 @@
+# SubscriptionInvoice fixtures for Stripe invoice tracking
+
+paid_invoice:
+  user: active_user
+  subscription: active_subscription
+  stripe_invoice_id: "in_paid_123"
+  invoice_number: "BTP-001"
+  amount: 29.90
+  currency: "eur"
+  status: "paid"
+  period_start: <%= 2.months.ago.to_date %>
+  period_end: <%= 1.month.ago.to_date %>
+  paid_at: <%= 2.months.ago %>
+  stripe_invoice_url: "https://invoice.stripe.com/i/paid_123"
+  stripe_invoice_pdf: "https://invoice.stripe.com/i/paid_123.pdf"
+
+recent_paid_invoice:
+  user: active_user
+  subscription: active_subscription
+  stripe_invoice_id: "in_paid_456"
+  invoice_number: "BTP-002"
+  amount: 29.90
+  currency: "eur"
+  status: "paid"
+  period_start: <%= 1.month.ago.to_date %>
+  period_end: <%= Date.current %>
+  paid_at: <%= 1.month.ago %>
+  stripe_invoice_url: "https://invoice.stripe.com/i/paid_456"
+  stripe_invoice_pdf: "https://invoice.stripe.com/i/paid_456.pdf"

@@ -1,0 +1,83 @@
+<% content_for :title, "WhatsApp Message ##{@whatsapp_message.id}" %>
+
+<div class="admin-page-header">
+  <%= link_to "← Retour", admin_whatsapp_messages_path, class: "back-link" %>
+  <h1>Détails message WhatsApp</h1>
+  <p class="text-muted">##<%= @whatsapp_message.id %> • <%= @whatsapp_message.direction %> • <%= @whatsapp_message.message_type %></p>
+</div>
+
+<div class="admin-card">
+  <div class="card-header">
+    <h2>Informations</h2>
+  </div>
+
+  <div class="details-list">
+    <div class="detail-item">
+      <span class="detail-label">Horodatage</span>
+      <span class="detail-value"><%= l(@whatsapp_message.created_at, format: :long) rescue @whatsapp_message.created_at %></span>
+    </div>
+
+    <div class="detail-item">
+      <span class="detail-label">Utilisateur</span>
+      <span class="detail-value"><%= link_to "##{@whatsapp_message.user_id} - #{@whatsapp_message.user.display_name}", admin_user_path(@whatsapp_message.user_id) %></span>
+    </div>
+
+    <div class="detail-item">
+      <span class="detail-label">Unipile message id</span>
+      <span class="detail-value"><%= @whatsapp_message.unipile_message_id %></span>
+    </div>
+
+    <div class="detail-item">
+      <span class="detail-label">Chat id</span>
+      <span class="detail-value"><%= @whatsapp_message.unipile_chat_id.presence || '—' %></span>
+    </div>
+
+    <div class="detail-item">
+      <span class="detail-label">Langue détectée</span>
+      <span class="detail-value"><%= @whatsapp_message.detected_language.presence || '—' %></span>
+    </div>
+
+    <div class="detail-item">
+      <span class="detail-label">Traité</span>
+      <span class="detail-value"><%= @whatsapp_message.processed? ? 'Oui' : 'Non' %></span>
+    </div>
+
+    <div class="detail-item">
+      <span class="detail-label">Erreur</span>
+      <span class="detail-value"><%= @whatsapp_message.error_message.presence || '—' %></span>
+    </div>
+  </div>
+</div>
+
+<div class="admin-content-grid" style="margin-top: var(--spacing-lg);">
+  <div class="admin-card">
+    <div class="card-header"><h2>Contenu</h2></div>
+    <div style="white-space: pre-wrap;"><%= @whatsapp_message.content.presence || '—' %></div>
+
+    <% if @whatsapp_message.audio_transcription.present? %>
+      <hr style="margin: var(--spacing-lg) 0;" />
+      <h3 style="margin-bottom: var(--spacing-sm);">Transcription</h3>
+      <div style="white-space: pre-wrap;"><%= @whatsapp_message.audio_transcription %></div>
+    <% end %>
+  </div>
+
+  <div class="admin-card">
+    <div class="card-header"><h2>LLM</h2></div>
+    <% if @whatsapp_message.llm_conversation %>
+      <p>
+        Conversation: <%= link_to "##{@whatsapp_message.llm_conversation.id}", admin_llm_conversation_path(@whatsapp_message.llm_conversation) %>
+      </p>
+      <p class="text-muted small">Model: <%= @whatsapp_message.llm_conversation.model.presence || '—' %></p>
+      <p class="text-muted small">Tokens: <%= @whatsapp_message.llm_conversation.total_tokens || '—' %></p>
+    <% else %>
+      <p class="text-muted">Aucune conversation liée</p>
+    <% end %>
+  </div>
+</div>
+
+<div class="admin-card" style="margin-top: var(--spacing-lg);">
+  <div class="card-header"><h2>Payload brut (JSON)</h2></div>
+  <div style="background: var(--color-gray-50); border-radius: var(--border-radius); padding: var(--spacing-lg); font-family: 'Courier New', monospace; font-size: 14px; overflow-x: auto;">
+    <pre style="margin:0; white-space: pre-wrap; word-wrap: break-word;"><%= JSON.pretty_generate(@whatsapp_message.raw_payload || {}) %></pre>
+  </div>
+</div>

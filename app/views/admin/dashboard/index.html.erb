@@ -10,13 +10,13 @@
   <div class="stat-card">
     <div class="stat-icon bg-blue">
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="32" height="32">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" />
+        <path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.25 0 11-5.25 0 2.625 2.25 0 015.25 0z" />
       </svg>
     </div>
     <div class="stat-content">
-      <div class="stat-value">47</div>
+      <div class="stat-value"><%= @active_users %></div>
       <div class="stat-label">Utilisateurs actifs</div>
-      <div class="stat-change positive">+12% ce mois</div>
+      <div class="stat-change neutral"><%= @active_users %> / <%= @total_users %> (total)</div>
     </div>
   </div>
 
@@ -27,9 +27,9 @@
       </svg>
     </div>
     <div class="stat-content">
-      <div class="stat-value">2 847€</div>
-      <div class="stat-label">MRR (Revenu mensuel)</div>
-      <div class="stat-change positive">+8% ce mois</div>
+      <div class="stat-value"><%= format_eur(@mrr_estimated) %></div>
+      <div class="stat-label">MRR estimé</div>
+      <div class="stat-change neutral">ARPU: <%= format_eur(@arpu_estimated) %></div>
     </div>
   </div>
 
@@ -40,9 +40,9 @@
       </svg>
     </div>
     <div class="stat-content">
-      <div class="stat-value">1 243</div>
+      <div class="stat-value"><%= @documents_total %></div>
       <div class="stat-label">Documents générés</div>
-      <div class="stat-change positive">+156 cette semaine</div>
+      <div class="stat-change neutral"><%= @documents_7d %> ces 7 derniers jours</div>
     </div>
   </div>
 
@@ -53,9 +53,9 @@
       </svg>
     </div>
     <div class="stat-content">
-      <div class="stat-value">98.2%</div>
-      <div class="stat-label">Webhooks réussis</div>
-      <div class="stat-change neutral">45 dernières 24h</div>
+      <div class="stat-value"><%= format_percent(@webhook_success_rate_24h) %></div>
+      <div class="stat-label">Webhooks (24h) - succès</div>
+      <div class="stat-change neutral"><%= @webhook_stats_24h[:success] %> succès / <%= @webhook_stats_24h[:failed] %> échecs (total: <%= @webhook_stats_24h[:total] %>)</div>
     </div>
   </div>
 </div>
@@ -65,49 +65,28 @@
   <div class="admin-card">
     <div class="card-header">
       <h2>Activité récente</h2>
-      <%= link_to logs_admin_user_path(1), class: "btn btn-sm btn-outline" do %>
+      <%= link_to admin_system_logs_path, class: "btn btn-sm btn-outline" do %>
         Voir tout
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" width="16" height="16" style="display: inline-block; vertical-align: middle; margin-left: 4px;">
           <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
         </svg>
       <% end %>
     </div>
+
     <div class="activity-list">
-      <div class="activity-item">
-        <div class="activity-icon bg-green">✓</div>
-        <div class="activity-content">
-          <div class="activity-title">Nouvel utilisateur inscrit</div>
-          <div class="activity-meta">Mehmet Yılmaz - Il y a 2 minutes</div>
-        </div>
-      </div>
-      <div class="activity-item">
-        <div class="activity-icon bg-blue">📄</div>
-        <div class="activity-content">
-          <div class="activity-title">Facture générée</div>
-          <div class="activity-meta">Jean Dupont - Il y a 15 minutes</div>
-        </div>
-      </div>
-      <div class="activity-item">
-        <div class="activity-icon bg-purple">💳</div>
-        <div class="activity-content">
-          <div class="activity-title">Paiement reçu</div>
-          <div class="activity-meta">Marie Martin - Il y a 1 heure</div>
-        </div>
-      </div>
-      <div class="activity-item">
-        <div class="activity-icon bg-orange">🔗</div>
-        <div class="activity-content">
-          <div class="activity-title">WhatsApp connecté</div>
-          <div class="activity-meta">Ahmet Demir - Il y a 2 heures</div>
-        </div>
-      </div>
-      <div class="activity-item">
-        <div class="activity-icon bg-green">📋</div>
-        <div class="activity-content">
-          <div class="activity-title">Devis créé via WhatsApp</div>
-          <div class="activity-meta">Pierre Lefebvre - Il y a 3 heures</div>
-        </div>
-      </div>
+      <% if @recent_logs.present? %>
+        <% @recent_logs.each do |log| %>
+          <div class="activity-item">
+            <div class="activity-icon <%= activity_color_class_for(log) %>"><%= activity_icon_for(log) %></div>
+            <div class="activity-content">
+              <div class="activity-title"><%= activity_title_for(log) %></div>
+              <div class="activity-meta"><%= activity_meta_for(log) %></div>
+            </div>
+          </div>
+        <% end %>
+      <% else %>
+        <div class="text-muted">Aucune activité récente.</div>
+      <% end %>
     </div>
   </div>
 
@@ -121,49 +100,27 @@
         </svg>
       <% end %>
     </div>
+
     <div class="alert-list">
-      <div class="alert-item warning">
-        <div class="alert-icon">⚠️</div>
-        <div class="alert-content">
-          <div class="alert-title">Paiement échoué</div>
-          <div class="alert-meta">Ali Öztürk - 2 jours restants</div>
-        </div>
-        <button class="btn btn-sm btn-primary" style="display: inline-flex; align-items: center; gap: 0.5rem;">
-          <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-            <path d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z"/>
-            <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z"/>
-          </svg>
-          <span>Relancer</span>
-        </button>
-      </div>
-      <div class="alert-item danger">
-        <div class="alert-icon">❌</div>
-        <div class="alert-content">
-          <div class="alert-title">Compte suspendu</div>
-          <div class="alert-meta">Sophie Bernard - Impayé depuis 15 jours</div>
-        </div>
-        <button class="btn btn-sm btn-outline" style="display: inline-flex; align-items: center; gap: 0.5rem;">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="14" height="14" style="display: inline-block; vertical-align: middle;">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
-            <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-          </svg>
-          <span>Voir</span>
-        </button>
-      </div>
-      <div class="alert-item warning">
-        <div class="alert-icon">⏰</div>
-        <div class="alert-content">
-          <div class="alert-title">Renouvellement proche</div>
-          <div class="alert-meta">Can Kaya - Dans 3 jours</div>
-        </div>
-        <button class="btn btn-sm btn-outline" style="display: inline-flex; align-items: center; gap: 0.5rem;">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="14" height="14" style="display: inline-block; vertical-align: middle;">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
-            <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-          </svg>
-          <span>Voir</span>
-        </button>
-      </div>
+      <% if @overdue_subscriptions_list.present? %>
+        <% @overdue_subscriptions_list.each do |sub| %>
+          <div class="alert-item warning">
+            <div class="alert-icon">⚠️</div>
+            <div class="alert-content">
+              <div class="alert-title">Paiement en retard</div>
+              <div class="alert-meta">
+                <%= sub.user&.display_name || "Utilisateur ##{sub.user_id}" %>
+                <% if sub.days_remaining.present? %>
+                  - <%= sub.days_remaining %> jours restants
+                <% end %>
+              </div>
+            </div>
+            <%= link_to "Voir", admin_subscription_path(sub), class: "btn btn-sm btn-outline" %>
+          </div>
+        <% end %>
+      <% else %>
+        <div class="text-muted">Aucun abonnement en alerte.</div>
+      <% end %>
     </div>
   </div>
 </div>
@@ -179,31 +136,34 @@
       </svg>
     <% end %>
   </div>
+
   <div class="stats-grid">
     <div class="stat-card">
       <div class="stat-icon bg-blue">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="32" height="32">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" />
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.25 0 11-5.25 0 2.625 2.25 0 015.25 0z" />
         </svg>
       </div>
       <div class="stat-content">
-        <div class="stat-value">8</div>
+        <div class="stat-value"><%= @new_users_7d %></div>
         <div class="stat-label">Nouveaux utilisateurs (7j)</div>
         <div class="stat-change neutral">Cette semaine</div>
       </div>
     </div>
+
     <div class="stat-card">
       <div class="stat-icon bg-green">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="32" height="32">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
+          <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5z" />
         </svg>
       </div>
       <div class="stat-content">
-        <div class="stat-value">73%</div>
-        <div class="stat-label">Taux de conversion</div>
-        <div class="stat-change positive">Excellent</div>
+        <div class="stat-value"><%= @active_subscriptions %></div>
+        <div class="stat-label">Abonnements actifs</div>
+        <div class="stat-change neutral"><%= @past_due_subscriptions %> en retard</div>
       </div>
     </div>
+
     <div class="stat-card">
       <div class="stat-icon bg-purple">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="32" height="32">
@@ -211,11 +171,12 @@
         </svg>
       </div>
       <div class="stat-content">
-        <div class="stat-value">542</div>
+        <div class="stat-value"><%= @quotes_this_month %></div>
         <div class="stat-label">Devis créés (mois)</div>
         <div class="stat-change neutral">Ce mois</div>
       </div>
     </div>
+
     <div class="stat-card">
       <div class="stat-icon bg-orange">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="32" height="32">
@@ -223,11 +184,12 @@
         </svg>
       </div>
       <div class="stat-content">
-        <div class="stat-value">701</div>
+        <div class="stat-value"><%= @invoices_this_month %></div>
         <div class="stat-label">Factures créées (mois)</div>
         <div class="stat-change neutral">Ce mois</div>
       </div>
     </div>
+
     <div class="stat-card">
       <div class="stat-icon bg-blue">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="32" height="32">
@@ -235,11 +197,12 @@
         </svg>
       </div>
       <div class="stat-content">
-        <div class="stat-value">3 247</div>
-        <div class="stat-label">Messages WhatsApp</div>
-        <div class="stat-change neutral">Ce mois</div>
+        <div class="stat-value"><%= @messages_this_month %></div>
+        <div class="stat-label">Messages WhatsApp (mois)</div>
+        <div class="stat-change neutral"><%= @messages_24h %> sur 24h</div>
       </div>
     </div>
+
     <div class="stat-card">
       <div class="stat-icon bg-green">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="32" height="32">
@@ -247,9 +210,9 @@
         </svg>
       </div>
       <div class="stat-content">
-        <div class="stat-value">94%</div>
-        <div class="stat-label">Taux de rétention</div>
-        <div class="stat-change positive">Très bon</div>
+        <div class="stat-value"><%= @active_users_30d %></div>
+        <div class="stat-label">Utilisateurs actifs (30j)</div>
+        <div class="stat-change neutral">Basé sur last_activity_at</div>
       </div>
     </div>
   </div>

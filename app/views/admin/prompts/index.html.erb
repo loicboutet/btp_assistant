@@ -1,0 +1,41 @@
+<% content_for :title, "Prompts LLM - Admin" %>
+
+<div class="admin-page-header">
+  <h1>Prompts LLM</h1>
+  <p class="text-muted">Gestion des prompts utilisés par l'assistant</p>
+</div>
+
+<div class="admin-card">
+  <div class="card-header">
+    <h2>Liste des prompts</h2>
+  </div>
+
+  <table class="admin-table">
+    <thead>
+      <tr>
+        <th>Nom</th>
+        <th>Description</th>
+        <th>Actif</th>
+        <th>Version</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @prompts.each do |prompt| %>
+        <tr>
+          <td><code><%= prompt.name %></code></td>
+          <td><%= prompt.description %></td>
+          <td>
+            <% if prompt.is_active? %>
+              <span class="status-badge status-success">Oui</span>
+            <% else %>
+              <span class="status-badge status-warning">Non</span>
+            <% end %>
+          </td>
+          <td><%= prompt.version %></td>
+          <td><%= link_to "Éditer", edit_admin_prompt_path(prompt), class: "btn btn-sm btn-primary" %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

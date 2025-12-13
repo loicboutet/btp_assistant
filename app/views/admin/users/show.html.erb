@@ -1,30 +1,29 @@
-<% content_for :title, "Jean Dupont - Utilisateur" %>
+<% content_for :title, "Utilisateur - #{@user.display_name}" %>
 
 <div class="admin-page-header">
   <div class="header-with-actions">
     <div>
       <%= link_to "← Retour aux utilisateurs", admin_users_path, class: "back-link" %>
-      <h1>Jean Dupont</h1>
-      <p class="text-muted">Dupont Maçonnerie • Membre depuis 3 mois</p>
+      <h1><%= @user.display_name %></h1>
+      <p class="text-muted"><%= @user.company_name.presence || '-' %> • Inscrit le <%= l(@user.created_at.to_date) %></p>
     </div>
     <div class="header-actions">
-      <%= link_to edit_admin_user_path(1), class: "btn btn-primary" do %>
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="16" height="16">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
-        </svg>
+      <%= link_to edit_admin_user_path(@user), class: "btn btn-primary" do %>
         <span>Modifier</span>
       <% end %>
-      <%= link_to stripe_portal_admin_user_path(1), method: :post, class: "btn btn-outline" do %>
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="16" height="16">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5z" />
-        </svg>
-        <span>Stripe Portal</span>
+
+      <%= link_to stripe_portal_admin_user_path(@user), class: "btn btn-outline" do %>
+        <span>Stripe</span>
       <% end %>
-      <%= link_to suspend_admin_user_path(1), method: :post, class: "btn btn-danger", data: { confirm: "Êtes-vous sûr de vouloir suspendre ce compte ?" } do %>
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="16" height="16">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
-        </svg>
-        <span>Suspendre</span>
+
+      <% if @user.subscription_status == 'active' %>
+        <%= link_to suspend_admin_user_path(@user), method: :post, class: "btn btn-danger", data: { confirm: "Êtes-vous sûr de vouloir suspendre ce compte ?" } do %>
+          <span>Suspendre</span>
+        <% end %>
+      <% else %>
+        <%= link_to activate_admin_user_path(@user), method: :post, class: "btn btn-primary", data: { confirm: "Activer ce compte ?" } do %>
+          <span>Activer</span>
+        <% end %>
       <% end %>
     </div>
   </div>
@@ -35,70 +34,76 @@
   <div class="stat-card">
     <div class="stat-icon bg-purple">📄</div>
     <div class="stat-content">
-      <div class="stat-value">87</div>
+      <div class="stat-value"><%= @quotes_count + @invoices_count %></div>
       <div class="stat-label">Documents générés</div>
-      <div class="stat-detail">42 devis, 45 factures</div>
+      <div class="stat-detail"><%= @quotes_count %> devis, <%= @invoices_count %> factures</div>
     </div>
   </div>
   <div class="stat-card">
     <div class="stat-icon bg-blue">👥</div>
     <div class="stat-content">
-      <div class="stat-value">12</div>
+      <div class="stat-value"><%= @clients_count %></div>
       <div class="stat-label">Clients</div>
-      <div class="stat-detail">8 pro, 4 particuliers</div>
+      <div class="stat-detail">Total</div>
     </div>
   </div>
   <div class="stat-card">
     <div class="stat-icon bg-green">💰</div>
     <div class="stat-content">
-      <div class="stat-value success-text">Actif</div>
+      <div class="stat-value"><%= @user.subscription_status %></div>
       <div class="stat-label">Abonnement</div>
-      <div class="stat-detail">Prochain: 15 juin 2025</div>
+      <div class="stat-detail">
+        <% if @subscription.present? && @subscription.current_period_end.present? %>
+          Prochaine échéance: <%= l(@subscription.current_period_end.to_date) %>
+        <% else %>
+          -
+        <% end %>
+      </div>
     </div>
   </div>
   <div class="stat-card">
     <div class="stat-icon bg-orange">💬</div>
     <div class="stat-content">
-      <div class="stat-value success-text">Connecté</div>
+      <div class="stat-value <%= @whatsapp_connected ? 'success-text' : '' %>"><%= @whatsapp_connected ? 'Connecté' : 'Non connecté' %></div>
       <div class="stat-label">WhatsApp</div>
-      <div class="stat-detail">+33 6 12 34 56 78</div>
+      <div class="stat-detail"><%= @user.formatted_phone %></div>
     </div>
   </div>
 </div>
 
 <!-- Quick Links -->
 <div class="stats-grid" style="margin-bottom: var(--spacing-xl);">
-  <%= link_to clients_admin_user_path(params[:id]), class: "stat-card", style: "text-decoration: none;" do %>
+  <%= link_to clients_admin_user_path(@user), class: "stat-card", style: "text-decoration: none;" do %>
     <div class="stat-icon bg-blue">👥</div>
     <div class="stat-content">
-      <div class="stat-value">12</div>
+      <div class="stat-value"><%= @clients_count %></div>
       <div class="stat-label">Clients</div>
       <div class="stat-change neutral">Voir la liste →</div>
     </div>
   <% end %>
 
-  <%= link_to quotes_admin_user_path(params[:id]), class: "stat-card", style: "text-decoration: none;" do %>
+  <%= link_to quotes_admin_user_path(@user), class: "stat-card", style: "text-decoration: none;" do %>
     <div class="stat-icon bg-purple">📋</div>
     <div class="stat-content">
-      <div class="stat-value">42</div>
+      <div class="stat-value"><%= @quotes_count %></div>
       <div class="stat-label">Devis</div>
       <div class="stat-change neutral">Voir la liste →</div>
     </div>
   <% end %>
 
-  <%= link_to invoices_admin_user_path(params[:id]), class: "stat-card", style: "text-decoration: none;" do %>
+  <%= link_to invoices_admin_user_path(@user), class: "stat-card", style: "text-decoration: none;" do %>
     <div class="stat-icon bg-green">📄</div>
     <div class="stat-content">
-      <div class="stat-value">45</div>
+      <div class="stat-value"><%= @invoices_count %></div>
       <div class="stat-label">Factures</div>
       <div class="stat-change neutral">Voir la liste →</div>
     </div>
   <% end %>
 
-  <%= link_to logs_admin_user_path(params[:id]), class: "stat-card", style: "text-decoration: none;" do %>
+  <%= link_to logs_admin_user_path(@user), class: "stat-card", style: "text-decoration: none;" do %>
     <div class="stat-icon bg-orange">📊</div>
     <div class="stat-content">
-      <div class="stat-value">247</div>
+      <div class="stat-value"><%= SystemLog.for_user(@user).count %></div>
       <div class="stat-label">Logs</div>
       <div class="stat-change neutral">Voir l'activité →</div>
     </div>
@@ -109,106 +114,80 @@
 <div class="admin-content-grid">
   <div class="admin-card">
     <div class="card-header">
-      <h2>Informations personnelles</h2>
-      <%= link_to edit_admin_user_path(1), class: "btn btn-sm btn-outline" do %>
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="14" height="14">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
-        </svg>
+      <h2>Informations</h2>
+      <%= link_to edit_admin_user_path(@user), class: "btn btn-sm btn-outline" do %>
         <span>Modifier</span>
       <% end %>
     </div>
     <div class="details-list">
       <div class="detail-item">
-        <span class="detail-label">Nom complet</span>
-        <span class="detail-value">Jean Dupont</span>
+        <span class="detail-label">Nom</span>
+        <span class="detail-value"><%= [@user.first_name, @user.last_name].compact.join(' ').presence || '-' %></span>
       </div>
       <div class="detail-item">
         <span class="detail-label">Email</span>
-        <span class="detail-value">jean.dupont@example.fr</span>
+        <span class="detail-value"><%= @user.email.presence || '-' %></span>
       </div>
       <div class="detail-item">
         <span class="detail-label">Téléphone</span>
-        <span class="detail-value">+33 6 12 34 56 78</span>
+        <span class="detail-value"><%= @user.formatted_phone %></span>
       </div>
       <div class="detail-item">
         <span class="detail-label">Langue préférée</span>
-        <span class="detail-value">🇫🇷 Français</span>
+        <span class="detail-value"><%= @user.preferred_language == 'tr' ? '🇹🇷 Türkçe' : '🇫🇷 Français' %></span>
       </div>
       <div class="detail-item">
-        <span class="detail-label">Date d'inscription</span>
-        <span class="detail-value">15 mars 2025</span>
+        <span class="detail-label">Statut</span>
+        <span class="detail-value"><%= @user.subscription_status %></span>
       </div>
       <div class="detail-item">
-        <span class="detail-label">Dernière connexion</span>
-        <span class="detail-value">Aujourd'hui à 14:23</span>
+        <span class="detail-label">Dernière activité</span>
+        <span class="detail-value"><%= @user.last_activity_at ? l(@user.last_activity_at) : '-' %></span>
+      </div>
+      <div class="detail-item">
+        <span class="detail-label">1er message WhatsApp</span>
+        <span class="detail-value"><%= @user.first_message_at ? l(@user.first_message_at) : '-' %></span>
       </div>
     </div>
   </div>
 
   <div class="admin-card">
     <div class="card-header">
-      <h2>Informations entreprise</h2>
+      <h2>Entreprise</h2>
     </div>
     <div class="details-list">
       <div class="detail-item">
         <span class="detail-label">Nom de l'entreprise</span>
-        <span class="detail-value">Dupont Maçonnerie</span>
+        <span class="detail-value"><%= @user.company_name.presence || '-' %></span>
       </div>
       <div class="detail-item">
         <span class="detail-label">SIRET</span>
-        <span class="detail-value">123 456 789 00012</span>
+        <span class="detail-value"><%= @user.siret.presence || '-' %></span>
       </div>
       <div class="detail-item">
         <span class="detail-label">Numéro de TVA</span>
-        <span class="detail-value">FR12345678901</span>
+        <span class="detail-value"><%= @user.vat_number.presence || '-' %></span>
       </div>
       <div class="detail-item">
         <span class="detail-label">Adresse</span>
-        <span class="detail-value">15 Rue de la Maçonnerie<br>75010 Paris, France</span>
+        <span class="detail-value"><%= simple_format(@user.address.to_s) %></span>
       </div>
     </div>
   </div>
 </div>
 
-<!-- Subscription Details -->
 <div class="admin-card" style="margin-top: var(--spacing-xl);">
   <div class="card-header">
-    <h2>Détails de l'abonnement</h2>
-    <%= link_to "#", class: "btn btn-sm btn-outline", target: "_blank" do %>
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="14" height="14">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
-      </svg>
-      <span>Ouvrir Stripe Dashboard</span>
-    <% end %>
+    <h2>WhatsApp / Unipile</h2>
   </div>
   <div class="details-list">
     <div class="detail-item">
-      <span class="detail-label">Statut</span>
-      <span class="detail-value"><span class="status-badge status-success">Actif</span></span>
+      <span class="detail-label">Unipile chat id</span>
+      <span class="detail-value"><%= @user.unipile_chat_id.presence || '-' %></span>
     </div>
     <div class="detail-item">
-      <span class="detail-label">Plan</span>
-      <span class="detail-value">Mensuel - 59€/mois</span>
-    </div>
-    <div class="detail-item">
-      <span class="detail-label">Stripe Customer ID</span>
-      <span class="detail-value">cus_AbCdEfGhIjKl</span>
-    </div>
-    <div class="detail-item">
-      <span class="detail-label">Stripe Subscription ID</span>
-      <span class="detail-value">sub_1234567890</span>
-    </div>
-    <div class="detail-item">
-      <span class="detail-label">Date de début</span>
-      <span class="detail-value">15 mars 2025</span>
-    </div>
-    <div class="detail-item">
-      <span class="detail-label">Prochain paiement</span>
-      <span class="detail-value">15 juin 2025</span>
-    </div>
-    <div class="detail-item">
-      <span class="detail-label">Moyen de paiement</span>
-      <span class="detail-value">Carte •••• 4242</span>
+      <span class="detail-label">Unipile attendee id</span>
+      <span class="detail-value"><%= @user.unipile_attendee_id.presence || '-' %></span>
     </div>
   </div>
 </div>
@@ -219,35 +198,16 @@
     <h2>Actions rapides</h2>
   </div>
   <div class="quick-actions-grid">
-    <%= link_to reset_whatsapp_admin_user_path(1), method: :post, class: "btn btn-outline btn-block", data: { confirm: "Forcer la reconnexion WhatsApp ?" } do %>
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="16" height="16">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" />
-      </svg>
+    <%= link_to reset_whatsapp_admin_user_path(@user), method: :post, class: "btn btn-outline btn-block", data: { confirm: "Forcer la reconnexion WhatsApp ?" } do %>
       <span>Réinitialiser WhatsApp</span>
     <% end %>
-    <%= link_to stripe_portal_admin_user_path(1), method: :post, class: "btn btn-outline btn-block" do %>
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="16" height="16">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5z" />
-      </svg>
+
+    <%= link_to create_stripe_portal_admin_user_path(@user), method: :post, class: "btn btn-outline btn-block" do %>
       <span>Ouvrir Stripe Portal</span>
     <% end %>
-    <%= link_to edit_admin_user_path(1), class: "btn btn-outline btn-block" do %>
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="16" height="16">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
-      </svg>
-      <span>Modifier les informations</span>
-    <% end %>
-    <%= link_to logs_admin_user_path(1), class: "btn btn-outline btn-block" do %>
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="16" height="16">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 12h16.5m-16.5 3.75h16.5M3.75 19.5h16.5M5.625 4.5h12.75a1.875 1.875 0 010 3.75H5.625a1.875 1.875 0 010-3.75z" />
-      </svg>
-      <span>Voir tous les logs</span>
-    <% end %>
-    <%= link_to suspend_admin_user_path(1), method: :post, class: "btn btn-danger btn-block", data: { confirm: "Êtes-vous sûr de vouloir suspendre ce compte ?" } do %>
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="16" height="16">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
-      </svg>
-      <span>Suspendre le compte</span>
+
+    <%= link_to logs_admin_user_path(@user), class: "btn btn-outline btn-block" do %>
+      <span>Voir les logs</span>
     <% end %>
   </div>
 </div>

@@ -1,0 +1,37 @@
+# frozen_string_literal: true
+
+require "test_helper"
+
+class AdminPromptsAuthTest < ActionDispatch::IntegrationTest
+  test "prompts require authentication" do
+    get admin_prompts_path
+    assert_redirected_to new_admin_session_path
+  end
+
+  test "prompts edit requires authentication" do
+    prompt = llm_prompts(:system_prompt)
+
+    get edit_admin_prompt_path(prompt)
+    assert_redirected_to new_admin_session_path
+  end
+
+  test "prompts update requires authentication" do
+    prompt = llm_prompts(:system_prompt)
+
+    patch admin_prompt_path(prompt), params: {
+      llm_prompt: { prompt_text: "Nouveau texte" }
+    }
+    assert_redirected_to new_admin_session_path
+  end
+
+  test "prompts test requires authentication (json)" do
+    prompt = llm_prompts(:system_prompt)
+
+    post test_admin_prompt_path(prompt), params: { input: "ping" }, as: :json
+
+    # Devise responds 401 for JSON requests (not a redirect)
+    assert_response :unauthorized
+    body = JSON.parse(response.body)
+    assert_match(/need to sign in/i, body["error"])
+  end
+end

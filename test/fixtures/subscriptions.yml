@@ -1,0 +1,38 @@
+# Subscription fixtures for Stripe subscription management
+
+active_subscription:
+  user: active_user
+  stripe_subscription_id: "sub_active_123"
+  stripe_price_id: "price_monthly_2990"
+  status: "active"
+  current_period_start: <%= 1.month.ago %>
+  current_period_end: <%= 1.month.from_now %>
+  cancel_at_period_end: false
+
+past_due_subscription:
+  user: past_due_user
+  stripe_subscription_id: "sub_pastdue_456"
+  stripe_price_id: "price_monthly_2990"
+  status: "past_due"
+  current_period_start: <%= 2.months.ago %>
+  current_period_end: <%= 1.month.ago %>
+  cancel_at_period_end: false
+
+canceled_subscription:
+  user: canceled_user
+  stripe_subscription_id: "sub_canceled_789"
+  stripe_price_id: "price_monthly_2990"
+  status: "canceled"
+  current_period_start: <%= 3.months.ago %>
+  current_period_end: <%= 2.months.ago %>
+  cancel_at_period_end: false
+  canceled_at: <%= 2.months.ago %>
+
+canceling_subscription:
+  user: turkish_user
+  stripe_subscription_id: "sub_canceling_101"
+  stripe_price_id: "price_monthly_2990"
+  status: "active"
+  current_period_start: <%= 15.days.ago %>
+  current_period_end: <%= 15.days.from_now %>
+  cancel_at_period_end: true

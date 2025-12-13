@@ -42,6 +42,33 @@ gem "thruster", require: false
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
 # gem "image_processing", "~> 1.2"
 
+# ========================================
+# BTP Assistant Dependencies
+# ========================================
+
+# Authentication for admins
+gem "devise", "~> 4.9"
+
+# Phone number validation and formatting
+gem "phonelib"
+
+# PDF generation for quotes and invoices
+gem "prawn"
+gem "prawn-table"
+
+# OpenAI API for LLM (GPT-4 + Whisper)
+gem "ruby-openai"
+
+# Stripe for payments
+gem "stripe"
+
+# Rate limiting
+gem "rack-attack"
+
+# HTTP client for Unipile API
+gem "faraday"
+gem "faraday-multipart"
+
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"
@@ -62,6 +89,10 @@ group :test do
   # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
   gem "capybara"
   gem "selenium-webdriver"
+  
+  # HTTP request stubbing for API tests
+  gem "webmock"
+  
+  # Mock/stub objects
+  gem "mocha"
 end
-
-gem "devise", "~> 4.9"

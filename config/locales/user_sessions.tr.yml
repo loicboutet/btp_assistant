@@ -1,0 +1,6 @@
+tr:
+  user_sessions:
+    welcome_back: "Hoş geldiniz, %{name}!"
+    link_expired: "Bu bağlantının süresi doldu. WhatsApp'tan yeni bir bağlantı isteyin."
+    link_invalid: "Bu bağlantı geçerli değil."
+    session_expired: "Oturumunuzun süresi doldu. WhatsApp'tan yeni bir bağlantı isteyin."

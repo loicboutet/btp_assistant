@@ -1,41 +1,54 @@
 <% content_for :title, "Abonnements - Admin" %>
 
 <div class="admin-page-header">
-  <h1>Gestion des abonnements</h1>
-  <p class="text-muted">47 actifs • 5 en retard • 3 annulés</p>
+  <div style="display:flex; justify-content: space-between; align-items: center; gap: var(--spacing-md);">
+    <div>
+      <h1>Gestion des abonnements</h1>
+      <p class="text-muted"><%= @active_count %> actifs • <%= @past_due_count %> en retard • <%= @canceled_count %> annulés</p>
+    </div>
+    <div>
+      <%= link_to new_admin_subscription_path, class: "btn btn-primary btn-sm" do %>
+        + Créer un abonnement
+      <% end %>
+    </div>
+  </div>
 </div>
 
 <!-- Filters -->
 <div class="admin-card" style="margin-bottom: var(--spacing-lg);">
   <h3 class="filters-title">Filtres de recherche</h3>
-  <div class="filters-bar">
+  <%= form_with url: admin_subscriptions_path, method: :get, local: true, class: "filters-bar" do %>
     <div class="search-box">
-      <input type="search" placeholder="Rechercher par nom, Stripe ID..." class="form-input">
+      <%= text_field_tag :q, params[:q], type: :search, placeholder: "Rechercher par entreprise, customer/subscription id...", class: "form-input" %>
     </div>
     <div class="filter-group">
-      <select class="form-select">
-        <option>Tous les statuts</option>
-        <option selected>Actifs</option>
-        <option>En retard</option>
-        <option>Annulés</option>
-        <option>Essai</option>
-      </select>
+      <%= select_tag :status,
+            options_for_select([
+              ["Tous les statuts", ""],
+              ["Actifs", "active"],
+              ["En retard", "past_due"],
+              ["Annulés", "canceled"],
+              ["Unpaid", "unpaid"],
+              ["Incomplete", "incomplete"]
+            ], params[:status]),
+            class: "form-select" %>
     </div>
     <div class="filter-actions">
-      <button class="btn btn-outline">
+      <%= link_to admin_subscriptions_path, class: "btn btn-outline" do %>
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="20" height="20">
           <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
         </svg>
         <span>Effacer</span>
-      </button>
+      <% end %>
       <%= link_to overdue_admin_subscriptions_path, class: "btn btn-primary" do %>
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="20" height="20">
           <path stroke-linecap="round" stroke-linejoin="round" d="M12 3c2.755 0 5.455.232 8.083.678.533.09.917.556.917 1.096v1.044a2.25 2.25 0 01-.659 1.591l-5.432 5.432a2.25 2.25 0 00-.659 1.591v2.927a2.25 2.25 0 01-1.244 2.013L9.75 21v-6.568a2.25 2.25 0 00-.659-1.591L3.659 7.409A2.25 2.25 0 013 5.818V4.774c0-.54.384-1.006.917-1.096A48.32 48.32 0 0112 3z" />
         </svg>
         <span>Abonnements en retard</span>
       <% end %>
+      <button class="btn btn-primary" type="submit" style="display:none"></button>
     </div>
-  </div>
+  <% end %>
 </div>
 
 <!-- Subscriptions Table -->
@@ -45,177 +58,58 @@
       <thead>
         <tr>
           <th>Utilisateur</th>
-          <th>Plan</th>
           <th>Statut</th>
           <th>Stripe IDs</th>
           <th>Date début</th>
-          <th>Prochain paiement</th>
-          <th>MRR</th>
+          <th>Fin période</th>
           <th>Actions</th>
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td data-label="Utilisateur">
-            <div class="user-info">
-              <div class="user-avatar">JD</div>
-              <div>
-                <div class="user-name">Jean Dupont</div>
-                <div class="user-email">jean.dupont@example.fr</div>
+        <% @subscriptions.each do |sub| %>
+          <tr>
+            <td data-label="Utilisateur">
+              <div class="user-info">
+                <div class="user-avatar"><%= (sub.user.company_name.presence || sub.user.phone_number).to_s.first(2).upcase %></div>
+                <div>
+                  <div class="user-name"><%= sub.user.display_name %></div>
+                  <div class="user-email"><%= sub.user.formatted_phone %></div>
+                </div>
               </div>
-            </div>
-          </td>
-          <td data-label="Plan">Mensuel</td>
-          <td data-label="Statut"><span class="status-badge status-success">Actif</span></td>
-          <td data-label="Stripe IDs">
-            <div class="text-muted small">cus_AbCdEfGh</div>
-            <div class="text-muted small">sub_12345678</div>
-          </td>
-          <td data-label="Date début">15 mars 2025</td>
-          <td data-label="Prochain paiement">15 juin 2025</td>
-          <td data-label="MRR" class="font-weight-bold">59€</td>
-          <td data-label="Actions">
-            <div class="action-buttons">
-              <%= link_to admin_subscription_path(1), class: "btn btn-xs btn-outline" do %>
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" width="16" height="16">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                </svg>
-                Voir
-              <% end %>
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <td data-label="Utilisateur">
-            <div class="user-info">
-              <div class="user-avatar">MM</div>
-              <div>
-                <div class="user-name">Marie Martin</div>
-                <div class="user-email">marie.martin@example.fr</div>
+            </td>
+            <td data-label="Statut">
+              <% css = case sub.status
+                     when 'active' then 'status-success'
+                     when 'past_due' then 'status-warning'
+                     when 'canceled', 'unpaid' then 'status-danger'
+                     else 'status-warning'
+                     end %>
+              <span class="status-badge <%= css %>"><%= sub.status %></span>
+            </td>
+            <td data-label="Stripe IDs">
+              <div class="text-muted small"><%= sub.user.stripe_customer_id.presence || '-' %></div>
+              <div class="text-muted small"><%= sub.stripe_subscription_id %></div>
+            </td>
+            <td data-label="Date début"><%= sub.current_period_start ? l(sub.current_period_start.to_date) : '-' %></td>
+            <td data-label="Fin période"><%= sub.current_period_end ? l(sub.current_period_end.to_date) : '-' %></td>
+            <td data-label="Actions">
+              <div class="action-buttons">
+                <%= link_to admin_subscription_path(sub), class: "btn btn-xs btn-outline" do %>
+                  Voir
+                <% end %>
+                <%= link_to edit_admin_subscription_path(sub), class: "btn btn-xs btn-outline" do %>
+                  Éditer
+                <% end %>
+                <%= link_to admin_user_path(sub.user), class: "btn btn-xs btn-outline" do %>
+                  Profil
+                <% end %>
               </div>
-            </div>
-          </td>
-          <td data-label="Plan">Mensuel</td>
-          <td data-label="Statut"><span class="status-badge status-success">Actif</span></td>
-          <td data-label="Stripe IDs">
-            <div class="text-muted small">cus_IjKlMnOp</div>
-            <div class="text-muted small">sub_23456789</div>
-          </td>
-          <td data-label="Date début">12 déc 2024</td>
-          <td data-label="Prochain paiement">12 juin 2025</td>
-          <td data-label="MRR" class="font-weight-bold">59€</td>
-          <td data-label="Actions">
-            <div class="action-buttons">
-              <%= link_to admin_subscription_path(2), class: "btn btn-xs btn-outline" do %>
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" width="16" height="16">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                </svg>
-                Voir
-              <% end %>
-            </div>
-          </td>
-        </tr>
-        <tr class="row-warning">
-          <td data-label="Utilisateur">
-            <div class="user-info">
-              <div class="user-avatar">AÖ</div>
-              <div>
-                <div class="user-name">Ali Öztürk</div>
-                <div class="user-email">ali.ozturk@example.com</div>
-              </div>
-            </div>
-          </td>
-          <td data-label="Plan">Mensuel</td>
-          <td data-label="Statut"><span class="status-badge status-warning">Paiement échoué</span></td>
-          <td data-label="Stripe IDs">
-            <div class="text-muted small">cus_QrStUvWx</div>
-            <div class="text-muted small">sub_34567890</div>
-          </td>
-          <td data-label="Date début">8 fév 2025</td>
-          <td data-label="Prochain paiement" class="warning-text">Échoué - 2j restants</td>
-          <td data-label="MRR" class="font-weight-bold">59€</td>
-          <td data-label="Actions">
-            <div class="action-buttons">
-              <%= link_to admin_subscription_path(3), class: "btn btn-xs btn-outline" do %>
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" width="16" height="16">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                </svg>
-                Voir
-              <% end %>
-            </div>
-          </td>
-        </tr>
-        <tr class="row-danger">
-          <td data-label="Utilisateur">
-            <div class="user-info">
-              <div class="user-avatar">SB</div>
-              <div>
-                <div class="user-name">Sophie Bernard</div>
-                <div class="user-email">sophie.bernard@example.fr</div>
-              </div>
-            </div>
-          </td>
-          <td data-label="Plan">Mensuel</td>
-          <td data-label="Statut"><span class="status-badge status-danger">Suspendu</span></td>
-          <td data-label="Stripe IDs">
-            <div class="text-muted small">cus_YzAbCdEf</div>
-            <div class="text-muted small">sub_45678901</div>
-          </td>
-          <td data-label="Date début">1 nov 2024</td>
-          <td data-label="Prochain paiement" class="danger-text">Impayé 15 jours</td>
-          <td data-label="MRR" class="font-weight-bold">59€</td>
-          <td data-label="Actions">
-            <div class="action-buttons">
-              <%= link_to admin_subscription_path(4), class: "btn btn-xs btn-outline" do %>
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" width="16" height="16">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                </svg>
-                Voir
-              <% end %>
-            </div>
-          </td>
-        </tr>
+            </td>
+          </tr>
+        <% end %>
       </tbody>
     </table>
   </div>
 </div>
 
-<!-- Summary Stats -->
-<div class="stats-grid" style="margin-top: var(--spacing-xl);">
-  <div class="stat-card">
-    <div class="stat-icon bg-green">💰</div>
-    <div class="stat-content">
-      <div class="stat-label">MRR Total</div>
-      <div class="stat-value">2 847€</div>
-      <div class="stat-change positive">+8% ce mois</div>
-    </div>
-  </div>
-  <div class="stat-card">
-    <div class="stat-icon bg-blue">📊</div>
-    <div class="stat-content">
-      <div class="stat-label">ARR (Annual)</div>
-      <div class="stat-value">34 164€</div>
-      <div class="stat-detail">Projection annuelle</div>
-    </div>
-  </div>
-  <div class="stat-card">
-    <div class="stat-icon bg-orange">📉</div>
-    <div class="stat-content">
-      <div class="stat-label">Churn Rate</div>
-      <div class="stat-value">2.1%</div>
-      <div class="stat-change positive">↓ 0.5%</div>
-    </div>
-  </div>
-  <div class="stat-card">
-    <div class="stat-icon bg-purple">👤</div>
-    <div class="stat-content">
-      <div class="stat-label">ARPU</div>
-      <div class="stat-value">60.57€</div>
-      <div class="stat-detail">Par utilisateur</div>
-    </div>
-  </div>
-</div>
+<%= render 'shared/pagination', collection: @subscriptions %>

@@ -1,0 +1,67 @@
+<% content_for :title, "Log ##{@system_log.id}" %>
+
+<div class="admin-page-header">
+  <%= link_to "← Retour", admin_system_logs_path, class: "back-link" %>
+  <h1>Détails du log</h1>
+  <p class="text-muted">##<%= @system_log.id %> • <%= @system_log.event %></p>
+</div>
+
+<div class="admin-card">
+  <div class="card-header">
+    <h2>Informations</h2>
+    <span class="badge <%= @system_log.log_type_badge_class %>"><%= @system_log.log_type %></span>
+  </div>
+
+  <div class="details-list">
+    <div class="detail-item">
+      <span class="detail-label">Horodatage</span>
+      <span class="detail-value"><%= l(@system_log.created_at, format: :long) rescue @system_log.created_at %></span>
+    </div>
+
+    <div class="detail-item">
+      <span class="detail-label">Utilisateur</span>
+      <span class="detail-value">
+        <% if @system_log.user %>
+          <%= link_to "##{@system_log.user_id} - #{@system_log.user.display_name}", admin_user_path(@system_log.user_id) %>
+        <% else %>
+          —
+        <% end %>
+      </span>
+    </div>
+
+    <div class="detail-item">
+      <span class="detail-label">Admin</span>
+      <span class="detail-value"><%= @system_log.admin_user&.email || '—' %></span>
+    </div>
+
+    <div class="detail-item">
+      <span class="detail-label">Event</span>
+      <span class="detail-value"><%= @system_log.event %></span>
+    </div>
+
+    <div class="detail-item">
+      <span class="detail-label">Description</span>
+      <span class="detail-value"><%= @system_log.description.presence || '—' %></span>
+    </div>
+
+    <div class="detail-item">
+      <span class="detail-label">IP</span>
+      <span class="detail-value"><%= @system_log.ip_address.presence || '—' %></span>
+    </div>
+
+    <div class="detail-item">
+      <span class="detail-label">User-Agent</span>
+      <span class="detail-value"><%= @system_log.user_agent.presence || '—' %></span>
+    </div>
+  </div>
+</div>
+
+<div class="admin-card" style="margin-top: var(--spacing-lg);">
+  <div class="card-header">
+    <h2>Métadonnées (JSON)</h2>
+  </div>
+
+  <div style="background: var(--color-gray-50); border-radius: var(--border-radius); padding: var(--spacing-lg); font-family: 'Courier New', monospace; font-size: 14px; overflow-x: auto;">
+    <pre style="margin: 0; white-space: pre-wrap; word-wrap: break-word;"><%= JSON.pretty_generate(@system_log.metadata || {}) %></pre>
+  </div>
+</div>

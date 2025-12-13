@@ -1,0 +1,6 @@
+fr:
+  user_sessions:
+    welcome_back: "Bienvenue, %{name} !"
+    link_expired: "Ce lien a expiré. Demandez un nouveau lien sur WhatsApp."
+    link_invalid: "Ce lien n'est pas valide."
+    session_expired: "Votre session a expiré. Demandez un nouveau lien sur WhatsApp."

@@ -1,0 +1,20 @@
+<%# Status badge for invoices %>
+<% 
+  badge_classes = case invoice.status
+                  when 'draft'
+                    'bg-gray-100 text-gray-800'
+                  when 'sent'
+                    'bg-yellow-100 text-yellow-800'
+                  when 'paid'
+                    'bg-green-100 text-green-800'
+                  when 'overdue'
+                    'bg-red-100 text-red-800'
+                  when 'canceled'
+                    'bg-gray-100 text-gray-500'
+                  else
+                    'bg-gray-100 text-gray-800'
+                  end
+%>
+<span class="px-3 py-1 <%= badge_classes %> text-xs font-medium rounded-full">
+  <%= t("client.invoices.status.#{invoice.status}") %>
+</span>

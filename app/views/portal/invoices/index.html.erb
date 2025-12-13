@@ -1,0 +1,133 @@
+<% content_for :title, t('client.invoices.title') %>
+<% content_for :page_title, t('client.invoices.title') %>
+<% content_for :active_page, :invoices %>
+<% content_for :back_path, client_dashboard_path %>
+
+<!-- Content -->
+<main class="p-4 max-w-2xl mx-auto">
+  
+  <!-- Simple Search -->
+  <div class="mb-4">
+    <%= form_with url: client_invoices_path, method: :get, local: true, class: "relative" do |f| %>
+      <%= f.text_field :search, 
+                       value: params[:search],
+                       placeholder: "🔍 #{t('client.invoices.search_placeholder')}", 
+                       class: "w-full px-5 py-4 bg-white rounded-full border border-gray-300 focus:outline-none focus:border-green-500 shadow-sm" %>
+      <% if params[:status].present? %>
+        <%= f.hidden_field :status, value: params[:status] %>
+      <% end %>
+      <% if params[:client_id].present? %>
+        <%= f.hidden_field :client_id, value: params[:client_id] %>
+      <% end %>
+    <% end %>
+  </div>
+
+  <!-- Simple Filters -->
+  <div class="flex flex-wrap gap-3 mb-6">
+    <!-- Status Filter -->
+    <div class="relative">
+      <select name="status" 
+              onchange="window.location.href = '<%= client_invoices_path %>?status=' + this.value + '<%= "&search=#{params[:search]}" if params[:search].present? %><%= "&client_id=#{params[:client_id]}" if params[:client_id].present? %>'"
+              class="appearance-none flex items-center space-x-2 px-5 py-3 bg-white rounded-full border border-gray-300 shadow-sm hover:border-green-500 cursor-pointer text-sm font-medium pr-10">
+        <option value=""><%= t('client.invoices.all_status') %></option>
+        <option value="draft" <%= 'selected' if params[:status] == 'draft' %>><%= t('client.invoices.status.draft') %></option>
+        <option value="sent" <%= 'selected' if params[:status] == 'sent' %>><%= t('client.invoices.status.sent') %></option>
+        <option value="paid" <%= 'selected' if params[:status] == 'paid' %>><%= t('client.invoices.status.paid') %></option>
+        <option value="overdue" <%= 'selected' if params[:status] == 'overdue' %>><%= t('client.invoices.status.overdue') %></option>
+      </select>
+      <div class="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">▼</div>
+    </div>
+    
+    <!-- Client Filter -->
+    <% if @clients.any? %>
+      <div class="relative">
+        <select name="client_id" 
+                onchange="window.location.href = '<%= client_invoices_path %>?client_id=' + this.value + '<%= "&search=#{params[:search]}" if params[:search].present? %><%= "&status=#{params[:status]}" if params[:status].present? %>'"
+                class="appearance-none flex items-center space-x-2 px-5 py-3 bg-white rounded-full border border-gray-300 shadow-sm hover:border-green-500 cursor-pointer text-sm font-medium pr-10">
+          <option value=""><%= t('client.invoices.all_clients') %></option>
+          <% @clients.each do |c| %>
+            <option value="<%= c.id %>" <%= 'selected' if params[:client_id].to_s == c.id.to_s %>><%= c.name %></option>
+          <% end %>
+        </select>
+        <div class="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">▼</div>
+      </div>
+    <% end %>
+    
+    <% if params[:search].present? || params[:status].present? || params[:client_id].present? %>
+      <%= link_to client_invoices_path, class: "flex items-center space-x-2 px-5 py-3 bg-gray-100 rounded-full border border-gray-300 shadow-sm hover:bg-gray-200 text-sm font-medium text-gray-600" do %>
+        ✕ <%= t('client.invoices.clear_filters') %>
+      <% end %>
+    <% end %>
+  </div>
+
+  <% if @invoices.any? %>
+    <!-- List of Documents -->
+    <div class="space-y-3">
+      <% @invoices.each do |invoice| %>
+        <%= link_to client_invoice_path(invoice), class: "block" do %>
+          <div class="bg-white rounded-xl p-5 shadow-sm border border-gray-200 hover:shadow-md transition">
+            <div class="flex justify-between items-start mb-3">
+              <div>
+                <h3 class="font-semibold text-gray-800 text-lg"><%= invoice.invoice_number %></h3>
+                <p class="text-sm text-gray-600"><%= invoice.client.name %></p>
+                <p class="text-xs text-gray-500 mt-1"><%= l(invoice.issue_date, format: :long) %></p>
+              </div>
+              <%= render 'portal/shared/invoice_status_badge', invoice: invoice %>
+            </div>
+            
+            <div class="flex justify-between items-center pt-3 border-t border-gray-100">
+              <p class="text-2xl font-bold text-gray-900"><%= number_to_currency(invoice.total_amount, unit: '€', format: '%n %u') %></p>
+              <div class="flex space-x-2">
+                <%= link_to pdf_client_invoice_path(invoice), class: "p-2 hover:bg-gray-100 rounded-lg", onclick: "event.stopPropagation();" do %>
+                  <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                  </svg>
+                <% end %>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      <% end %>
+    </div>
+    
+    <!-- Pagination -->
+    <% if @total_pages > 1 %>
+      <div class="mt-6 flex justify-center space-x-2">
+        <% if @current_page > 1 %>
+          <%= link_to client_invoices_path(page: @current_page - 1, search: params[:search], status: params[:status], client_id: params[:client_id]), 
+                      class: "px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 text-sm" do %>
+            ← <%= t('pagination.previous') %>
+          <% end %>
+        <% end %>
+        
+        <span class="px-4 py-2 text-sm text-gray-600">
+          <%= t('pagination.page_info', current: @current_page, total: @total_pages) %>
+        </span>
+        
+        <% if @current_page < @total_pages %>
+          <%= link_to client_invoices_path(page: @current_page + 1, search: params[:search], status: params[:status], client_id: params[:client_id]), 
+                      class: "px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 text-sm" do %>
+            <%= t('pagination.next') %> →
+          <% end %>
+        <% end %>
+      </div>
+    <% end %>
+  <% else %>
+    <!-- Empty State -->
+    <div class="bg-white rounded-xl p-8 shadow-sm border border-gray-200 text-center">
+      <div class="text-6xl mb-4">🧾</div>
+      <h3 class="text-lg font-semibold text-gray-800 mb-2"><%= t('client.invoices.no_invoices') %></h3>
+      <p class="text-gray-600 text-sm">
+        <%= t('client.invoices.no_invoices_hint') %>
+      </p>
+    </div>
+  <% end %>
+
+  <!-- Hint -->
+  <div class="mt-8 text-center">
+    <p class="text-sm text-gray-500">
+      💬 <%= t('client.invoices.whatsapp_hint_html') %>
+    </p>
+  </div>
+
+</main>

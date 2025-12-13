@@ -1,0 +1,138 @@
+<% content_for :title, @invoice.invoice_number %>
+<% content_for :page_title, @invoice.invoice_number %>
+<% content_for :active_page, :invoices %>
+<% content_for :back_path, client_invoices_path %>
+
+<!-- Content -->
+<main class="p-4 max-w-2xl mx-auto">
+  
+  <!-- Invoice Header -->
+  <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-200 mb-4">
+    <div class="flex justify-between items-start mb-4">
+      <div>
+        <h2 class="text-xl font-bold text-gray-900"><%= @invoice.invoice_number %></h2>
+        <p class="text-gray-600"><%= @invoice.client.name %></p>
+      </div>
+      <%= render 'portal/shared/invoice_status_badge', invoice: @invoice %>
+    </div>
+    
+    <div class="grid grid-cols-2 gap-4 text-sm">
+      <div>
+        <p class="text-gray-500"><%= t('client.invoices.issue_date') %></p>
+        <p class="font-medium text-gray-900"><%= l(@invoice.issue_date, format: :long) %></p>
+      </div>
+      <% if @invoice.due_date.present? %>
+        <div>
+          <p class="text-gray-500"><%= t('client.invoices.due_date') %></p>
+          <p class="font-medium text-gray-900 <%= 'text-red-600' if @invoice.overdue? %>">
+            <%= l(@invoice.due_date, format: :long) %>
+            <% if @invoice.overdue? %>
+              <span class="text-xs">(<%= t('client.invoices.days_overdue', count: @invoice.days_overdue) %>)</span>
+            <% end %>
+          </p>
+        </div>
+      <% end %>
+    </div>
+    
+    <% if @invoice.paid? && @invoice.paid_at.present? %>
+      <div class="mt-4 pt-4 border-t border-gray-200">
+        <p class="text-sm text-green-600 font-medium">
+          ✅ <%= t('client.invoices.paid_on', date: l(@invoice.paid_at.to_date, format: :long)) %>
+        </p>
+      </div>
+    <% end %>
+  </div>
+  
+  <!-- Client Info -->
+  <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-200 mb-4">
+    <h3 class="font-semibold text-gray-900 mb-3"><%= t('client.invoices.client_info') %></h3>
+    <div class="space-y-2 text-sm">
+      <p class="font-medium text-gray-900"><%= @invoice.client.name %></p>
+      <% if @invoice.client.address.present? %>
+        <p class="text-gray-600"><%= @invoice.client.address %></p>
+      <% end %>
+      <% if @invoice.client.siret.present? %>
+        <p class="text-gray-500">SIRET: <%= @invoice.client.siret %></p>
+      <% end %>
+    </div>
+  </div>
+  
+  <!-- Items Table -->
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 mb-4 overflow-hidden">
+    <h3 class="font-semibold text-gray-900 p-4 border-b border-gray-200"><%= t('client.invoices.items') %></h3>
+    
+    <div class="overflow-x-auto">
+      <table class="w-full text-sm">
+        <thead class="bg-gray-50">
+          <tr>
+            <th class="px-4 py-3 text-left font-medium text-gray-700"><%= t('client.invoices.description') %></th>
+            <th class="px-4 py-3 text-right font-medium text-gray-700"><%= t('client.invoices.quantity') %></th>
+            <th class="px-4 py-3 text-right font-medium text-gray-700"><%= t('client.invoices.unit_price') %></th>
+            <th class="px-4 py-3 text-right font-medium text-gray-700"><%= t('client.invoices.total') %></th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-200">
+          <% @invoice.items.each do |item| %>
+            <tr>
+              <td class="px-4 py-3 text-gray-900"><%= item.description %></td>
+              <td class="px-4 py-3 text-right text-gray-600"><%= number_with_precision(item.quantity, precision: 2) %> <%= item.unit %></td>
+              <td class="px-4 py-3 text-right text-gray-600"><%= number_to_currency(item.unit_price, unit: '€', format: '%n %u') %></td>
+              <td class="px-4 py-3 text-right font-medium text-gray-900"><%= number_to_currency(item.total_price, unit: '€', format: '%n %u') %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  
+  <!-- Totals -->
+  <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-200 mb-4">
+    <div class="space-y-2 text-sm">
+      <div class="flex justify-between">
+        <span class="text-gray-600"><%= t('client.invoices.subtotal') %></span>
+        <span class="text-gray-900"><%= number_to_currency(@invoice.subtotal_amount, unit: '€', format: '%n %u') %></span>
+      </div>
+      <div class="flex justify-between">
+        <span class="text-gray-600"><%= t('client.invoices.vat', rate: @invoice.vat_rate) %></span>
+        <span class="text-gray-900"><%= number_to_currency(@invoice.vat_amount, unit: '€', format: '%n %u') %></span>
+      </div>
+      <div class="flex justify-between pt-2 border-t border-gray-200">
+        <span class="font-semibold text-gray-900"><%= t('client.invoices.total_ttc') %></span>
+        <span class="text-2xl font-bold text-gray-900"><%= number_to_currency(@invoice.total_amount, unit: '€', format: '%n %u') %></span>
+      </div>
+    </div>
+  </div>
+  
+  <% if @invoice.notes.present? %>
+    <!-- Notes -->
+    <div class="bg-yellow-50 rounded-xl p-6 border border-yellow-200 mb-4">
+      <h3 class="font-semibold text-gray-900 mb-2"><%= t('client.invoices.notes') %></h3>
+      <p class="text-sm text-gray-700"><%= @invoice.notes %></p>
+    </div>
+  <% end %>
+  
+  <% if @invoice.quote.present? %>
+    <!-- Related Quote -->
+    <div class="bg-blue-50 rounded-xl p-4 border border-blue-200 mb-4">
+      <p class="text-sm text-blue-800">
+        📄 <%= t('client.invoices.from_quote') %>: 
+        <%= link_to @invoice.quote.quote_number, client_quote_path(@invoice.quote), class: "font-medium underline hover:no-underline" %>
+      </p>
+    </div>
+  <% end %>
+  
+  <!-- Actions -->
+  <div class="space-y-3">
+    <%= link_to pdf_client_invoice_path(@invoice), 
+                class: "block w-full bg-green-600 hover:bg-green-700 text-white font-medium py-3 px-4 rounded-lg text-center transition" do %>
+      📥 <%= t('client.invoices.download_pdf') %>
+    <% end %>
+    
+    <%= button_to send_whatsapp_client_invoice_path(@invoice),
+                  method: :post,
+                  class: "w-full bg-white hover:bg-gray-50 text-gray-800 font-medium py-3 px-4 rounded-lg text-center transition border border-gray-300" do %>
+      💬 <%= t('client.invoices.send_whatsapp') %>
+    <% end %>
+  </div>
+
+</main>

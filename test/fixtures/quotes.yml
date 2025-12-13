@@ -1,0 +1,43 @@
+# Quote fixtures for testing
+
+quote_one:
+  user: active_user
+  client: client_acme
+  quote_number: "DEVIS-2025-0001"
+  issue_date: <%= Date.current %>
+  validity_date: <%= 30.days.from_now.to_date %>
+  status: "sent"
+  subtotal_amount: 1000.00
+  vat_rate: 20.0
+  vat_amount: 200.00
+  total_amount: 1200.00
+  notes: "Conditions particulieres: paiement a 30 jours"
+  sent_via_whatsapp_at: <%= 1.day.ago %>
+
+quote_draft:
+  user: active_user
+  client: client_martin
+  quote_number: "DEVIS-2025-0002"
+  issue_date: <%= Date.current %>
+  validity_date: <%= 30.days.from_now.to_date %>
+  status: "draft"
+  subtotal_amount: 500.00
+  vat_rate: 20.0
+  vat_amount: 100.00
+  total_amount: 600.00
+  notes: ~
+  sent_via_whatsapp_at: ~
+
+quote_turkish:
+  user: turkish_user
+  client: client_turkish
+  quote_number: "DEVIS-2025-9001"
+  issue_date: <%= Date.current %>
+  validity_date: <%= 30.days.from_now.to_date %>
+  status: "sent"
+  subtotal_amount: 2500.00
+  vat_rate: 20.0
+  vat_amount: 500.00
+  total_amount: 3000.00
+  notes: ~
+  sent_via_whatsapp_at: <%= Time.current %>

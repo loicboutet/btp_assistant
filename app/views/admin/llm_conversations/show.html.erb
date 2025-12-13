@@ -1,0 +1,90 @@
+<% content_for :title, "LLM Conversation ##{@llm_conversation.id}" %>
+
+<div class="admin-page-header">
+  <%= link_to "← Retour", admin_llm_conversations_path, class: "back-link" %>
+  <h1>Détails conversation LLM</h1>
+  <p class="text-muted">##<%= @llm_conversation.id %></p>
+</div>
+
+<div class="admin-card">
+  <div class="details-list">
+    <div class="detail-item">
+      <span class="detail-label">Horodatage</span>
+      <span class="detail-value"><%= l(@llm_conversation.created_at, format: :long) rescue @llm_conversation.created_at %></span>
+    </div>
+
+    <div class="detail-item">
+      <span class="detail-label">Utilisateur</span>
+      <span class="detail-value"><%= link_to "##{@llm_conversation.user_id} - #{@llm_conversation.user.display_name}", admin_user_path(@llm_conversation.user_id) %></span>
+    </div>
+
+    <div class="detail-item">
+      <span class="detail-label">Message WhatsApp</span>
+      <span class="detail-value">
+        <% if @llm_conversation.whatsapp_message_id %>
+          <%= link_to "WA ##{@llm_conversation.whatsapp_message_id}", admin_whatsapp_message_path(@llm_conversation.whatsapp_message_id) %>
+        <% else %>
+          —
+        <% end %>
+      </span>
+    </div>
+
+    <div class="detail-item">
+      <span class="detail-label">Model</span>
+      <span class="detail-value"><%= @llm_conversation.model.presence || '—' %></span>
+    </div>
+
+    <div class="detail-item">
+      <span class="detail-label">Tool</span>
+      <span class="detail-value"><%= @llm_conversation.tool_name.presence || '—' %></span>
+    </div>
+
+    <div class="detail-item">
+      <span class="detail-label">Tokens</span>
+      <span class="detail-value"><%= @llm_conversation.total_tokens.presence || '—' %></span>
+    </div>
+
+    <div class="detail-item">
+      <span class="detail-label">Durée</span>
+      <span class="detail-value"><%= @llm_conversation.duration_seconds.presence || '—' %> sec</span>
+    </div>
+
+    <div class="detail-item">
+      <span class="detail-label">Coût estimé</span>
+      <span class="detail-value">$<%= @llm_conversation.estimated_cost_usd %></span>
+    </div>
+
+    <div class="detail-item">
+      <span class="detail-label">Erreur</span>
+      <span class="detail-value"><%= @llm_conversation.error_message.presence || '—' %></span>
+    </div>
+  </div>
+</div>
+
+<div class="admin-card" style="margin-top: var(--spacing-lg);">
+  <div class="card-header"><h2>Messages payload</h2></div>
+  <div style="background: var(--color-gray-50); border-radius: var(--border-radius); padding: var(--spacing-lg); font-family: 'Courier New', monospace; font-size: 14px; overflow-x: auto;">
+    <pre style="margin:0; white-space: pre-wrap; word-wrap: break-word;"><%= JSON.pretty_generate(@llm_conversation.messages_payload || {}) %></pre>
+  </div>
+</div>
+
+<div class="admin-card" style="margin-top: var(--spacing-lg);">
+  <div class="card-header"><h2>Réponse payload</h2></div>
+  <div style="background: var(--color-gray-50); border-radius: var(--border-radius); padding: var(--spacing-lg); font-family: 'Courier New', monospace; font-size: 14px; overflow-x: auto;">
+    <pre style="margin:0; white-space: pre-wrap; word-wrap: break-word;"><%= JSON.pretty_generate(@llm_conversation.response_payload || {}) %></pre>
+  </div>
+</div>
+
+<div class="admin-card" style="margin-top: var(--spacing-lg);">
+  <div class="card-header"><h2>Tool arguments</h2></div>
+  <div style="background: var(--color-gray-50); border-radius: var(--border-radius); padding: var(--spacing-lg); font-family: 'Courier New', monospace; font-size: 14px; overflow-x: auto;">
+    <pre style="margin:0; white-space: pre-wrap; word-wrap: break-word;"><%= JSON.pretty_generate(@llm_conversation.tool_arguments || {}) %></pre>
+  </div>
+</div>
+
+<div class="admin-card" style="margin-top: var(--spacing-lg);">
+  <div class="card-header"><h2>Tool result</h2></div>
+  <div style="background: var(--color-gray-50); border-radius: var(--border-radius); padding: var(--spacing-lg); font-family: 'Courier New', monospace; font-size: 14px; overflow-x: auto;">
+    <pre style="margin:0; white-space: pre-wrap; word-wrap: break-word;"><%= JSON.pretty_generate(@llm_conversation.tool_result || {}) %></pre>
+  </div>
+</div>

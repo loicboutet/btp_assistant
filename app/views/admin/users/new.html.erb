@@ -1,3 +1,5 @@
+<% content_for :title, "Créer un utilisateur - Admin" %>
+
 <div class="admin-page-header">
   <%= link_to admin_users_path, class: "back-link" do %>
     <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16" style="margin-right: 4px;">
@@ -6,140 +8,114 @@
     Retour aux utilisateurs
   <% end %>
   <h1>Créer un nouvel utilisateur</h1>
-  <p class="text-muted">Ajoutez manuellement un nouveau compte artisan</p>
+  <p class="text-muted">Ajoutez manuellement un compte artisan (base de données)</p>
 </div>
 
 <div class="admin-card">
-  <%= form_with url: admin_users_path, method: :post, local: true do |f| %>
-    <!-- Personal Information Section -->
+  <%= form_with model: @user, url: admin_users_path, method: :post, local: true do |f| %>
+
+    <!-- Identity / Contact -->
     <div style="margin-bottom: var(--spacing-xl);">
-      <h3 style="margin-bottom: var(--spacing-lg); color: var(--primary-green);">Informations Personnelles</h3>
-      
+      <h3 style="margin-bottom: var(--spacing-lg); color: var(--primary-green);">Identité & Contact</h3>
+
       <div class="form-fields-grid">
         <div class="form-group">
           <%= f.label :first_name, "Prénom", class: "form-label" %>
-          <%= f.text_field :first_name, class: "form-input", placeholder: "Jean", required: true %>
+          <%= f.text_field :first_name, class: "form-input", placeholder: "Jean" %>
         </div>
 
         <div class="form-group">
           <%= f.label :last_name, "Nom", class: "form-label" %>
-          <%= f.text_field :last_name, class: "form-input", placeholder: "Dupont", required: true %>
+          <%= f.text_field :last_name, class: "form-input", placeholder: "Dupont" %>
         </div>
       </div>
 
       <div class="form-fields-grid">
         <div class="form-group">
           <%= f.label :email, "Email", class: "form-label" %>
-          <%= f.email_field :email, class: "form-input", placeholder: "jean.dupont@example.com", required: true %>
-          <span class="form-hint">L'adresse email pour la connexion au compte</span>
+          <%= f.email_field :email, class: "form-input", placeholder: "jean.dupont@example.com" %>
+          <span class="form-hint">Optionnel pour l'instant (utile pour facturation / support)</span>
         </div>
 
         <div class="form-group">
-          <%= f.label :whatsapp_phone, "Téléphone WhatsApp", class: "form-label" %>
-          <%= f.text_field :whatsapp_phone, class: "form-input", placeholder: "+33612345678", required: true %>
+          <%= f.label :phone_number, "Téléphone WhatsApp (E.164)", class: "form-label" %>
+          <%= f.text_field :phone_number, class: "form-input", placeholder: "+33612345678", required: true %>
           <span class="form-hint">Format: +33612345678 (sans espaces)</span>
         </div>
       </div>
 
       <div class="form-group">
         <%= f.label :preferred_language, "Langue préférée", class: "form-label" %>
-        <%= f.select :preferred_language, 
-          [["🇫🇷 Français", "fr"], ["🇹🇷 Türkçe", "tr"]], 
-          {}, 
+        <%= f.select :preferred_language,
+          [["🇫🇷 Français", "fr"], ["🇹🇷 Türkçe", "tr"]],
+          {},
           class: "form-select", required: true %>
       </div>
     </div>
 
-    <!-- Business Information Section -->
+    <!-- Business -->
     <div style="margin-bottom: var(--spacing-xl);">
       <h3 style="margin-bottom: var(--spacing-lg); color: var(--primary-green);">Informations Professionnelles</h3>
-      
+
       <div class="form-group">
         <%= f.label :company_name, "Nom de l'entreprise", class: "form-label" %>
-        <%= f.text_field :company_name, class: "form-input", placeholder: "Dupont Maçonnerie SARL", required: true %>
+        <%= f.text_field :company_name, class: "form-input", placeholder: "Dupont Maçonnerie SARL" %>
       </div>
 
       <div class="form-fields-grid">
         <div class="form-group">
           <%= f.label :siret, "Numéro SIRET", class: "form-label" %>
-          <%= f.text_field :siret, class: "form-input", placeholder: "12345678900012", required: true %>
-          <span class="form-hint">14 chiffres sans espaces</span>
+          <%= f.text_field :siret, class: "form-input", placeholder: "12345678900012" %>
+          <span class="form-hint">14 chiffres (sans espaces)</span>
         </div>
 
         <div class="form-group">
           <%= f.label :vat_number, "Numéro de TVA", class: "form-label" %>
           <%= f.text_field :vat_number, class: "form-input", placeholder: "FR12345678901" %>
-          <span class="form-hint">Optionnel - Format: FR + 11 chiffres</span>
+          <span class="form-hint">Optionnel</span>
         </div>
       </div>
 
       <div class="form-group">
         <%= f.label :address, "Adresse complète", class: "form-label" %>
-        <%= f.text_area :address, class: "form-textarea", rows: 3, placeholder: "15 Rue de la Construction\n75001 Paris\nFrance", required: true %>
+        <%= f.text_area :address, class: "form-textarea", rows: 3, placeholder: "15 Rue de la Construction\n75001 Paris\nFrance" %>
       </div>
     </div>
 
-    <!-- Account Settings Section -->
+    <!-- Account / Stripe -->
     <div style="margin-bottom: var(--spacing-xl);">
-      <h3 style="margin-bottom: var(--spacing-lg); color: var(--primary-green);">Paramètres du Compte</h3>
-      
-      <div class="form-fields-grid">
-        <div class="form-group">
-          <%= f.label :password, "Mot de passe temporaire", class: "form-label" %>
-          <%= f.password_field :password, class: "form-input", placeholder: "Minimum 6 caractères", required: true %>
-          <span class="form-hint">L'utilisateur pourra le changer après connexion</span>
-        </div>
+      <h3 style="margin-bottom: var(--spacing-lg); color: var(--primary-green);">Compte & Stripe</h3>
 
-        <div class="form-group">
-          <%= f.label :password_confirmation, "Confirmation du mot de passe", class: "form-label" %>
-          <%= f.password_field :password_confirmation, class: "form-input", placeholder: "Retapez le mot de passe", required: true %>
-        </div>
-      </div>
-
-      <div class="form-group">
-        <%= f.label :account_status, "Statut du compte", class: "form-label" %>
-        <%= f.select :account_status, 
-          [
-            ["En attente (Pending)", "pending"],
-            ["Actif (Active)", "active"],
-            ["Suspendu (Suspended)", "suspended"]
-          ], 
-          {}, 
-          class: "form-select", required: true %>
-        <span class="form-hint">Sélectionnez "Actif" si l'utilisateur a déjà payé</span>
-      </div>
-    </div>
-
-    <!-- Stripe Information Section (Optional) -->
-    <div style="margin-bottom: var(--spacing-xl);">
-      <h3 style="margin-bottom: var(--spacing-lg); color: var(--primary-green);">Informations Stripe (Optionnel)</h3>
-      
       <div class="form-group">
         <%= f.label :stripe_customer_id, "ID Client Stripe", class: "form-label" %>
         <%= f.text_field :stripe_customer_id, class: "form-input", placeholder: "cus_xxxxxxxxxxxxx" %>
-        <span class="form-hint">Laissez vide si pas encore configuré - sera ajouté automatiquement lors du paiement</span>
+        <span class="form-hint">Optionnel (souvent rempli automatiquement via paiement)</span>
+      </div>
+
+      <div class="form-group">
+        <%= label_tag :account_status, "Statut du compte", class: "form-label" %>
+        <%= select_tag :"user[account_status]",
+          options_for_select(
+            [
+              ["En attente (pending)", "pending"],
+              ["Actif (active)", "active"],
+              ["Suspendu (canceled)", "suspended"]
+            ],
+            params.dig(:user, :account_status) || 'pending'
+          ),
+          class: "form-select", required: true %>
+        <span class="form-hint">"Actif" = compte autorisé à créer des documents</span>
       </div>
     </div>
 
-    <!-- Form Actions -->
     <div class="form-actions">
-      <button type="submit" class="btn btn-primary" style="display: inline-flex; align-items: center; gap: 0.5rem;">
-        <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-          <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
-          <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
-        </svg>
+      <button type="submit" class="btn btn-primary">
         <span>Créer l'utilisateur</span>
       </button>
-      <%= link_to admin_users_path, class: "btn btn-secondary", style: "display: inline-flex; align-items: center; gap: 0.5rem;" do %>
-        <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-          <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
-        </svg>
+      <%= link_to admin_users_path, class: "btn btn-secondary" do %>
         <span>Annuler</span>
       <% end %>
     </div>
 
-    <div class="alert alert-info" style="margin-top: var(--spacing-lg);">
-      <strong>Note:</strong> Un email de bienvenue sera envoyé automatiquement à l'utilisateur avec ses identifiants de connexion. Assurez-vous que l'adresse email est correcte.
-    </div>
   <% end %>
 </div>

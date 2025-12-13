@@ -1,0 +1,10 @@
+# Fixtures pour AdminUser (Devise authentication)
+# Attention: le model est AdminUser (table admins), et le scope devise est :admin
+
+admin_one:
+  email: admin@example.com
+  encrypted_password: <%= Devise::Encryptor.digest(AdminUser, 'password123') %>
+
+admin_two:
+  email: admin2@example.com
+  encrypted_password: <%= Devise::Encryptor.digest(AdminUser, 'password456') %>
