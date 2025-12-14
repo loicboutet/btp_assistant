@@ -34,7 +34,7 @@ class UnipileClient
   DEFAULT_TIMEOUT = 30
 
   def initialize(dsn: nil, api_key: nil, account_id: nil)
-    @dsn = dsn || settings.unipile_dsn
+    @dsn = normalize_dsn(dsn || settings.unipile_dsn)
     @api_key = api_key || settings.unipile_api_key
     @account_id = account_id || settings.unipile_account_id
 
@@ -48,8 +48,7 @@ class UnipileClient
   def send_message(chat_id:, text:)
     validate_presence!(chat_id: chat_id, text: text)
 
-    response = connection.post("api/v1/chats/#{chat_id}/messages") do |req|
-      req.headers['Content-Type'] = 'multipart/form-data'
+    response = multipart_connection.post("api/v1/chats/#{chat_id}/messages") do |req|
       req.body = { text: text }
     end
 
@@ -147,8 +146,7 @@ class UnipileClient
     # WhatsApp attendee ID format: phone@s.whatsapp.net
     attendee_id = "#{phone_number.delete('+')}@s.whatsapp.net"
 
-    response = connection.post("api/v1/chats") do |req|
-      req.headers['Content-Type'] = 'multipart/form-data'
+    response = multipart_connection.post("api/v1/chats") do |req|
       req.body = {
         account_id: @account_id,
         text: text,
@@ -207,6 +205,19 @@ class UnipileClient
 
   def settings
     @settings ||= AppSetting.instance
+  end
+
+
+  # Accept values like:
+  # - "https://api10.unipile.com:14054"
+  # - "http://api10.unipile.com:14054"
+  # - "api10.unipile.com:14054"   (we auto-prefix with https://)
+  def normalize_dsn(value)
+    return nil if value.blank?
+
+    v = value.to_s.strip
+    v = "https://#{v}" unless v.match?(/\Ahttps?:\/\//)
+    v
   end
 
   def validate_configuration!
