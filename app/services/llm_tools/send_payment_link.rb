@@ -72,21 +72,29 @@ module LlmTools
       "#{base_url}/payment/canceled"
     end
 
-    def base_url
-      # Get base URL from Rails configuration or environment
-      if Rails.application.config.action_mailer.default_url_options.present?
-        host = Rails.application.config.action_mailer.default_url_options[:host]
-        protocol = Rails.application.config.action_mailer.default_url_options[:protocol] || 'https'
-        "#{protocol}://#{host}"
+        def base_url
+      # Get base URL from Rails configuration or environment.
+      # In development, we want http://localhost:3000 by default.
+      if (opts = Rails.application.config.action_mailer.default_url_options).present?
+        host = opts[:host]
+        port = opts[:port]
+        protocol = opts[:protocol] || (Rails.env.development? ? 'http' : 'https')
+
+        url = "#{protocol}://#{host}"
+        url += ":#{port}" if port.present? && ![80, 443].include?(port.to_i)
+        url
       elsif ENV['APP_HOST'].present?
-        "https://#{ENV['APP_HOST']}"
+        # If APP_HOST includes scheme, keep it; otherwise default to https
+        host = ENV['APP_HOST'].to_s
+        host.match?(/\Ahttps?:\/\//) ? host : "https://#{host}"
       else
-        # Fallback for development
-        "https://app.example.com"
+        # Fallback
+        Rails.env.development? ? 'http://localhost:3000' : 'https://app.example.com'
       end
     end
 
-    def build_payment_message(payment_url)
+    def build_payment_message
+(payment_url)
       if user.french?
         <<~MSG.strip
           💳 Lien de paiement pour votre abonnement BTP Assistant

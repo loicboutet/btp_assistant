@@ -33,12 +33,20 @@ module Webhooks
         # 1. Verify account_id matches our configured account
         unless valid_account_id?
           Rails.logger.warn "[Unipile Webhook] Invalid account_id: #{webhook_account_id}"
-          return head :unauthorized
+          # En dev/staging on ignore simplement (200) pour éviter les retries Unipile
+          # quand plusieurs comptes envoient sur le même webhook.
+          return head(Rails.env.production? ? :unauthorized : :ok)
         end
 
         # 2. Check for supported event types
         unless supported_event?
           Rails.logger.info "[Unipile Webhook] Ignoring unsupported event: #{event_type}"
+          return head :ok
+        end
+
+        # 2b. Ignore messages sent by our own WhatsApp account (avoid bot replying to itself)
+        if sender_is_bot?
+          Rails.logger.info "[Unipile Webhook] Ignoring self-sent message: #{unipile_message_id}"
           return head :ok
         end
 
@@ -158,6 +166,36 @@ module Webhooks
         event_type.in?(['message_received', nil]) # nil for backwards compatibility
       end
 
+
+      def sender_is_bot?
+        bot_phone = normalize_phone(AppSetting.instance.whatsapp_business_number)
+
+        # Best-effort auto-fill in non-prod if missing
+        if bot_phone.blank? && !Rails.env.production?
+          begin
+            info = UnipileClient.new.get_account_info
+            raw = info.dig('connection_params', 'im', 'phone_number') || info['name']
+            bot_phone = normalize_phone(raw)
+            AppSetting.instance.update_column(:whatsapp_business_number, bot_phone) if bot_phone.present?
+          rescue StandardError
+            # ignore
+          end
+        end
+
+        sender_phone = normalize_phone(sender_info['attendee_provider_id'] || attendee_info['attendee_provider_id'])
+        return false if bot_phone.blank? || sender_phone.blank?
+
+        sender_phone == bot_phone
+      end
+
+      def normalize_phone(value)
+        return nil if value.blank?
+
+        v = value.to_s
+        v = v.split('@').first if v.include?('@')
+        v = "+#{v}" unless v.start_with?('+')
+        v
+      end
       # ==========================================
       # Data Extraction
       # ==========================================
@@ -187,37 +225,45 @@ module Webhooks
         match ? match[1] : nil
       end
 
-      def message_type
-        # Determine message type from attachments
-        attachments = attachments_info
-        
-        if attachments.present?
-          attachment_type = attachments.is_a?(Array) ? attachments.first&.dig('type') : attachments['type']
-          case attachment_type
-          when 'audio', 'voice' then 'audio'
-          when 'image', 'img' then 'image'
-          when 'video' then 'video'
-          when 'document', 'file' then 'document'
-          else 'text'
-          end
-        else
-          'text'
-        end
-      end
+def message_type
+  # Determine message type from attachments
+  attachments = attachments_info
 
-      def attachment_id
-        attachments = attachments_info
-        return nil unless attachments.present?
+  if attachments.present?
+    attachment = attachments.is_a?(Array) ? attachments.first : attachments
+    attachment_type = attachment.is_a?(Hash) ? (attachment['type'] || attachment['attachment_type']) : nil
 
-        if attachments.is_a?(Array)
-          attachments.first&.dig('id')
-        else
-          attachments['id']
-        end
-      end
+    case attachment_type
+    when 'audio', 'voice', 'voice_note', 'opus'
+      'audio'
+    when 'image', 'img'
+      'image'
+    when 'video'
+      'video'
+    when 'document', 'file'
+      'document'
+    else
+      # Some payloads (voice notes) have voice_note: true
+      attachment.is_a?(Hash) && attachment['voice_note'] ? 'audio' : 'text'
+    end
+  else
+    'text'
+  end
+end
 
-      # ==========================================
-      # User Management
+def attachment_id
+  attachments = attachments_info
+  return nil unless attachments.present?
+
+  attachment = attachments.is_a?(Array) ? attachments.first : attachments
+  return nil unless attachment.is_a?(Hash)
+
+  attachment['id'] || attachment['attachment_id']
+end
+
+# ==========================================
+# User Management
+
       # ==========================================
 
       def find_or_create_user(phone_number)

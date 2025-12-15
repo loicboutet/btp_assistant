@@ -169,6 +169,16 @@ class UnipileClient
     handle_response(response)
   end
 
+
+# Get a single message by ID
+# @param message_id [String]
+# @return [Hash]
+def get_message(message_id:)
+  validate_presence!(message_id: message_id)
+
+  response = connection.get("api/v1/messages/#{message_id}")
+  handle_response(response)
+end
   # Get messages from a specific chat
   # @param chat_id [String] The chat ID
   # @param limit [Integer] Number of messages to retrieve
@@ -201,6 +211,26 @@ class UnipileClient
     nil
   end
 
+
+# Download an attachment that belongs to a specific message.
+# Unipile uses message-scoped attachment download for WhatsApp voice notes.
+# GET /api/v1/messages/:message_id/attachments/:attachment_id
+# @return [Hash] { content: binary_data, content_type: String, filename: String }
+def download_message_attachment(message_id:, attachment_id:)
+  validate_presence!(message_id: message_id, attachment_id: attachment_id)
+
+  response = connection.get("api/v1/messages/#{message_id}/attachments/#{attachment_id}")
+
+  if response.success?
+    {
+      content: response.body,
+      content_type: response.headers['content-type'],
+      filename: "attachment"
+    }
+  else
+    handle_response(response)
+  end
+end
   private
 
   def settings

@@ -28,7 +28,18 @@ module WhatsappBot
 
       # Download audio from Unipile
       Rails.logger.info "[AudioTranscriber] Downloading audio #{attachment_id}"
-      audio_data = download_audio(attachment_id)
+
+      audio_data = begin
+        download_audio(attachment_id)
+      rescue TranscriptionError => e
+        # Some Unipile WhatsApp voice notes are downloaded via message-scoped endpoint:
+        #   /api/v1/messages/:message_id/attachments/:attachment_id
+        msg_id = whatsapp_message.unipile_message_id
+        raise e if msg_id.blank?
+
+        Rails.logger.info "[AudioTranscriber] Fallback download via message #{msg_id} / attachment #{attachment_id}"
+        @unipile_client.download_message_attachment(message_id: msg_id, attachment_id: attachment_id)
+      end
 
       # Save to temp file and transcribe
       transcribe_audio_data(audio_data, whatsapp_message.user.preferred_language)
@@ -40,7 +51,7 @@ module WhatsappBot
     # @return [Hash] { transcription: String, language: String, duration_ms: Integer }
     def transcribe_audio_data(audio_data, language_hint = nil)
       extension = determine_extension(audio_data[:filename], audio_data[:content_type])
-      
+
       Tempfile.create(["whatsapp_audio", extension]) do |temp_file|
         temp_file.binmode
         temp_file.write(audio_data[:content])
@@ -73,24 +84,13 @@ module WhatsappBot
       payload = message.raw_payload
       return nil if payload.blank?
 
-      # Handle different payload structures from Unipile
-      # The attachment ID could be in various places depending on the webhook format
-      
-      # Try common paths
-      attachment_id = payload.dig("attachment_id") ||
-                      payload.dig("attachments", 0, "id") ||
-                      payload.dig("attachments", 0, "attachment_id") ||
-                      payload.dig("media", "id") ||
-                      payload.dig("message", "attachment_id") ||
-                      payload.dig("message", "media", "id")
+      attachment = if payload["attachments"].is_a?(Array)
+                     payload["attachments"].first
+                   elsif payload["attachments"].is_a?(Hash)
+                     payload["attachments"]
+                   end
 
-      # If payload contains attachments array
-      if attachment_id.blank? && payload["attachments"].is_a?(Array)
-        attachment = payload["attachments"].first
-        attachment_id = attachment["id"] || attachment["attachment_id"] if attachment
-      end
-
-      attachment_id
+      payload["attachment_id"] || attachment&.[]( "attachment_id") || attachment&.[]("id")
     end
 
     def download_audio(attachment_id)

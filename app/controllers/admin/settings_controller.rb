@@ -108,10 +108,13 @@ module Admin
         :rate_limit_messages_per_hour
       )
     end
-
     def unipile_params
-      params.require(:app_setting).permit(:unipile_dsn, :unipile_account_id, :unipile_api_key)
+      permitted = params.require(:app_setting).permit(:unipile_dsn, :unipile_account_id, :unipile_api_key)
+      # Avoid overwriting API key if the field is left blank in the form
+      permitted.delete(:unipile_api_key) if permitted[:unipile_api_key].blank?
+      permitted
     end
+
 
     def stripe_params
       params.require(:app_setting).permit(:stripe_publishable_key, :stripe_secret_key, :stripe_price_id, :stripe_webhook_secret)

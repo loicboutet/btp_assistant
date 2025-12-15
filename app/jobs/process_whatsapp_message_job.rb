@@ -79,7 +79,8 @@ class ProcessWhatsappMessageJob < ApplicationJob
       # Update message with transcription
       @message.update!(
         audio_transcription: result[:transcription],
-        detected_language: result[:language]
+        detected_language: result[:language],
+        error_message: nil
       )
       
       Rails.logger.info "[ProcessWhatsappMessageJob] Transcription: #{result[:transcription].truncate(100)}"
