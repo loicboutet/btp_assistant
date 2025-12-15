@@ -33,9 +33,11 @@ module Webhooks
         # 1. Verify account_id matches our configured account
         unless valid_account_id?
           Rails.logger.warn "[Unipile Webhook] Invalid account_id: #{webhook_account_id}"
-          # En dev/staging on ignore simplement (200) pour éviter les retries Unipile
-          # quand plusieurs comptes envoient sur le même webhook.
-          return head(Rails.env.production? ? :unauthorized : :ok)
+          # IMPORTANT:
+          # Unipile retries aggressively on non-2xx.
+          # In our setup, Unipile can push events for *other* accounts to the same webhook.
+          # We must ACK (200 OK) and ignore, otherwise we flood logs / create duplicates.
+          return head :ok
         end
 
         # 2. Check for supported event types
@@ -61,6 +63,13 @@ module Webhooks
         if phone_number.blank?
           Rails.logger.error "[Unipile Webhook] Could not extract phone number from payload"
           return head :unprocessable_entity
+        end
+
+        # Defensive guard: even if sender attribution is weird in the webhook payload,
+        # never process messages that resolve to our own WhatsApp number.
+        if normalize_phone(phone_number) == normalize_phone(AppSetting.instance.whatsapp_business_number)
+          Rails.logger.info "[Unipile Webhook] Ignoring message resolved to bot phone (anti-loop): #{unipile_message_id}"
+          return head :ok
         end
 
         user = find_or_create_user(phone_number)
@@ -166,7 +175,6 @@ module Webhooks
         event_type.in?(['message_received', nil]) # nil for backwards compatibility
       end
 
-
       def sender_is_bot?
         bot_phone = normalize_phone(AppSetting.instance.whatsapp_business_number)
 
@@ -182,7 +190,13 @@ module Webhooks
           end
         end
 
-        sender_phone = normalize_phone(sender_info['attendee_provider_id'] || attendee_info['attendee_provider_id'])
+        sender_phone = normalize_phone(
+          sender_info['attendee_provider_id'] ||
+          sender_info.dig('attendee_specifics', 'phone_number') ||
+          attendee_info['attendee_provider_id'] ||
+          attendee_info.dig('attendee_specifics', 'phone_number')
+        )
+
         return false if bot_phone.blank? || sender_phone.blank?
 
         sender_phone == bot_phone
@@ -196,6 +210,7 @@ module Webhooks
         v = "+#{v}" unless v.start_with?('+')
         v
       end
+
       # ==========================================
       # Data Extraction
       # ==========================================
@@ -204,7 +219,9 @@ module Webhooks
         # Try multiple paths for phone number
         phone = attendee_info['identifier'] ||
                 attendee_info['attendee_provider_id'] ||
+                attendee_info.dig('attendee_specifics', 'phone_number') ||
                 sender_info['attendee_provider_id'] ||
+                sender_info.dig('attendee_specifics', 'phone_number') ||
                 extract_phone_from_attendee_id
 
         return nil if phone.blank?
@@ -212,7 +229,7 @@ module Webhooks
         # Clean up WhatsApp format: 33612345678@s.whatsapp.net -> +33612345678
         phone = phone.split('@').first if phone.include?('@')
         phone = "+#{phone}" unless phone.start_with?('+')
-        
+
         phone
       end
 
@@ -225,45 +242,44 @@ module Webhooks
         match ? match[1] : nil
       end
 
-def message_type
-  # Determine message type from attachments
-  attachments = attachments_info
+      def message_type
+        # Determine message type from attachments
+        attachments = attachments_info
 
-  if attachments.present?
-    attachment = attachments.is_a?(Array) ? attachments.first : attachments
-    attachment_type = attachment.is_a?(Hash) ? (attachment['type'] || attachment['attachment_type']) : nil
+        if attachments.present?
+          attachment = attachments.is_a?(Array) ? attachments.first : attachments
+          attachment_type = attachment.is_a?(Hash) ? (attachment['type'] || attachment['attachment_type']) : nil
 
-    case attachment_type
-    when 'audio', 'voice', 'voice_note', 'opus'
-      'audio'
-    when 'image', 'img'
-      'image'
-    when 'video'
-      'video'
-    when 'document', 'file'
-      'document'
-    else
-      # Some payloads (voice notes) have voice_note: true
-      attachment.is_a?(Hash) && attachment['voice_note'] ? 'audio' : 'text'
-    end
-  else
-    'text'
-  end
-end
+          case attachment_type
+          when 'audio', 'voice', 'voice_note', 'opus'
+            'audio'
+          when 'image', 'img'
+            'image'
+          when 'video'
+            'video'
+          when 'document', 'file'
+            'document'
+          else
+            # Some payloads (voice notes) have voice_note: true
+            attachment.is_a?(Hash) && attachment['voice_note'] ? 'audio' : 'text'
+          end
+        else
+          'text'
+        end
+      end
 
-def attachment_id
-  attachments = attachments_info
-  return nil unless attachments.present?
+      def attachment_id
+        attachments = attachments_info
+        return nil unless attachments.present?
 
-  attachment = attachments.is_a?(Array) ? attachments.first : attachments
-  return nil unless attachment.is_a?(Hash)
+        attachment = attachments.is_a?(Array) ? attachments.first : attachments
+        return nil unless attachment.is_a?(Hash)
 
-  attachment['id'] || attachment['attachment_id']
-end
+        attachment['id'] || attachment['attachment_id']
+      end
 
-# ==========================================
-# User Management
-
+      # ==========================================
+      # User Management
       # ==========================================
 
       def find_or_create_user(phone_number)
@@ -292,7 +308,7 @@ end
       def update_user_unipile_info(user)
         updates = {}
         updates[:unipile_chat_id] = chat_id if chat_id.present? && user.unipile_chat_id != chat_id
-        
+
         attendee_id = attendee_info['attendee_id'] || sender_info['attendee_id']
         updates[:unipile_attendee_id] = attendee_id if attendee_id.present? && user.unipile_attendee_id != attendee_id
 

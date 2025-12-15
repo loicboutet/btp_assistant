@@ -39,7 +39,7 @@ class ProcessWhatsappMessageJob < ApplicationJob
     begin
       process_message
       @message.mark_as_processed!
-      
+
       Rails.logger.info "[ProcessWhatsappMessageJob] Successfully processed message #{message_id}"
     rescue StandardError => e
       handle_error(e)
@@ -72,43 +72,43 @@ class ProcessWhatsappMessageJob < ApplicationJob
 
     # Transcribe the audio
     transcriber = WhatsappBot::AudioTranscriber.new
-    
+
     begin
       result = transcriber.transcribe(@message)
-      
+
       # Update message with transcription
       @message.update!(
         audio_transcription: result[:transcription],
         detected_language: result[:language],
         error_message: nil
       )
-      
+
       Rails.logger.info "[ProcessWhatsappMessageJob] Transcription: #{result[:transcription].truncate(100)}"
       Rails.logger.info "[ProcessWhatsappMessageJob] Detected language: #{result[:language]}"
-      
+
       # Process the transcribed text through LLM
       engine = WhatsappBot::ConversationEngine.new(
         user: @user,
         unipile_client: UnipileClient.new
       )
-      
+
       response_text = engine.process_message(
         result[:transcription],
         detected_language: result[:language]
       )
-      
+
       # Send response via WhatsApp
       send_whatsapp_response(response_text)
-      
+
       log_message_processed(transcription: result[:transcription])
-      
+
     rescue WhatsappBot::AudioTranscriber::TranscriptionError => e
       Rails.logger.error "[ProcessWhatsappMessageJob] Transcription failed: #{e.message}"
-      
+
       # Send error message to user
       error_message = build_transcription_error_message
       send_whatsapp_response(error_message)
-      
+
       @message.update(error_message: "Transcription failed: #{e.message}")
     end
   end
@@ -117,7 +117,7 @@ class ProcessWhatsappMessageJob < ApplicationJob
     Rails.logger.info "[ProcessWhatsappMessageJob] Processing text message"
 
     content = @message.content
-    
+
     if content.blank?
       Rails.logger.warn "[ProcessWhatsappMessageJob] Empty text message, skipping"
       return
@@ -172,10 +172,15 @@ class ProcessWhatsappMessageJob < ApplicationJob
     begin
       result = client.send_message(chat_id: chat_id, text: text)
 
+      # Unipile's response payload differs depending on API/version.
+      # We store the *real* Unipile message id so that when Unipile sends back
+      # a webhook for our outbound message, we can deduplicate and ignore it.
+      unipile_id = result["message_id"] || result["id"] || result.dig("data", "id") || "out_#{SecureRandom.uuid}"
+
       # Create outbound message record
       WhatsappMessage.create!(
         user: @user,
-        unipile_message_id: result["message_id"] || "out_#{SecureRandom.uuid}",
+        unipile_message_id: unipile_id,
         unipile_chat_id: chat_id,
         direction: "outbound",
         message_type: "text",

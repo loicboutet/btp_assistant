@@ -9,7 +9,9 @@ class Webhooks::Unipile::MessagesControllerTest < ActionDispatch::IntegrationTes
     @settings.update!(
       unipile_account_id: "test_account_123",
       unipile_dsn: "https://api.test.unipile.com",
-      unipile_api_key: "test_key"
+      unipile_api_key: "test_key",
+      # Prevent controller from trying to auto-fetch account info (HTTP) during tests
+      whatsapp_business_number: "+33999999999"
     )
 
     # Create a test user with unique phone number
@@ -167,7 +169,7 @@ class Webhooks::Unipile::MessagesControllerTest < ActionDispatch::IntegrationTes
   # Account Validation Tests
   # ==========================================
 
-  test "rejects webhook with wrong account_id" do
+  test "ignores webhook with wrong account_id (ack 200 to avoid Unipile retries)" do
     payload = build_webhook_payload(
       phone: "+33677112233",
       message: "Test",
@@ -179,7 +181,7 @@ class Webhooks::Unipile::MessagesControllerTest < ActionDispatch::IntegrationTes
       post webhooks_unipile_messages_url, params: payload, as: :json
     end
 
-    assert_response :unauthorized
+    assert_response :ok
   end
 
   test "accepts webhook when account_id not configured" do
