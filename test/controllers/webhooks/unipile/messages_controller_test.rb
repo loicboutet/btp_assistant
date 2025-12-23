@@ -234,6 +234,158 @@ class Webhooks::Unipile::MessagesControllerTest < ActionDispatch::IntegrationTes
   end
 
   # ==========================================
+  # Self-Sent Message Detection (Anti-Loop) Tests
+  # ==========================================
+
+  test "ignores messages from sender named 'You'" do
+    # When Unipile echoes back our own sent messages, sender.attendee_name is "You"
+    payload = {
+      "event" => "message_received",
+      "account_id" => "test_account_123",
+      "chat_id" => "chat_789",
+      "message_id" => "msg_self_you",
+      "message" => "This is a bot response that should be ignored",
+      "timestamp" => Time.current.iso8601,
+      "sender" => {
+        "attendee_id" => "att_bot",
+        "attendee_name" => "You",
+        "attendee_provider_id" => "33769363669@s.whatsapp.net"
+      },
+      "attendees" => [
+        {
+          "attendee_id" => "att_user",
+          "attendee_name" => "Some User",
+          "attendee_provider_id" => "33749368028@s.whatsapp.net"
+        }
+      ]
+    }
+
+    assert_no_difference "WhatsappMessage.count" do
+      post webhooks_unipile_messages_url, params: payload, as: :json
+    end
+
+    assert_response :ok
+  end
+
+  test "ignores messages from sender named 'Vous' (French)" do
+    payload = {
+      "event" => "message_received",
+      "account_id" => "test_account_123",
+      "chat_id" => "chat_789",
+      "message_id" => "msg_self_vous",
+      "message" => "Bot response in French locale",
+      "timestamp" => Time.current.iso8601,
+      "sender" => {
+        "attendee_id" => "att_bot",
+        "attendee_name" => "Vous",
+        "attendee_provider_id" => "33769363669@s.whatsapp.net"
+      }
+    }
+
+    assert_no_difference "WhatsappMessage.count" do
+      post webhooks_unipile_messages_url, params: payload, as: :json
+    end
+
+    assert_response :ok
+  end
+
+  test "ignores messages where sender matches whatsapp_business_number" do
+    @settings.update!(whatsapp_business_number: "+33769363669")
+
+    payload = {
+      "event" => "message_received",
+      "account_id" => "test_account_123",
+      "chat_id" => "chat_789",
+      "message_id" => "msg_self_business",
+      "message" => "Message from business number",
+      "timestamp" => Time.current.iso8601,
+      "sender" => {
+        "attendee_id" => "att_bot",
+        "attendee_name" => "BTP Assistant",
+        "attendee_provider_id" => "33769363669@s.whatsapp.net"
+      }
+    }
+
+    assert_no_difference "WhatsappMessage.count" do
+      post webhooks_unipile_messages_url, params: payload, as: :json
+    end
+
+    assert_response :ok
+  end
+
+  test "processes legitimate inbound messages (sender is not You)" do
+    # Real inbound message from a user to the bot
+    payload = {
+      "event" => "message_received",
+      "account_id" => "test_account_123",
+      "chat_id" => "chat_789",
+      "message_id" => "msg_real_inbound",
+      "message" => "Je veux créer un devis",
+      "timestamp" => Time.current.iso8601,
+      "sender" => {
+        "attendee_id" => "att_user",
+        "attendee_name" => "5000.dev",
+        "attendee_provider_id" => "33749368028@s.whatsapp.net"
+      },
+      "attendees" => [
+        {
+          "attendee_id" => "att_user",
+          "attendee_name" => "5000.dev",
+          "attendee_provider_id" => "33749368028@s.whatsapp.net"
+        }
+      ]
+    }
+
+    assert_difference "WhatsappMessage.count", 1 do
+      post webhooks_unipile_messages_url, params: payload, as: :json
+    end
+
+    assert_response :ok
+    
+    # Verify the user was created/found with the sender's phone
+    user = User.find_by(phone_number: "+33749368028")
+    assert_not_nil user
+  end
+
+  test "ignores messages sent by registered user to another contact" do
+    # Create the user who owns the WhatsApp account
+    bot_user = User.create!(
+      phone_number: "+33769363669",
+      company_name: "Mel Agari",
+      subscription_status: "active"
+    )
+
+    # When the bot sends a message, sender is the registered user
+    # but attendees contains the recipient (external contact)
+    payload = {
+      "event" => "message_received",
+      "account_id" => "test_account_123",
+      "chat_id" => "chat_789",
+      "message_id" => "msg_bot_to_contact",
+      "message" => "Voici votre devis",
+      "timestamp" => Time.current.iso8601,
+      "sender" => {
+        "attendee_id" => "att_bot",
+        "attendee_name" => "Mel Agari",
+        "attendee_provider_id" => "33769363669@s.whatsapp.net"
+      },
+      "attendees" => [
+        {
+          "attendee_id" => "att_external",
+          "attendee_name" => "Client Externe",
+          "attendee_provider_id" => "33612345678@s.whatsapp.net"
+        }
+      ]
+    }
+
+    assert_no_difference "WhatsappMessage.count" do
+      post webhooks_unipile_messages_url, params: payload, as: :json
+    end
+
+    assert_response :ok
+  end
+
+  # ==========================================
   # Phone Number Extraction Tests
   # ==========================================
 
@@ -246,6 +398,7 @@ class Webhooks::Unipile::MessagesControllerTest < ActionDispatch::IntegrationTes
       "message" => "Test",
       "sender" => {
         "attendee_id" => "att_123",
+        "attendee_name" => "Test User",
         "attendee_provider_id" => "33687654321@s.whatsapp.net"
       }
     }
@@ -269,7 +422,9 @@ class Webhooks::Unipile::MessagesControllerTest < ActionDispatch::IntegrationTes
           "identifier" => "+33688776655"
         }
       },
-      "sender" => {}
+      "sender" => {
+        "attendee_name" => "Test User"
+      }
     }
 
     post webhooks_unipile_messages_url, params: payload, as: :json
@@ -329,7 +484,9 @@ class Webhooks::Unipile::MessagesControllerTest < ActionDispatch::IntegrationTes
       "account_id" => "test_account_123",
       "message_id" => "msg_no_phone",
       "message" => "Test",
-      "sender" => {}
+      "sender" => {
+        "attendee_name" => "Unknown"
+      }
     }
 
     post webhooks_unipile_messages_url, params: payload, as: :json

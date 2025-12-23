@@ -47,8 +47,9 @@ module Webhooks
         end
 
         # 2b. Ignore messages sent by our own WhatsApp account (avoid bot replying to itself)
-        if sender_is_bot?
-          Rails.logger.info "[Unipile Webhook] Ignoring self-sent message: #{unipile_message_id}"
+        # This is CRITICAL to prevent infinite loops
+        if sender_is_self?
+          Rails.logger.info "[Unipile Webhook] Ignoring self-sent message (anti-loop): #{unipile_message_id}"
           return head :ok
         end
 
@@ -63,13 +64,6 @@ module Webhooks
         if phone_number.blank?
           Rails.logger.error "[Unipile Webhook] Could not extract phone number from payload"
           return head :unprocessable_entity
-        end
-
-        # Defensive guard: even if sender attribution is weird in the webhook payload,
-        # never process messages that resolve to our own WhatsApp number.
-        if normalize_phone(phone_number) == normalize_phone(AppSetting.instance.whatsapp_business_number)
-          Rails.logger.info "[Unipile Webhook] Ignoring message resolved to bot phone (anti-loop): #{unipile_message_id}"
-          return head :ok
         end
 
         user = find_or_create_user(phone_number)
@@ -149,6 +143,10 @@ module Webhooks
         webhook_params['sender'] || webhook_params.dig('data', 'sender') || {}
       end
 
+      def attendees_info
+        webhook_params['attendees'] || webhook_params.dig('data', 'attendees') || []
+      end
+
       def attendee_info
         # Attendee might be in different places depending on payload structure
         webhook_params.dig('data', 'attendee') || sender_info
@@ -175,31 +173,64 @@ module Webhooks
         event_type.in?(['message_received', nil]) # nil for backwards compatibility
       end
 
-      def sender_is_bot?
+      # Detect if the message was sent by the bot (our own WhatsApp account)
+      # This prevents infinite loops where bot responds to its own messages
+      #
+      # Detection methods (in order of reliability):
+      # 1. sender.attendee_name == "You" (Unipile marks outbound messages this way)
+      # 2. sender phone matches the connected WhatsApp business number
+      # 3. sender phone matches the User's phone who owns this chat
+      def sender_is_self?
+        # Method 1: Check if sender name is "You" (most reliable for Unipile)
+        sender_name = sender_info['attendee_name'].to_s.strip
+        if sender_name.casecmp('you').zero? || sender_name.casecmp('vous').zero?
+          Rails.logger.debug "[Unipile Webhook] Self-message detected via attendee_name='#{sender_name}'"
+          return true
+        end
+
+        # Method 2: Check if sender phone matches our business number
+        sender_phone = extract_sender_phone
         bot_phone = normalize_phone(AppSetting.instance.whatsapp_business_number)
 
-        # Best-effort auto-fill in non-prod if missing
-        if bot_phone.blank? && !Rails.env.production?
-          begin
-            info = UnipileClient.new.get_account_info
-            raw = info.dig('connection_params', 'im', 'phone_number') || info['name']
-            bot_phone = normalize_phone(raw)
-            AppSetting.instance.update_column(:whatsapp_business_number, bot_phone) if bot_phone.present?
-          rescue StandardError
-            # ignore
+        if bot_phone.present? && sender_phone.present? && sender_phone == bot_phone
+          Rails.logger.debug "[Unipile Webhook] Self-message detected via business number match"
+          return true
+        end
+
+        # Method 3: Check if sender is the same as the chat owner (for multi-user setup)
+        # In WhatsApp, when user A sends to user B, the attendees list contains B
+        # When B sends (or bot sends on behalf of B), sender matches B's phone
+        # We need to check if sender == the user whose WhatsApp account is connected
+        attendee = attendees_info.first
+        if attendee
+          attendee_phone = normalize_phone(
+            attendee['attendee_provider_id'] ||
+            attendee.dig('attendee_specifics', 'phone_number')
+          )
+          
+          # If sender phone equals the attendee phone (the other party in the chat),
+          # this is an INBOUND message - NOT a self-message
+          # If sender phone is DIFFERENT from attendee phone, it could be our bot
+          if sender_phone.present? && attendee_phone.present?
+            # Find if sender phone belongs to a registered user with this Unipile account
+            sender_user = User.find_by(phone_number: sender_phone)
+            if sender_user && sender_user.phone_number != attendee_phone
+              # Sender is a registered user but not the chat recipient
+              # This means the bot is sending on behalf of this user
+              Rails.logger.debug "[Unipile Webhook] Self-message detected: sender #{sender_phone} is registered user, recipient is #{attendee_phone}"
+              return true
+            end
           end
         end
 
-        sender_phone = normalize_phone(
+        false
+      end
+
+      def extract_sender_phone
+        normalize_phone(
           sender_info['attendee_provider_id'] ||
-          sender_info.dig('attendee_specifics', 'phone_number') ||
-          attendee_info['attendee_provider_id'] ||
-          attendee_info.dig('attendee_specifics', 'phone_number')
+          sender_info.dig('attendee_specifics', 'phone_number')
         )
-
-        return false if bot_phone.blank? || sender_phone.blank?
-
-        sender_phone == bot_phone
       end
 
       def normalize_phone(value)
@@ -216,12 +247,13 @@ module Webhooks
       # ==========================================
 
       def extract_phone_number
-        # Try multiple paths for phone number
-        phone = attendee_info['identifier'] ||
+        # For inbound messages, we want the SENDER's phone (the person messaging us)
+        # NOT the attendee (which might be the bot's phone)
+        phone = sender_info['attendee_provider_id'] ||
+                sender_info.dig('attendee_specifics', 'phone_number') ||
+                attendee_info['identifier'] ||
                 attendee_info['attendee_provider_id'] ||
                 attendee_info.dig('attendee_specifics', 'phone_number') ||
-                sender_info['attendee_provider_id'] ||
-                sender_info.dig('attendee_specifics', 'phone_number') ||
                 extract_phone_from_attendee_id
 
         return nil if phone.blank?

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_12_13_120000) do
+ActiveRecord::Schema[8.0].define(version: 2025_12_23_095235) do
   create_table "admins", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -40,6 +40,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_13_120000) do
     t.integer "rate_limit_messages_per_hour", default: 50
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "default_trial_days", default: 14
   end
 
   create_table "clients", force: :cascade do |t|
@@ -239,6 +240,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_13_120000) do
     t.string "first_name"
     t.string "last_name"
     t.string "email"
+    t.boolean "bypass_subscription", default: false, null: false
+    t.datetime "trial_ends_at"
     t.index ["email"], name: "index_users_on_email"
     t.index ["phone_number"], name: "index_users_on_phone_number", unique: true
     t.index ["stripe_customer_id"], name: "index_users_on_stripe_customer_id"

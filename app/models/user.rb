@@ -34,9 +34,13 @@ class User < ApplicationRecord
   scope :pending, -> { where(subscription_status: 'pending') }
   scope :past_due, -> { where(subscription_status: 'past_due') }
   scope :can_create_documents, -> { where(subscription_status: %w[active past_due]) }
+  scope :in_trial, -> { where('trial_ends_at > ?', Time.current) }
+  scope :billable, -> { where(bypass_subscription: false) }
+  scope :with_bypass, -> { where(bypass_subscription: true) }
 
   # Callbacks
   before_validation :normalize_phone_number
+  after_create :set_trial_period
 
   # Subscription status helpers
   def active?
@@ -55,12 +59,33 @@ class User < ApplicationRecord
     subscription_status == 'canceled'
   end
 
-  def can_create_documents?
+  # Returns true if the user has an active subscription
+  def subscription_active?
     active? || past_due?
+  end
+
+  # Returns true if the user can create documents
+  # Priority: bypass_subscription FIRST, then subscription, then trial
+  def can_create_documents?
+    bypass_subscription? || subscription_active? || in_trial_period?
   end
 
   def needs_payment?
     pending? || canceled?
+  end
+
+  # Trial period helpers
+  def in_trial_period?
+    trial_ends_at.present? && trial_ends_at > Time.current
+  end
+
+  def trial_expired?
+    trial_ends_at.present? && trial_ends_at <= Time.current
+  end
+
+  def trial_days_remaining
+    return 0 unless in_trial_period?
+    ((trial_ends_at - Time.current) / 1.day).ceil
   end
 
   # Activity tracking
@@ -119,5 +144,12 @@ class User < ApplicationRecord
     normalized = normalized.sub(/\A\+?0/, '+33') if normalized.match?(/\A\+?0[67]/)
     
     self.phone_number = normalized
+  end
+
+  def set_trial_period
+    return if trial_ends_at.present? # Ne pas écraser si déjà défini
+    
+    trial_days = AppSetting.instance&.default_trial_days || 14
+    update_column(:trial_ends_at, trial_days.days.from_now)
   end
 end

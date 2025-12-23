@@ -1,5 +1,60 @@
 # Recent Changes - BTP Assistant
 
+## 2024-12-15 - WhatsApp Self-Message Loop Fix
+
+### 📋 Summary
+Fixed a critical bug where the bot was responding to its own messages, creating an infinite loop. When the bot sends a message via Unipile, Unipile echoes that message back as a webhook event with `sender.attendee_name: "You"`. The bot was treating these as new inbound messages and responding to them.
+
+### 🐛 Problem
+1. User sends message to bot
+2. Bot responds via Unipile
+3. Unipile sends a webhook for the bot's response with `sender.attendee_name: "You"`
+4. Bot treats this as a new message and responds again
+5. Loop continues indefinitely
+
+### ✅ Solution
+Enhanced `sender_is_self?` method in `Webhooks::Unipile::MessagesController` with multi-layered detection:
+
+1. **Sender name check**: If `sender.attendee_name` is "You" or "Vous", ignore the message
+2. **Business number check**: If sender phone matches `whatsapp_business_number` in AppSetting
+3. **Registered user check**: If sender is a registered user sending to a different attendee
+
+### 📁 Files Modified
+- `app/controllers/webhooks/unipile/messages_controller.rb`
+  - Renamed `sender_is_bot?` to `sender_is_self?` for clarity
+  - Added `attendees_info` accessor
+  - Enhanced detection logic with 3 fallback methods
+  - Added debug logging for troubleshooting
+
+### 📁 Files Updated
+- `test/controllers/webhooks/unipile/messages_controller_test.rb`
+  - Added 5 new tests for self-message detection
+  - Tests cover: "You" name, "Vous" name, business number match, legitimate inbound, registered user sending
+
+### 🧪 Tests
+All 21 tests pass:
+- `test "ignores messages from sender named 'You'"`
+- `test "ignores messages from sender named 'Vous' (French)"`
+- `test "ignores messages where sender matches whatsapp_business_number"`
+- `test "processes legitimate inbound messages (sender is not You)"`
+- `test "ignores messages sent by registered user to another contact"`
+
+### 🔧 Technical Details
+
+```ruby
+# Detection priority:
+# 1. sender.attendee_name == "You" or "Vous" (most reliable)
+# 2. sender phone == whatsapp_business_number in AppSetting
+# 3. sender is registered user sending to different attendee
+```
+
+### ⚠️ Important Notes
+- The `whatsapp_business_number` in AppSetting should be set to the phone number of the WhatsApp account connected via Unipile
+- In multi-user setups, each user's phone number is stored in `users.phone_number`
+- The detection relies on Unipile's webhook payload structure
+
+---
+
 ## 2024-11-21 - Admin Interface Design Overhaul
 
 ### 📋 Summary
@@ -64,23 +119,6 @@ All admin views now benefit from the new design system:
 4. **Mobile Menu** with slide-in sidebar
 5. **Enhanced Navigation** with active states and hover effects
 
-#### Component Library
-- Stat Cards with animated icons
-- Enhanced tables with gradient headers
-- Multiple button variants (xs, sm, md, lg)
-- Badge system with gradients
-- Status indicators with borders
-- Activity lists with icons
-- Alert items with colors
-- Details lists with hover
-- Filter bars with responsive layout
-- Pagination with navigation
-
-#### Responsive Behavior
-- **Mobile (< 768px)**: Sidebar overlay, card tables, stacked layout
-- **Tablet (769-1024px)**: Reduced sidebar, 2-column grids
-- **Desktop (> 1024px)**: Full layout, multi-column grids
-
 ### 🔧 Technical Details
 
 #### CSS Architecture
@@ -103,187 +141,6 @@ admin.css (~2000 lines)
 └── Utilities & Animations
 ```
 
-#### Stimulus Controller
-```javascript
-admin_layout_controller.js
-├── toggleSidebar() - Mobile menu
-├── closeSidebar() - Auto-close on nav
-├── toggleProfileMenu() - Profile dropdown
-└── clickOutside() - Close menus on outside click
-```
-
-#### Design Tokens
-All colors, spacing, and typography use CSS custom properties for consistency and easy maintenance.
-
-### 📊 Performance Metrics
-
-#### Before
-- Basic styling
-- No animations
-- Poor mobile experience
-- Inconsistent spacing
-- Limited reusability
-
-#### After
-- Modern design with gradients
-- Smooth 60fps animations
-- Excellent mobile experience
-- Consistent design system
-- Highly reusable components
-- Optimized CSS (transform-based animations)
-
-### 🎯 Benefits
-
-#### For Developers
-- Comprehensive documentation
-- Quick reference guide
-- Reusable components
-- Clear naming conventions
-- Easy to extend
-
-#### For Users
-- Modern, professional interface
-- Smooth, responsive experience
-- Clear visual hierarchy
-- Better accessibility
-- Intuitive navigation
-
-#### For Business
-- Professional appearance
-- Better user satisfaction
-- Reduced development time
-- Consistent branding
-- Easy maintenance
-
-### 📚 Documentation Structure
-
-```
-doc/memory/
-├── admin_design_system.md       # Complete guide (~300 lines)
-│   ├── Architecture overview
-│   ├── Component catalog
-│   ├── Responsive design
-│   ├── Colors & gradients
-│   ├── Animations
-│   ├── Accessibility
-│   ├── Best practices
-│   └── Examples
-│
-├── admin_quick_reference.md     # Quick guide (~200 lines)
-│   ├── Component snippets
-│   ├── Utility classes
-│   ├── Color variables
-│   ├── Stimulus controller
-│   ├── Checklist
-│   └── Troubleshooting
-│
-└── recent_changes.md            # This file
-```
-
-### 🚀 Usage
-
-#### For new admin pages:
-1. Use standard layout (already configured)
-2. Reference quick guide for components
-3. Follow checklist for best practices
-4. Test on mobile/tablet/desktop
-
-#### Example page structure:
-```erb
-<% content_for :title, "Page Title" %>
-
-<div class="admin-page-header">
-  <h1>Main Title</h1>
-  <p class="text-muted">Description</p>
-</div>
-
-<div class="stats-grid">
-  <!-- Stat cards -->
-</div>
-
-<div class="admin-card">
-  <table class="admin-table">
-    <!-- Table content -->
-  </table>
-</div>
-```
-
-### ✅ Testing
-
-#### Completed
-- ✅ Asset precompilation
-- ✅ Stimulus controller loading
-- ✅ CSS variable inheritance
-- ✅ Responsive breakpoints
-- ✅ Animation performance
-- ✅ Browser compatibility
-
-#### To Test
-- [ ] Test on actual mobile devices
-- [ ] Verify in different browsers (Chrome, Firefox, Safari)
-- [ ] Check accessibility with screen reader
-- [ ] Validate print styles
-- [ ] Test with real data
-
-### 🔜 Next Steps
-
-1. **User Testing** - Get feedback from actual admin users
-2. **Performance Monitoring** - Track page load times
-3. **Accessibility Audit** - Run automated tools
-4. **Browser Testing** - Test on target browsers
-5. **Mobile Testing** - Test on actual devices
-
-### 💡 Future Enhancements
-
-Potential improvements for consideration:
-- Dark mode toggle
-- Theme customization panel
-- More chart components (graphs, pie charts)
-- Advanced filtering with date ranges
-- Bulk actions UI
-- Drag and drop table sorting
-- Real-time updates with Action Cable
-- Export to PDF/Excel functionality
-- Activity timeline component
-- Notification center
-
-### 📝 Notes
-
-- All existing functionality remains intact
-- No breaking changes to API or data structures
-- Views are backward compatible
-- CSS is namespaced under `.admin-` classes
-- Stimulus controller is optional (enhances UX)
-- Mobile menu requires JavaScript but degrades gracefully
-
-### 🎓 Learning Resources
-
-For developers working with this system:
-1. Read `admin_design_system.md` for comprehensive understanding
-2. Use `admin_quick_reference.md` for daily development
-3. Reference existing admin views for examples
-4. Check `CHANGELOG_ADMIN_DESIGN.md` for detailed changes
-
-### 🐛 Known Issues
-
-None currently identified. System is production-ready.
-
-### 📞 Support
-
-For questions or issues:
-1. Check documentation first
-2. Review existing code examples
-3. Consult quick reference guide
-4. Check troubleshooting section
-
 ---
 
-**Implementation Status**: ✅ Complete
-**Documentation Status**: ✅ Complete
-**Testing Status**: ⚠️ Automated tests passed, manual testing recommended
-**Production Ready**: ✅ Yes
-**Breaking Changes**: ❌ None
-
-**Implemented by**: Gilfoyle (AI Coding Agent)
-**Date**: November 21, 2024
-**Version**: 2.0
+**Last Updated**: December 15, 2024
