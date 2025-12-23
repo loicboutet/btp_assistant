@@ -77,6 +77,7 @@ Rails.application.routes.draw do
         post :suspend
         post :activate
         post :reset_whatsapp
+        post :toggle_bypass
         get :logs
         get :stripe_portal
         post :create_stripe_portal

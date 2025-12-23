@@ -71,6 +71,45 @@
   </div>
 </div>
 
+<!-- Accès & Abonnement Section -->
+<div class="admin-card" style="margin-bottom: var(--spacing-xl);">
+  <div class="card-header">
+    <h2>Accès & Abonnement</h2>
+  </div>
+  <div class="details-list">
+    <div class="detail-item">
+      <span class="detail-label">Accès gratuit</span>
+      <span class="detail-value">
+        <% if @user.bypass_subscription %>
+          <span class="status-badge status-success">🎁 Accès gratuit</span>
+        <% else %>
+          <span class="status-badge">Non</span>
+        <% end %>
+      </span>
+    </div>
+    <div class="detail-item">
+      <span class="detail-label">Période d'essai</span>
+      <span class="detail-value">
+        <% if @user.in_trial_period? %>
+          <span class="status-badge status-warning">⏳ Période d'essai: <%= @user.trial_days_remaining %> jours restants</span>
+        <% elsif @user.trial_expired? && @user.subscription_status != 'active' && !@user.bypass_subscription %>
+          <span class="status-badge status-danger">❌ Période d'essai expirée</span>
+        <% elsif @user.trial_ends_at.present? %>
+          <span class="status-badge">Terminée</span>
+        <% else %>
+          <span class="status-badge">Non définie</span>
+        <% end %>
+      </span>
+    </div>
+    <% if @user.trial_ends_at.present? %>
+      <div class="detail-item">
+        <span class="detail-label">Date de fin d'essai</span>
+        <span class="detail-value"><%= l(@user.trial_ends_at) %></span>
+      </div>
+    <% end %>
+  </div>
+</div>
+
 <!-- Quick Links -->
 <div class="stats-grid" style="margin-bottom: var(--spacing-xl);">
   <%= link_to clients_admin_user_path(@user), class: "stat-card", style: "text-decoration: none;" do %>
@@ -208,6 +247,10 @@
 
     <%= link_to logs_admin_user_path(@user), class: "btn btn-outline btn-block" do %>
       <span>Voir les logs</span>
+    <% end %>
+
+    <%= link_to toggle_bypass_admin_user_path(@user), method: :post, class: "btn btn-outline btn-block", data: { confirm: @user.bypass_subscription ? "Désactiver l'accès gratuit ?" : "Activer l'accès gratuit ?" } do %>
+      <span><%= @user.bypass_subscription ? '🚫 Désactiver accès gratuit' : '🎁 Activer accès gratuit' %></span>
     <% end %>
   </div>
 </div>

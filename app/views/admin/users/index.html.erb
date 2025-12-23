@@ -39,6 +39,17 @@
     </div>
 
     <div class="filter-group">
+      <%= select_tag :access_type,
+            options_for_select([
+              ["Tous les accès", ""],
+              ["🎁 Accès gratuit", "bypass"],
+              ["⏳ En période d'essai", "in_trial"],
+              ["❌ Essai expiré", "trial_expired"]
+            ], params[:access_type]),
+            class: "form-select" %>
+    </div>
+
+    <div class="filter-group">
       <%= select_tag :language,
             options_for_select([
               ["Toutes les langues", ""],
@@ -85,7 +96,7 @@
           <th>Entreprise</th>
           <th>Langue</th>
           <th>WhatsApp</th>
-          <th>Abonnement</th>
+          <th>Accès</th>
           <th>Documents</th>
           <th>Statut</th>
           <th>Actions</th>
@@ -123,12 +134,17 @@
                 <span class="status-badge status-warning">Non connecté</span>
               <% end %>
             </td>
-            <td data-label="Abonnement">
-              <div><%= user.subscription_status %></div>
-              <% if (sub = user.subscriptions.order(created_at: :desc).first) %>
-                <% if sub.current_period_end.present? %>
-                  <div class="text-muted small">Fin période: <%= l(sub.current_period_end.to_date) %></div>
-                <% end %>
+            <td data-label="Accès">
+              <% if user.bypass_subscription? %>
+                <span class="badge badge-purple">🎁 Gratuit</span>
+              <% elsif user.in_trial_period? %>
+                <span class="badge badge-blue">⏳ Essai (<%= user.trial_days_remaining %>j)</span>
+              <% elsif user.trial_expired? && !user.subscription_active? %>
+                <span class="badge badge-red">❌ Expiré</span>
+              <% elsif user.subscription_active? %>
+                <span class="badge badge-green">💳 Abonné</span>
+              <% else %>
+                <span class="badge">—</span>
               <% end %>
             </td>
             <td data-label="Documents">

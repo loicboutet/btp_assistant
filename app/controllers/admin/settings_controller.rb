@@ -102,12 +102,14 @@ module Admin
 
     def general_params
       params.fetch(:app_setting, {}).permit(
+        :default_trial_days,
         :signed_url_expiration_minutes,
         :conversation_context_messages,
         :conversation_context_hours,
         :rate_limit_messages_per_hour
       )
     end
+
     def unipile_params
       permitted = params.require(:app_setting).permit(:unipile_dsn, :unipile_account_id, :unipile_api_key)
       # Avoid overwriting API key if the field is left blank in the form

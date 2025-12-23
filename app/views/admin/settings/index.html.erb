@@ -64,6 +64,12 @@
   <%= form_with model: @app_setting, url: admin_settings_path, method: :patch, class: "settings-form" do |f| %>
     <div class="form-fields-grid">
       <div class="form-group">
+        <%= f.label :default_trial_days, "Durée d'essai par défaut (jours)", class: "form-label" %>
+        <%= f.number_field :default_trial_days, class: "form-input", min: 0, max: 90 %>
+        <p class="form-hint">Nombre de jours d'essai gratuit pour les nouveaux utilisateurs (0 = pas d'essai)</p>
+      </div>
+
+      <div class="form-group">
         <%= f.label :signed_url_expiration_minutes, "Expiration des liens signés (minutes)", class: "form-label" %>
         <%= f.number_field :signed_url_expiration_minutes, class: "form-input", min: 1, max: 1440 %>
       </div>

@@ -4,7 +4,7 @@ module Admin
   class UsersController < Admin::BaseController
     before_action :set_user, only: [
       :show, :edit, :update,
-      :suspend, :activate, :reset_whatsapp,
+      :suspend, :activate, :reset_whatsapp, :toggle_bypass,
       :logs, :stripe_portal, :create_stripe_portal,
       :clients, :show_client, :edit_client,
       :quotes, :show_quote,
@@ -31,6 +31,20 @@ module Admin
           @users = @users.where.not(unipile_chat_id: nil)
         when 'disconnected'
           @users = @users.where(unipile_chat_id: nil)
+        end
+      end
+
+      if params[:access_type].present?
+        case params[:access_type]
+        when 'bypass'
+          @users = @users.with_bypass
+        when 'in_trial'
+          @users = @users.in_trial
+        when 'trial_expired'
+          @users = @users.where(
+            'trial_ends_at IS NOT NULL AND trial_ends_at < ? AND subscription_status NOT IN (?)',
+            Time.current, %w[active past_due]
+          )
         end
       end
 
@@ -97,6 +111,20 @@ module Admin
       @user.update!(unipile_chat_id: nil, unipile_attendee_id: nil)
       log_admin_action('whatsapp_reset', "WhatsApp reset for user #{@user.id}", { user_id: @user.id })
       redirect_to admin_user_path(@user), notice: 'WhatsApp réinitialisé.'
+    end
+
+    def toggle_bypass
+      new_value = !@user.bypass_subscription?
+      @user.update!(bypass_subscription: new_value)
+      
+      action = new_value ? 'enabled' : 'disabled'
+      log_admin_action('bypass_subscription_toggled', "Bypass subscription #{action} for user #{@user.id}", { 
+        user_id: @user.id, 
+        bypass_subscription: new_value 
+      })
+      
+      notice = new_value ? 'Accès gratuit permanent activé.' : 'Accès gratuit permanent désactivé.'
+      redirect_to admin_user_path(@user), notice: notice
     end
 
     def logs
@@ -207,7 +235,9 @@ module Admin
         :address,
         :vat_number,
         :preferred_language,
-        :stripe_customer_id
+        :stripe_customer_id,
+        :bypass_subscription,
+        :trial_ends_at
       )
     end
 
